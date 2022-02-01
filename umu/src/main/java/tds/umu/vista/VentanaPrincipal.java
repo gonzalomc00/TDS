@@ -42,7 +42,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 	private PanelExplorar panel_explorar;
 	private PanelMisListas panel_mis_listas;
 	private PanelLogin Plogin;
-	private ventanaRegistro PRegistro;
+	private VentanaRegistro PRegistro;
 	private PanelNuevaLista PNLista;
 
 	/**
@@ -70,7 +70,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 		panel_explorar= new PanelExplorar(this);
 		panel_mis_listas= new PanelMisListas(this);
 		Plogin= new PanelLogin(this);
-		PRegistro = new ventanaRegistro(this);
+		PRegistro = new VentanaRegistro();
 		PNLista= new PanelNuevaLista(this);
 		
 		setBounds(0,0,900,600);
