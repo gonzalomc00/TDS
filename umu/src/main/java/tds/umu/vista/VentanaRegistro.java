@@ -28,11 +28,13 @@ public class VentanaRegistro extends JPanel {
 	private JTextField txtPepicodominioalgo;
 	private JTextField txtPepico;
 	private JPasswordField passwordField;
+	private VentanaPrincipal prin;
 
 	/**
 	 * Create the panel.
 	 */
-	public VentanaRegistro() {
+	public VentanaRegistro(VentanaPrincipal prin) {
+		this.prin=prin; //TODO mirar donde se usa en el otro  fichero
 		setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		FlowLayout flowLayout = (FlowLayout) getLayout();
 		flowLayout.setVgap(80);
