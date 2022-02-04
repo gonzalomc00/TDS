@@ -22,9 +22,9 @@ public class AdaptadorClienteTDS implements IAdaptadorClienteDAO {
 
 	public static AdaptadorClienteTDS getUnicaInstancia() { // patron singleton
 		if (unicaInstancia == null)
-			return new AdaptadorClienteTDS();
-		else
-			return unicaInstancia;
+			unicaInstancia=new AdaptadorClienteTDS();
+	
+		return unicaInstancia;
 	}
 
 	private AdaptadorClienteTDS() {
@@ -53,7 +53,7 @@ public class AdaptadorClienteTDS implements IAdaptadorClienteDAO {
 		eCliente = servPersistencia.registrarEntidad(eCliente);
 		// asignar identificador unico
 		// Se aprovecha el que genera el servicio de persistencia
-		//cliente.setCodigo(eCliente.getId());
+		cliente.setCodigo(eCliente.getId());
 	}
 
 	public void borrarCliente(Cliente cliente) {
