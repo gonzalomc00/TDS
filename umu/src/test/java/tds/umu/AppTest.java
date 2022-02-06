@@ -6,7 +6,8 @@ import java.util.List;
 
 import org.junit.Test;
 
-import tds.umu.modelo.Cliente;
+import tds.umu.modelo.Usuario;
+import tds.umu.persistencia.IAdaptadorUsuarioDAO;
 import tds.umu.modelo.Etiqueta;
 import tds.umu.modelo.Video;
 import tds.umu.persistencia.IAdaptadorClienteDAO;
@@ -19,7 +20,7 @@ import tds.umu.persistencia.TDSFactoriaDAO;
 public class AppTest 
 {
 	private TDSFactoriaDAO factoria = new TDSFactoriaDAO();
-	private IAdaptadorClienteDAO idao;
+	private IAdaptadorUsuarioDAO idao;
 	private IAdaptadorVideoDAO vdao;
     /**
      * Rigorous Test :-)
@@ -32,11 +33,11 @@ public class AppTest
     @Test
     public void persistencia()
     {
-    	idao = factoria.getClienteDAO();
-    	Cliente a= new Cliente("trini");
-    	idao.registrarCliente(a);
-    	List<Cliente> clientes = idao.recuperarTodosClientes();
-    	for (Cliente cliente : clientes) {
+    	idao = factoria.getUsuarioDAO();
+    	Usuario a= new Usuario("trini");
+    	idao.registrarUsuario(a);
+    	List<Usuario> clientes = idao.recuperarTodosUsuarios();
+    	for (Usuario cliente : clientes) {
 			System.out.println("mi nombre es " + cliente.getNombre() + "\n");
 		}
     	assertTrue(clientes.size()!=0);

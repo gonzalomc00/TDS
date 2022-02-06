@@ -5,8 +5,8 @@ public class TDSFactoriaDAO extends FactoriaDAO {
 	}
 	
 	@Override
-	public IAdaptadorClienteDAO getClienteDAO() {
-		return AdaptadorClienteTDS.getUnicaInstancia();
+	public IAdaptadorUsuarioDAO getUsuarioDAO() {
+		return AdaptadorUsuarioTDS.getUnicaInstancia();
 	}
 	
 	public IAdaptadorVideoDAO getVideoDAO() {
