@@ -10,7 +10,6 @@ import tds.umu.modelo.Usuario;
 import tds.umu.persistencia.IAdaptadorUsuarioDAO;
 import tds.umu.modelo.Etiqueta;
 import tds.umu.modelo.Video;
-import tds.umu.persistencia.IAdaptadorClienteDAO;
 import tds.umu.persistencia.IAdaptadorVideoDAO;
 import tds.umu.persistencia.TDSFactoriaDAO;
 
@@ -34,8 +33,8 @@ public class AppTest
     public void persistencia()
     {
     	idao = factoria.getUsuarioDAO();
-    	Usuario a= new Usuario("trini");
-    	idao.registrarUsuario(a);
+    	//Usuario a= new Usuario("trini");
+    	//idao.registrarUsuario(a);
     	List<Usuario> clientes = idao.recuperarTodosUsuarios();
     	for (Usuario cliente : clientes) {
 			System.out.println("mi nombre es " + cliente.getNombre() + "\n");

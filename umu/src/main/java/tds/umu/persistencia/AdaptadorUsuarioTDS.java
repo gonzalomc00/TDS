@@ -56,14 +56,6 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 		String fecha= usuario.getFecha().format(formattedDate);
 		
 		
-		//si no es premium pondré noPremium
-		//si es premium pondré premium
-		//no sé si habrá alguna manera de hacerlo más rápido
-		String premium = "noPremium";
-		if(usuario.isPremium()) {
-			premium="premium";
-		}
-		
 		eUsuario.setPropiedades(new ArrayList<Propiedad>(
 				Arrays.asList( new Propiedad("nombre", usuario.getNombre()),
 				//añado las nuevas propiedades
@@ -74,7 +66,7 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 						new Propiedad("usuario", usuario.getUsuario()),
 						new Propiedad("contraseña", usuario.getContraseña()),
 						//será algo del palo new Propiedad("listasDeVideo", usuario.getListasVideos()),
-						new Propiedad("isPremium", premium)
+						new Propiedad("isPremium", String.valueOf(usuario.isPremium()))
 						)));
 
 		// registrar entidad usuario
@@ -85,7 +77,7 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 	}
 
 	public void borrarUsuario(Usuario usuario) {
-		// No se comprueban restricciones de integridad con Venta
+		// Habrá que borrar tambien todas las playlists que tenga este usuario 
 		Entidad eUsuario = servPersistencia.recuperarEntidad(usuario.getCodigo());
 
 		servPersistencia.borrarEntidad(eUsuario);
@@ -98,53 +90,41 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 		//tengo que pasar lafecha a string también que la tengo en forma de LocalDate
 		//he seguido los pasos de https://howtodoinjava.com/java/date-time/localdate-format-example/
 		DateTimeFormatter formattedDate = DateTimeFormatter.ofPattern("dd-MMM-yy");
-		String fecha= usuario.getFecha().format(formattedDate);
-		
-		
-		//si no es premium pondré noPremium
-		//si es premium pondré premium
-		//no sé si habrá alguna manera de hacerlo más rápido
-		String premium = "noPremium";
-		if(usuario.isPremium()) {
-			premium="premium";
-		}
-		
+	
 		for (Propiedad prop : eUsuario.getPropiedades()) {
 			//TODO faltará uno para modificar las playlists de videos
 			switch(prop.getNombre()) {
 			case("nombre"):
 				prop.setValor(usuario.getNombre());
+				break;
 				
 			case("apellidos"):
-		
 				prop.setValor(usuario.getApellidos());
+				break;
 			
 			case("fechaNacimiento"):
-				prop.setValor(fecha);
+				prop.setValor(usuario.getFecha().format(formattedDate));
+				break;
 				
 			case("email"):
-
 				prop.setValor(usuario.getEmail());
-			
+				break;
 				
 			case("usuario"):	
-
-
 				prop.setValor(usuario.getUsuario());
+				break;
 			
 			case("contraseña"):	
 
 				prop.setValor(usuario.getContraseña());
-			
+				break;
 				
 			case("isPremium"):
-
-				prop.setValor(premium);
+				prop.setValor(String.valueOf(usuario.isPremium()));
+				break;
 			
-			default:
-			
-			servPersistencia.modificarPropiedad(prop);
 			}
+			servPersistencia.modificarPropiedad(prop);
 		}
 
 	}
@@ -167,7 +147,6 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 
 		// recuperar entidad
 		eUsuario = servPersistencia.recuperarEntidad(codigo);
-
 		nombre = servPersistencia.recuperarPropiedadEntidad(eUsuario, "nombre");
 		apellidos = servPersistencia.recuperarPropiedadEntidad(eUsuario, "apellidos");
 		fecha = servPersistencia.recuperarPropiedadEntidad(eUsuario, "fechaNacimiento");
@@ -180,23 +159,18 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 		DateTimeFormatter formattedDate = DateTimeFormatter.ofPattern("dd-MMM-yy");
 		fechaFormateada= LocalDate.parse(fecha,formattedDate);		
 		
-		
-		
-		
-		
-		
 		Usuario usuario = new Usuario(nombre,apellidos, fechaFormateada,email,nombreUsuario,contraseña);
 
-		if(isPremium.equals("noPremium")) {
+		if(isPremium.equals("false")) {
 			usuario.setPremium(false);
 		}else {
 			usuario.setPremium(true);
 		}
-		
-		
 		usuario.setCodigo(codigo);
 		return usuario;
 	}
+	
+	
 
 	public List<Usuario> recuperarTodosUsuarios() {
 
@@ -209,12 +183,6 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 		return usuarios;
 	}
 
-	//creo la funcion de hacer aquí set premium por no violar patrones y delegar:
-	public void setPremium(Usuario usuario, boolean premium) {
-		usuario.setPremium(premium);
-		//modificamos el estado del usuario en la BBDD aka persistencia
-		this.modificarUsuario(usuario);
-	}
 	//TODO supongo que faltarían métodos para gestionar las playlist (rollo igual q hemos hecho aqui de delegar el trabajo a la clase, pos con las
 	//funciones que implementemos en usuario pues habrá que hacer lo mismo aqui de delegar.
 	
