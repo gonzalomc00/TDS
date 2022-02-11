@@ -14,27 +14,19 @@ import javax.swing.border.BevelBorder;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Component;
-import java.awt.FlowLayout;
-import java.awt.CardLayout;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.FormSpecs;
-import com.jgoodies.forms.layout.RowSpec;
-import java.awt.GridLayout;
 import javax.swing.UIManager;
 
-public class PanelMisListas extends JPanel {
+public class PanelRecientes extends JPanel {
 	
 	private VentanaPrincipal ventana;
-	private JPanel panel,panel_1,panel_2,panel_4,panel_5;
+	private JPanel panel,panel_1,panel_2,panel_3,panel_4,panel_5;
 	private JLabel etiquetaSeleccion;
 	private JComboBox comboBox;
 	private JButton bReproducir, bCancelar;
-	private JPanel panel_3;
 	private JScrollBar scrollBar;
 	private JPanel panel_6;
 	
-	public PanelMisListas(VentanaPrincipal ventana) {
+	public PanelRecientes(VentanaPrincipal ventana) {
 
 		ventana=ventana;
 		crearPantalla();
@@ -56,7 +48,7 @@ public class PanelMisListas extends JPanel {
 		panel.add(panel_1, BorderLayout.NORTH);
 		panel_1.setLayout(new BoxLayout(panel_1, BoxLayout.Y_AXIS));
 		
-		etiquetaSeleccion = new JLabel("Seleccione la lista");
+		etiquetaSeleccion = new JLabel("Videos recientes");
 		etiquetaSeleccion.setAlignmentX(Component.CENTER_ALIGNMENT);
 		etiquetaSeleccion.setForeground(Color.WHITE);
 		panel_1.add(etiquetaSeleccion);
@@ -80,17 +72,16 @@ public class PanelMisListas extends JPanel {
 		panel_2.add(bCancelar);
 		
 		panel_3 = new JPanel();
-		panel_3.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
 		panel_3.setBackground(Color.GRAY);
-		panel.add(panel_3, BorderLayout.WEST);
+		panel_3.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
+		panel.add(panel_3, BorderLayout.EAST);
 		panel_3.setLayout(new BorderLayout(0, 0));
 		
 		scrollBar = new JScrollBar();
-		scrollBar.setBackground(Color.GRAY);
-		scrollBar.setForeground(Color.GRAY);
-		panel.add(scrollBar, BorderLayout.EAST);
+		panel_3.add(scrollBar);
 		
 		panel_6 = new JPanel();
+		panel_6.setBorder(UIManager.getBorder("RadioButton.border"));
 		panel_6.setBackground(Color.GRAY);
 		panel.add(panel_6, BorderLayout.CENTER);
 		
