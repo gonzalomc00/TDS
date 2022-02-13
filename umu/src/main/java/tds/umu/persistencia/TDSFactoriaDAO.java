@@ -17,4 +17,7 @@ public class TDSFactoriaDAO extends FactoriaDAO {
 		return AdaptadorEtiquetaTDS.getUnicaInstancia();
 	}
 	
+	public IAdaptadorListaVideosDAO getListaVideosDAO() {
+		return AdaptadorListaVideosTDS.getUnicaInstancia();
+	}
 }

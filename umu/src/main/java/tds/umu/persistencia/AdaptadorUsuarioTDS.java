@@ -10,7 +10,9 @@ import java.util.StringTokenizer;
 
 import tds.driver.FactoriaServicioPersistencia;
 import tds.driver.ServicioPersistencia;
+import tds.umu.modelo.ListaVideos;
 import tds.umu.modelo.Usuario;
+import tds.umu.modelo.Video;
 import beans.Entidad;
 import beans.Propiedad;
 
@@ -49,9 +51,13 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 		// crear entidad Usuario
 		eUsuario = new Entidad();
 		eUsuario.setNombre("usuario");
-		//como en el arraylist de propiedades almacenamos strings, tengo que convertir lo del premium a un string
-		//tengo que pasar lafecha a string también que la tengo en forma de LocalDate
-		//he seguido los pasos de https://howtodoinjava.com/java/date-time/localdate-format-example/
+		
+		
+		AdaptadorListaVideosTDS adaptadorListaVideos= AdaptadorListaVideosTDS.getUnicaInstancia();
+		for(ListaVideos lv: usuario.getListas()) {
+			adaptadorListaVideos.registrarListaVideos(lv);
+		}
+		
 		DateTimeFormatter formattedDate = DateTimeFormatter.ofPattern("dd-MMM-yy");
 		String fecha= usuario.getFecha().format(formattedDate);
 		
@@ -65,10 +71,11 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 						new Propiedad("email", usuario.getEmail()),
 						new Propiedad("usuario", usuario.getUsuario()),
 						new Propiedad("contraseña", usuario.getContraseña()),
-						//será algo del palo new Propiedad("listasDeVideo", usuario.getListasVideos()),
+					    new Propiedad("listasDeVideo", obtenerCodigosListasVideos(null)),
 						new Propiedad("isPremium", String.valueOf(usuario.isPremium()))
 						)));
 
+		
 		// registrar entidad usuario
 		eUsuario = servPersistencia.registrarEntidad(eUsuario);
 		// asignar identificador unico
@@ -77,9 +84,12 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 	}
 
 	public void borrarUsuario(Usuario usuario) {
-		// Habrá que borrar tambien todas las playlists que tenga este usuario 
+		// Habrá que borrar tambien todas las playlists que tenga este usuario
+		AdaptadorListaVideosTDS adaptadorListaVideos= AdaptadorListaVideosTDS.getUnicaInstancia();
+		for(ListaVideos lv: usuario.getListas()) {
+			adaptadorListaVideos.borrarListaVideos(lv);
+		}
 		Entidad eUsuario = servPersistencia.recuperarEntidad(usuario.getCodigo());
-
 		servPersistencia.borrarEntidad(eUsuario);
 	}
 
@@ -122,6 +132,8 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 			case("isPremium"):
 				prop.setValor(String.valueOf(usuario.isPremium()));
 				break;
+			case("listasDeVideo"):
+				prop.setValor(String.valueOf(usuario.getListas()));
 			
 			}
 			servPersistencia.modificarPropiedad(prop);
@@ -133,7 +145,7 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 
 		// si no, la recupera de la base de datos
 		//TODO same otra vez las lsitas de videos
-		Entidad eUsuario;
+		Entidad eUsuario=null;
 		String nombre;
 		String apellidos;
 		String fecha;
@@ -142,11 +154,15 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 		String nombreUsuario;
 		String contraseña;
 		String isPremium;
+		List<ListaVideos> lv;
 		
+		try {
+			eUsuario=servPersistencia.recuperarEntidad(codigo);
+		} catch(NullPointerException e) {}
+		if(eUsuario==null) return null;
 		
 
 		// recuperar entidad
-		eUsuario = servPersistencia.recuperarEntidad(codigo);
 		nombre = servPersistencia.recuperarPropiedadEntidad(eUsuario, "nombre");
 		apellidos = servPersistencia.recuperarPropiedadEntidad(eUsuario, "apellidos");
 		fecha = servPersistencia.recuperarPropiedadEntidad(eUsuario, "fechaNacimiento");
@@ -154,18 +170,23 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 		nombreUsuario = servPersistencia.recuperarPropiedadEntidad(eUsuario, "usuario");
 		contraseña = servPersistencia.recuperarPropiedadEntidad(eUsuario, "contraseña");
 		isPremium = servPersistencia.recuperarPropiedadEntidad(eUsuario, "isPremium");
-
+		lv= obtenerListaVideosDesdeCodigos(servPersistencia.recuperarPropiedadEntidad(eUsuario, "listasDeVideo"));
 		
 		DateTimeFormatter formattedDate = DateTimeFormatter.ofPattern("dd-MMM-yy");
 		fechaFormateada= LocalDate.parse(fecha,formattedDate);		
 		
 		Usuario usuario = new Usuario(nombre,apellidos, fechaFormateada,email,nombreUsuario,contraseña);
 
+		for(ListaVideos lista: lv) {
+			usuario.añadirLista(lista);
+		}
 		if(isPremium.equals("false")) {
 			usuario.setPremium(false);
 		}else {
 			usuario.setPremium(true);
 		}
+		
+		
 		usuario.setCodigo(codigo);
 		return usuario;
 	}
@@ -183,8 +204,22 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 		return usuarios;
 	}
 
-	//TODO supongo que faltarían métodos para gestionar las playlist (rollo igual q hemos hecho aqui de delegar el trabajo a la clase, pos con las
-	//funciones que implementemos en usuario pues habrá que hacer lo mismo aqui de delegar.
+	private String obtenerCodigosListasVideos(List<ListaVideos> lvideos) {
+		String lineas="";
+		for(ListaVideos lv: lvideos)
+			lineas+= lv.getCodigo()+" ";
+		return lineas.trim();
+	}
 	
+	private List<ListaVideos> obtenerListaVideosDesdeCodigos(String lineas){
+		List<ListaVideos> listasvideos= new LinkedList<ListaVideos>();
+		StringTokenizer strTok= new StringTokenizer(lineas," ");
+		AdaptadorListaVideosTDS adaptadorListaVideo=AdaptadorListaVideosTDS.getUnicaInstancia();
+		while(strTok.hasMoreTokens()) {
+			listasvideos.add(adaptadorListaVideo.recuperarListaVideos(Integer.valueOf((String)strTok.nextElement())));
+		}
+		
+		return listasvideos;
+	}
 	
 }

@@ -141,7 +141,7 @@ public class AdaptadorVideoTDS  implements IAdaptadorVideoDAO {
 	private String obtenerCodigosEtiquetas(List<Etiqueta> etiquetas) {
 		String lineas="";
 		for(Etiqueta etq: etiquetas)
-				lineas+= etq.getCodigo();
+				lineas+= etq.getCodigo()+" ";
 		return lineas.trim();
 		
 	}

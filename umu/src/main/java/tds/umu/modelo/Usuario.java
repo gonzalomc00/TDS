@@ -1,6 +1,8 @@
 package tds.umu.modelo;
 
 import java.time.LocalDate;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Usuario {
 private Integer codigo;
@@ -11,6 +13,7 @@ private String email;
 private String usuario;
 private String contraseña;
 private boolean isPremium;
+private List<ListaVideos> listas;
 
 //funcionalidad
 
@@ -22,6 +25,7 @@ public Usuario(String nombre, String apellidos, LocalDate fecha, String email, S
 	this.usuario=usuario;
 	this.contraseña= contraseña;
 	this.isPremium=false;
+	this.setListas(new LinkedList<ListaVideos>());
 	
 }
 
@@ -127,6 +131,25 @@ public boolean isPremium() {
 public void setPremium(boolean isPremium) {
 	this.isPremium = isPremium;
 }
+
+
+public List<ListaVideos> getListas() {
+	return listas;
+}
+
+
+public void setListas(List<ListaVideos> listas) {
+	this.listas = listas;
+}
+
+public void añadirLista(ListaVideos lv) {
+	this.listas.add(lv);
+}
+
+public void eliminarLista(ListaVideos lv) {
+	this.listas.remove(lv);
+}
+
 
 
 
