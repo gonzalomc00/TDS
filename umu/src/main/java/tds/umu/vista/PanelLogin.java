@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.Component;
@@ -11,6 +12,11 @@ import java.awt.Dimension;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import javax.swing.border.LineBorder;
+
+import tds.umu.controlador.Controlador;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class PanelLogin extends JPanel {
 	private JTextField textoUser,textoContrasena;
@@ -87,6 +93,20 @@ public class PanelLogin extends JPanel {
 		panel_4.add(panel_7);
 		
 		aceptar = new JButton("Aceptar");
+		aceptar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(Controlador.getUnicaInstancia().loginUsuario(textoUser.getText(), textoContrasena.getText())) {
+					System.out.println("Aqui iria toda la movida de actualizar");
+				}
+				else {
+					JOptionPane.showMessageDialog(PanelLogin.this, "Nombre de usuario o contrase�a no valido",
+							"Error", JOptionPane.ERROR_MESSAGE);
+					ventana.cambiarNombre("eo");
+
+				}
+			}
+		});
 		panel_7.add(aceptar);
 		
 		cancelar = new JButton("Cancelar");

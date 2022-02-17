@@ -71,7 +71,7 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 						new Propiedad("email", usuario.getEmail()),
 						new Propiedad("usuario", usuario.getUsuario()),
 						new Propiedad("contraseña", usuario.getContraseña()),
-					    new Propiedad("listasDeVideo", obtenerCodigosListasVideos(null)),
+					    new Propiedad("listasDeVideo", obtenerCodigosListasVideos(usuario.getListas())),
 						new Propiedad("isPremium", String.valueOf(usuario.isPremium()))
 						)));
 
@@ -218,7 +218,7 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 		while(strTok.hasMoreTokens()) {
 			listasvideos.add(adaptadorListaVideo.recuperarListaVideos(Integer.valueOf((String)strTok.nextElement())));
 		}
-		
+ 		
 		return listasvideos;
 	}
 	

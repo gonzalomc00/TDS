@@ -200,6 +200,9 @@ private void cambioPanel(JPanel panel) {
 	return;
 }
 
+public void cambiarNombre(String nombre) {
+	etiqueta.setText(nombre);
+}
 
 
 @Override

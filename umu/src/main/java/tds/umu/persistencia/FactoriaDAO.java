@@ -5,18 +5,21 @@ package tds.umu.persistencia;
 public abstract class FactoriaDAO {
 	private static FactoriaDAO unicaInstancia;
 	
-	public static final String DAO_TDS = "persistencia.TDSFactoriaDAO";
+	public static final String DAO_TDS = "tds.umu.persistencia.TDSFactoriaDAO";
 		
 	/** 
 	 * Crea un tipo de factoria DAO.
 	 * Solo existe el tipo TDSFactoriaDAO
 	 */
 	public static FactoriaDAO getInstancia(String tipo) throws DAOException{
-		if (unicaInstancia == null)
-			try { unicaInstancia=(FactoriaDAO) Class.forName(tipo).newInstance();
+		if (unicaInstancia == null) {
+			try {
+				unicaInstancia=(FactoriaDAO) Class.forName(tipo).newInstance();
+				System.out.println("eee");
 			} catch (Exception e) {	
 				throw new DAOException(e.getMessage());
 			} 
+		}
 		return unicaInstancia;
 	}
 

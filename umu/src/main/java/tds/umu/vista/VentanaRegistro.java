@@ -5,6 +5,7 @@ package tds.umu.vista;
 import javax.swing.JPanel;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import java.awt.Component;
@@ -27,6 +28,8 @@ import com.toedter.calendar.JCalendar;
 
 import tds.umu.controlador.Controlador;
 import tds.umu.modelo.Usuario;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class VentanaRegistro extends JPanel {
 	/**
@@ -40,6 +43,7 @@ public class VentanaRegistro extends JPanel {
 	private JPasswordField campoContra;
 	private VentanaPrincipal prin;
 	private JPasswordField repetirContra;
+	private final JCalendar calendar;
 
 	/**
 	 * Create the panel.
@@ -91,7 +95,7 @@ public class VentanaRegistro extends JPanel {
 		JLabel lblNewLabel_2 = new JLabel("Fecha de nacimiento");
 		panel_3.add(lblNewLabel_2);
 		
-		final JCalendar calendar = new JCalendar();
+		calendar = new JCalendar();
 		panel_3.add(calendar);
 		
 		JPanel panel_4 = new JPanel();
@@ -161,6 +165,12 @@ public class VentanaRegistro extends JPanel {
 		panel.add(panel_7);
 		
 		JButton botonRegistrarse = new JButton("Registrarse");
+		botonRegistrarse.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				
+			}
+		});
 		panel_7.add(botonRegistrarse);
 		
 		JButton botonCancelar = new JButton("Cancelar");
@@ -194,39 +204,91 @@ public class VentanaRegistro extends JPanel {
 				String contra= new String(campoContra.getPassword());
 				String contraRepe= new String(repetirContra.getPassword());
 				
-				
-				
-				
-				if((contra.equals(contraRepe))&&(fechaNacimiento.isBefore(LocalDate.now()))) {
-					if((email.endsWith(".com")||email.endsWith(".es")||(email.endsWith(".orgs")))&&(email.contains("@"))) {
-						//llamamos al controlador para que registre el usuario.
-						boolean registrado = Controlador.getUnicaInstancia().registrarUsuario(nombre, apellidos, fechaNacimiento, email, usuario, contra);
+				boolean OK = false;
+				OK = checkFields();
+				if (OK) {
+					boolean registrado = false;
+					registrado = Controlador.getUnicaInstancia().registrarUsuario(nombre, apellidos,fechaNacimiento,email, usuario, contra);
 						if (registrado) {
-							//TODO poner alguna ventana diciendo eee te has registrado correctaemnte1 un besazo
-							Controlador.getUnicaInstancia().setUsuario(new Usuario(nombre, apellidos, fechaNacimiento, usuario, contra,email));
-							//resetamos los campos a nulo
-							campoNombre.setText("");
-							campoApellidos.setText("");
-							campoEmail.setText("");
-							campoUsuario.setText("");
-							campoContra.setText("");
-							repetirContra.setText("");
+							JOptionPane.showMessageDialog(VentanaRegistro.this, "Usuario registrado correctamente.", "Registro",
+									JOptionPane.INFORMATION_MESSAGE);
+							
+							prin.cambiarNombre(nombre);
+						} else {
+							JOptionPane.showMessageDialog(VentanaRegistro.this, "No se ha podido llevar a cabo el registro.\n",
+									"Registro", JOptionPane.ERROR_MESSAGE);
 						}
 					}
-					else {
-						//TODO mostrar alguna ventana de q el email esta mal
-					}
-					
 				
-					if (fechaNacimiento.isAfter(LocalDate.now())) {
-					//TODO mostrar alguna ventana deq la fecha esta mal
-				
+	
+						
 				}
-				}
-			}
+			
 		});
 		
 		
 	}
+	private boolean checkFields() {
+		boolean salida = true;
+		String falta="";
+		
+		if (campoNombre.getText().trim().isEmpty()) {
+			falta=falta.concat("Debes introducir un nombre\n");
+			salida = false;
+		}
+		if (campoApellidos.getText().trim().isEmpty()) {
+			falta=falta.concat("Debes introducir apellidos\n");
+			salida = false;
+		}
+		if (campoEmail.getText().trim().isEmpty()) {
+			falta=falta.concat("Debes introducir un email\n");
+			salida = false;
+		}
+		if(!(campoEmail.getText().endsWith(".com")||campoEmail.getText().endsWith(".es")||(campoEmail.getText().endsWith(".orgs")))&&(campoEmail.getText().contains("@"))) {		
+			falta=falta.concat("El correo electrónico introducido no es válido\n");
+			salida =false;
+		}
+		if (campoUsuario.getText().trim().isEmpty()) {
+			falta=falta.concat("Debes introducir un nombre de usuario\n");
+			salida = false;
+		}
+		String password = new String(campoContra.getPassword());
+		String password2 = new String(repetirContra.getPassword());
+		if (password.isEmpty()) {
+			falta=falta.concat("Debes introducir una contraseña\n");
+			salida = false;
+		} 
+		if (password2.isEmpty()) {
+			falta=falta.concat("Debes repetir la contraseña\n");
+			salida = false;
+		} 
+		if (!password.equals(password2)) {
+			falta=falta.concat("Ambas contraseñas no coinciden\n");
+			salida = false;
+		}
+		/* Comprobar que no exista otro usuario con igual login */
+		if (!campoNombre.getText().trim().isEmpty() && Controlador.getUnicaInstancia().esUsuarioRegistrado(campoUsuario.getText())) {
+			falta=falta.concat("Ya existe ese usuario\n");
+			salida = false;
+		}
+		Date fecha= calendar.getDate();
+		LocalDate fechaNacimiento= fecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+		if (fechaNacimiento==null) {
+			falta=falta.concat("Introduce una fecha de nacimiento\n");
+			salida = false;
+		}
+		if(fechaNacimiento.isAfter(LocalDate.now()) && fechaNacimiento!=null) {
+			falta=falta.concat("La fecha de nacimiento es incorrecta\n");
+			salida=false;
+		}
+
+		if(!salida) {
+		JOptionPane.showMessageDialog(VentanaRegistro.this, falta,
+				"Error", JOptionPane.ERROR_MESSAGE);
+		}
+		return salida;
+	}
+	
 
 }
