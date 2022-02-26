@@ -41,9 +41,11 @@ import tds.umu.controlador.Controlador;
 import tds.umu.modelo.CatalogoEtiquetas;
 import tds.umu.modelo.Etiqueta;
 import tds.umu.modelo.Usuario;
+import tds.video.VideoWeb;
 
 public class VentanaPrincipal extends JFrame implements ActionListener {
 
+	private static VideoWeb videoWeb;
 	private JPanel contentPane,panel_superior,panel_botones,panel_central;
 	private JButton explorar,mlistas,recientes,nlistas,logout,login,registro,premium;
 	private JLabel etiqueta;
@@ -60,6 +62,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					videoWeb= new VideoWeb();
 					VentanaPrincipal frame = new VentanaPrincipal();
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -160,7 +163,7 @@ private void crearPanelBotones()
 	explorar.addMouseListener(new MouseAdapter() {
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			cambioPanel(new PanelExplorar(VentanaPrincipal.this));
+			cambioPanel(new PanelExplorar(VentanaPrincipal.this, videoWeb));
 			return;
 			
 		}
@@ -214,7 +217,7 @@ public void actionPerformed(ActionEvent e) {
 
 public void actualizarLogin(String text) {
 	etiqueta.setText("Hola "+text+"!");
-	cambioPanel(new PanelExplorar(this));
+	cambioPanel(new PanelExplorar(this,videoWeb));
 
 	
 }

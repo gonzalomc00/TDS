@@ -19,6 +19,7 @@ import tds.umu.modelo.Etiqueta;
 
 import javax.swing.JList;
 import javax.swing.JTextPane;
+import tds.video.VideoWeb;
 
 public class PanelExplorar extends JPanel {
 	private JTextPane textPane_1;
@@ -28,12 +29,14 @@ public class PanelExplorar extends JPanel {
 	private JTextField barra_busqueda;
 	private VentanaPrincipal ventana;
 	private JList lista_etiquetas;
+	private VideoWeb videoWeb;
 
 	/**
 	 * Create the panel.
 	 */
-	public PanelExplorar(VentanaPrincipal ventana) {
-		ventana=ventana;
+	public PanelExplorar(VentanaPrincipal ventana, VideoWeb videoWeb) {
+		this.ventana=ventana;
+		this.videoWeb=videoWeb;
 		crearPantalla();
 			
 		
@@ -125,6 +128,12 @@ public class PanelExplorar extends JPanel {
 	    panel_5 = new JPanel();
 	    panel_5.setBackground(Color.GRAY);
 	    panel_1.add(panel_5, BorderLayout.CENTER);
+	    
+	 
+	    panel_5.add(videoWeb);
+	    videoWeb.playVideo("https://www.youtube.com/watch?v=4mYBiIO0pfY");
+	    
+	    
 	}
 	
 	public DefaultListModel getListaEtiquetas() {
