@@ -213,7 +213,6 @@ public class VentanaRegistro extends JPanel {
 							JOptionPane.showMessageDialog(VentanaRegistro.this, "Usuario registrado correctamente.", "Registro",
 									JOptionPane.INFORMATION_MESSAGE);
 							
-							prin.cambiarNombre(nombre);
 						} else {
 							JOptionPane.showMessageDialog(VentanaRegistro.this, "No se ha podido llevar a cabo el registro.\n",
 									"Registro", JOptionPane.ERROR_MESSAGE);

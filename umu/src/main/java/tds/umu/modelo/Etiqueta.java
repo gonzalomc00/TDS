@@ -6,7 +6,7 @@ public class Etiqueta {
 
 	public Etiqueta(String nombre)
 	{
-		nombre=nombre;
+		this.nombre=nombre;
 	}
 	
 	

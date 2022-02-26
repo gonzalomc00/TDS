@@ -7,8 +7,10 @@ import java.util.List;
 import org.junit.Test;
 
 import tds.umu.modelo.Usuario;
+import tds.umu.persistencia.IAdaptadorEtiquetaDAO;
 import tds.umu.persistencia.IAdaptadorListaVideosDAO;
 import tds.umu.persistencia.IAdaptadorUsuarioDAO;
+import tds.umu.modelo.CatalogoEtiquetas;
 import tds.umu.modelo.Etiqueta;
 import tds.umu.modelo.ListaVideos;
 import tds.umu.modelo.Video;
@@ -24,6 +26,7 @@ public class AppTest
 	private IAdaptadorUsuarioDAO idao;
 	private IAdaptadorVideoDAO vdao;
 	private IAdaptadorListaVideosDAO lvdao;
+	private IAdaptadorEtiquetaDAO edao;
     /**
      * Rigorous Test :-)
      */
@@ -82,6 +85,24 @@ public class AppTest
     	}
     	
     	assertTrue(listas.size()!=0);
+    	
+    }
+    
+    @Test
+    public void pruebaEtqs() {
+    	edao= factoria.getEtiquetaDAO();
+    	Etiqueta e1= new Etiqueta("musica");
+    	Etiqueta e2= new Etiqueta("documental");
+    	edao.registrarEtiqueta(e1);
+    	edao.registrarEtiqueta(e2);
+    	CatalogoEtiquetas.getUnicaInstancia().addEtiqueta(e1);
+    	CatalogoEtiquetas.getUnicaInstancia().addEtiqueta(e2);
+    	
+    	for(Etiqueta etq: edao.recuperarTodosEtiquetas()) {
+    		System.out.println("Nombre etq: "+etq.getNombre());
+    	}
+    	
+    	assertTrue(true);
     	
     }
 }

@@ -4,22 +4,30 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.util.List;
 import java.awt.BorderLayout;
 import javax.swing.JButton;
+import javax.swing.AbstractListModel;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import javax.swing.border.LineBorder;
+
+import tds.umu.modelo.CatalogoEtiquetas;
+import tds.umu.modelo.Etiqueta;
+
 import javax.swing.JList;
 import javax.swing.JTextPane;
 
 public class PanelExplorar extends JPanel {
-	private JTextPane textPane,textPane_1;
+	private JTextPane textPane_1;
 	private JPanel panel,panel_1,panel_2,panel_3,panel_4,panel_5,panel_6,panel_7,panel_8,panel_9,panel_10,panel_11;
 	private JButton n_busqueda,boton_buscar;
 	private JLabel etiq_titulo,etiquetas_disp,b_etiquetas;
 	private JTextField barra_busqueda;
 	private VentanaPrincipal ventana;
+	private JList lista_etiquetas;
 
 	/**
 	 * Create the panel.
@@ -60,8 +68,8 @@ public class PanelExplorar extends JPanel {
 	    panel_9.setBackground(Color.GRAY);
 	    panel_6.add(panel_9);
 	    
-	    textPane = new JTextPane();
-	    panel_9.add(textPane);
+	    lista_etiquetas = new JList(actualizarEtiquetasExplora());
+	    panel_9.add(lista_etiquetas);
 	    
 	    panel_7 = new JPanel();
 	    panel.add(panel_7);
@@ -117,5 +125,23 @@ public class PanelExplorar extends JPanel {
 	    panel_5 = new JPanel();
 	    panel_5.setBackground(Color.GRAY);
 	    panel_1.add(panel_5, BorderLayout.CENTER);
+	}
+	
+	public DefaultListModel getListaEtiquetas() {
+		return (DefaultListModel) lista_etiquetas.getModel();
+	}
+	
+	public DefaultListModel actualizarEtiquetasExplora() {
+		
+		DefaultListModel listado=new DefaultListModel();
+		
+		List<Etiqueta> lista_etiquetas_cat;
+		lista_etiquetas_cat= CatalogoEtiquetas.getUnicaInstancia().getEtiquetas();
+		lista_etiquetas_cat.stream()
+					   .map(etq->etq.getNombre())
+					   .forEach(nom->listado.addElement(nom));
+		listado.addElement("eo");
+		return listado;
+		
 	}
 }

@@ -14,7 +14,7 @@ import tds.umu.persistencia.IAdaptadorListaVideosDAO;
 import tds.umu.persistencia.IAdaptadorUsuarioDAO;
 import tds.umu.persistencia.IAdaptadorVideoDAO;
 import tds.umu.persistencia.TDSFactoriaDAO;
-import umu.tds.dominio.CatalogoUsuarios;
+import tds.umu.modelo.CatalogoUsuarios;
 
 public final class Controlador {
 

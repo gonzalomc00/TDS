@@ -44,10 +44,7 @@ public class CatalogoListasVideos {
 	}
 
 	public ListaVideos getListaVideos(int codigo) {
-		for(ListaVideos lv: listasvideos.values()) {
-			if(lv.getCodigo()==codigo) return lv;
-		}
-		return null;
+		return listasvideos.get(codigo);
 	}
 	
 	//metodo para obtener video por titulo? no creo

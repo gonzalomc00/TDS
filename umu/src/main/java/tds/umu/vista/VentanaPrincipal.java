@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -17,8 +18,10 @@ import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
 import javax.imageio.ImageIO;
+import javax.swing.AbstractListModel;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import java.awt.event.MouseAdapter;
@@ -34,16 +37,21 @@ import javax.swing.border.BevelBorder;
 import java.awt.Color;
 import javax.swing.border.EtchedBorder;
 
+import tds.umu.controlador.Controlador;
+import tds.umu.modelo.CatalogoEtiquetas;
+import tds.umu.modelo.Etiqueta;
+import tds.umu.modelo.Usuario;
+
 public class VentanaPrincipal extends JFrame implements ActionListener {
 
 	private JPanel contentPane,panel_superior,panel_botones,panel_central;
 	private JButton explorar,mlistas,recientes,nlistas,logout,login,registro,premium;
 	private JLabel etiqueta;
-	private PanelExplorar panel_explorar;
 	private PanelMisListas panel_mis_listas;
 	private PanelLogin Plogin;
 	private VentanaRegistro PRegistro;
 	private PanelNuevaLista PNLista;
+	private Usuario user_actual;
 
 	/**
 	 * Launch the application.
@@ -67,7 +75,6 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 	 */
 	public VentanaPrincipal() throws IOException {
 		setResizable(false);
-		panel_explorar= new PanelExplorar(this);
 		panel_mis_listas= new PanelMisListas(this);
 		Plogin= new PanelLogin(this);
 		PRegistro = new VentanaRegistro(this);
@@ -96,7 +103,7 @@ private void crearPanelSuperior()
 	panel_superior.setBorder(new BevelBorder(BevelBorder.LOWERED, Color.LIGHT_GRAY, null, Color.LIGHT_GRAY, null));
 	panel_superior.setLayout(new BoxLayout(panel_superior,BoxLayout.X_AXIS));
 	
-	etiqueta = new JLabel("Hola <nombre del usuario>!");
+	etiqueta = new JLabel("Inicia sesión o crea una nueva cuenta");
 	etiqueta.setIcon(new ImageIcon("C:\\Users\\gonzi\\tds\\Prueba_mejor\\img\\dis.png"));
 	panel_superior.add(etiqueta);
 	repaint();
@@ -153,7 +160,7 @@ private void crearPanelBotones()
 	explorar.addMouseListener(new MouseAdapter() {
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			cambioPanel(panel_explorar);
+			cambioPanel(new PanelExplorar(VentanaPrincipal.this));
 			return;
 			
 		}
@@ -191,7 +198,7 @@ private void crearPanelBotones()
 	contentPane.add(panel_botones,BorderLayout.SOUTH);
 }
 	
-private void cambioPanel(JPanel panel) {
+public void cambioPanel(JPanel panel) {
 	panel_central.removeAll();
 	panel_central.add(panel,BorderLayout.CENTER);
 	panel_central.revalidate();
@@ -200,14 +207,18 @@ private void cambioPanel(JPanel panel) {
 	return;
 }
 
-public void cambiarNombre(String nombre) {
-	etiqueta.setText(nombre);
-}
-
-
 @Override
 public void actionPerformed(ActionEvent e) {
 
 }
+
+public void actualizarLogin(String text) {
+	etiqueta.setText("Hola "+text+"!");
+	cambioPanel(new PanelExplorar(this));
+
+	
+}
+
+
 
 }

@@ -12,7 +12,7 @@ import tds.umu.persistencia.IAdaptadorVideoDAO;
 
 public class CatalogoUsuarios {
 
-	private Map<Integer,Usuario> Usuarios; 
+	private Map<String,Usuario> Usuarios; 
 	private static CatalogoUsuarios unicaInstancia = new CatalogoUsuarios();
 	
 	private FactoriaDAO dao;
@@ -22,7 +22,7 @@ public class CatalogoUsuarios {
 		try {
   			dao = FactoriaDAO.getInstancia(FactoriaDAO.DAO_TDS);
   			adaptadorUsuario = dao.getUsuarioDAO();
-  			Usuarios = new HashMap<Integer,Usuario>();
+  			Usuarios = new HashMap<String,Usuario>();
   			this.cargarCatalogo();
   		} catch (DAOException eDAO) {
   			eDAO.printStackTrace();
@@ -47,10 +47,14 @@ public class CatalogoUsuarios {
 		}
 		return null;
 	}
+	
+	public Usuario getUsuario(String nombre) {
+		return Usuarios.get(nombre);
+	}
 
 	
 	public void addUsuario(Usuario user) {
-		Usuarios.put(user.getCodigo(),user);
+		Usuarios.put(user.getUsuario(),user);
 	}
 	public void removeUsuario (Usuario user) {
 		Usuarios.remove(user.getCodigo());
@@ -60,6 +64,6 @@ public class CatalogoUsuarios {
 	private void cargarCatalogo() throws DAOException {
 		 List<Usuario> UsuariosBD = adaptadorUsuario.recuperarTodosUsuarios();
 		 for (Usuario user: UsuariosBD) 
-			     Usuarios.put(user.getCodigo(),user);
+			     Usuarios.put(user.getUsuario(),user);
 	}
 }

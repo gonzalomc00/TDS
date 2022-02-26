@@ -50,10 +50,7 @@ public class CatalogoEtiquetas {
 	}
 
 	public Etiqueta getEtiqueta(int codigo) {
-		for(Etiqueta etq: etiquetas.values()) {
-			if(etq.getCodigo()==codigo) return etq;
-		}
-		return null;
+		return etiquetas.get(codigo);
 	}
 	
 	//metodo para obtener video por titulo? no creo
