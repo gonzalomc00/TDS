@@ -14,6 +14,7 @@ import tds.umu.persistencia.IAdaptadorListaVideosDAO;
 import tds.umu.persistencia.IAdaptadorUsuarioDAO;
 import tds.umu.persistencia.IAdaptadorVideoDAO;
 import tds.umu.persistencia.TDSFactoriaDAO;
+import tds.video.VideoWeb;
 import tds.umu.modelo.CatalogoUsuarios;
 
 public final class Controlador {
@@ -22,6 +23,7 @@ public final class Controlador {
 	private Video videoActual;
 	private static Controlador unicaInstancia=null;
 	private FactoriaDAO factoria;
+	private static VideoWeb videoWeb;
 	
 	private IAdaptadorUsuarioDAO adaptadorUsuario;
 	private IAdaptadorVideoDAO adaptadorVideo;
@@ -37,6 +39,7 @@ public final class Controlador {
 		inicializarAdaptadores();
 		inicializarCatalogos();
 		usuarioActual = null;
+		videoWeb= new VideoWeb();
 		try {
 			factoria = FactoriaDAO.getInstancia();
 		} catch (DAOException e){
@@ -65,6 +68,8 @@ public final class Controlador {
 		
 	}
 
+	
+
 	public static Controlador getUnicaInstancia() {
 		if (unicaInstancia == null)
 			unicaInstancia = new Controlador();
@@ -77,6 +82,10 @@ public final class Controlador {
 	
 	public Video getVideoActual() {
 		return videoActual;
+	}
+	
+	public VideoWeb getReproductor() {
+		return videoWeb;
 	}
 
 	

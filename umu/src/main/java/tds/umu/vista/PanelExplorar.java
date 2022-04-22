@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.util.ArrayList;
 import java.util.List;
 import java.awt.BorderLayout;
 import javax.swing.JButton;
@@ -13,34 +14,37 @@ import javax.swing.DefaultListModel;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import javax.swing.border.LineBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.AbstractTableModel;
 
+import tds.umu.controlador.Controlador;
 import tds.umu.modelo.CatalogoEtiquetas;
 import tds.umu.modelo.Etiqueta;
 
 import javax.swing.JList;
 import javax.swing.JTextPane;
 import tds.video.VideoWeb;
+import javax.swing.JTable;
 
 public class PanelExplorar extends JPanel {
-	private JTextPane textPane_1;
 	private JPanel panel,panel_1,panel_2,panel_3,panel_4,panel_5,panel_6,panel_7,panel_8,panel_9,panel_10,panel_11;
 	private JButton n_busqueda,boton_buscar;
 	private JLabel etiq_titulo,etiquetas_disp,b_etiquetas;
 	private JTextField barra_busqueda;
 	private VentanaPrincipal ventana;
-	private JList lista_etiquetas;
-	private VideoWeb videoWeb;
+	private JList lista_etiquetas,lista_etiquetas_sel,lista_videos;
+	private VideoWeb videoWeb=Controlador.getUnicaInstancia().getReproductor();
+	private DefaultListModel<String> modeloEtiqDisponibles = new DefaultListModel<String>();
+	private DefaultListModel<String> modeloEtiqueSeleccionadas= new DefaultListModel<String>();
+	private DefaultListModel<String> modeloTablaVideos= new DefaultListModel<String>();
 
 	/**
 	 * Create the panel.
 	 */
-	public PanelExplorar(VentanaPrincipal ventana, VideoWeb videoWeb) {
+	public PanelExplorar(VentanaPrincipal ventana) {
 		this.ventana=ventana;
-		this.videoWeb=videoWeb;
 		crearPantalla();
-			
-		
-
 	}
 
 	private void crearPantalla() {
@@ -71,8 +75,26 @@ public class PanelExplorar extends JPanel {
 	    panel_9.setBackground(Color.GRAY);
 	    panel_6.add(panel_9);
 	    
-	    lista_etiquetas = new JList(actualizarEtiquetasExplora());
+	    lista_etiquetas = new JList();
+	    actualizarEtiquetasExplora();
+	    lista_etiquetas.setModel(modeloEtiqDisponibles);
+	    
+	    lista_etiquetas.addListSelectionListener(
+	    		new ListSelectionListener() {
+	    			public void valueChanged(ListSelectionEvent event) {
+	    				
+	    				if(!event.getValueIsAdjusting()) {
+	    					JList source=(JList) event.getSource();
+	    					String selected = source.getSelectedValue().toString();
+	    					if(!modeloEtiqueSeleccionadas.contains(selected)) {
+	    					modeloEtiqueSeleccionadas.addElement(selected);
+	    					}
+	    				}
+	    			}	
+	    		}	
+	    		);
 	    panel_9.add(lista_etiquetas);
+	    
 	    
 	    panel_7 = new JPanel();
 	    panel.add(panel_7);
@@ -90,8 +112,26 @@ public class PanelExplorar extends JPanel {
 	    panel_11.setBackground(Color.GRAY);
 	    panel_7.add(panel_11);
 	    
-	    textPane_1 = new JTextPane();
-	    panel_11.add(textPane_1);
+	    lista_etiquetas_sel = new JList();
+	    lista_etiquetas_sel.setModel(modeloEtiqueSeleccionadas);
+	    lista_etiquetas_sel.addListSelectionListener(
+	    		new ListSelectionListener() {
+	    			public void valueChanged(ListSelectionEvent event) {
+	    				
+	    				if(!event.getValueIsAdjusting()) {
+	    					JList source=(JList) event.getSource();
+	    					int selected = source.getSelectedIndex();
+	    					if(selected>=0) {
+	    						modeloEtiqueSeleccionadas.remove(selected);
+	    					}
+	    					
+	    				}
+	    			}	
+	    		}	
+	    		);
+	    
+	    
+	    panel_11.add(lista_etiquetas_sel);
 	    
 	    panel_1 = new JPanel();
 	    panel_1.setBackground(Color.GRAY);
@@ -129,28 +169,34 @@ public class PanelExplorar extends JPanel {
 	    panel_5.setBackground(Color.GRAY);
 	    panel_1.add(panel_5, BorderLayout.CENTER);
 	    
+	    lista_videos = new JList();
+	    lista_videos.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+	    lista_videos.setVisibleRowCount(2);
+	    modeloTablaVideos.addElement("a");
+	    modeloTablaVideos.addElement("a");
+	    modeloTablaVideos.addElement("a");
+	    modeloTablaVideos.addElement("a");
+	    modeloTablaVideos.addElement("eeeeeeeeeeeeeeee");
+	    modeloTablaVideos.addElement("eeeeeeeeeeeeeeee");
+	    modeloTablaVideos.addElement("eeeeeeeeeeeeeeee");
+	    lista_videos.setModel(modeloTablaVideos);
 	 
-	    panel_5.add(videoWeb);
-	    videoWeb.playVideo("https://www.youtube.com/watch?v=4mYBiIO0pfY");
+	    
+	    panel_5.add(lista_videos);
+
 	    
 	    
 	}
 	
-	public DefaultListModel getListaEtiquetas() {
-		return (DefaultListModel) lista_etiquetas.getModel();
-	}
+
 	
-	public DefaultListModel actualizarEtiquetasExplora() {
-		
-		DefaultListModel listado=new DefaultListModel();
-		
+	public void actualizarEtiquetasExplora() {
 		List<Etiqueta> lista_etiquetas_cat;
 		lista_etiquetas_cat= CatalogoEtiquetas.getUnicaInstancia().getEtiquetas();
 		lista_etiquetas_cat.stream()
 					   .map(etq->etq.getNombre())
-					   .forEach(nom->listado.addElement(nom));
-		listado.addElement("eo");
-		return listado;
+					   .forEach(nom->modeloEtiqDisponibles.addElement(nom));
+		
 		
 	}
 }

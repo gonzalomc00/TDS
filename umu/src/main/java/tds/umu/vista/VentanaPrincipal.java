@@ -45,12 +45,14 @@ import tds.video.VideoWeb;
 
 public class VentanaPrincipal extends JFrame implements ActionListener {
 
-	private static VideoWeb videoWeb;
+	private static VideoWeb videoWeb=Controlador.getUnicaInstancia().getReproductor();
 	private JPanel contentPane,panel_superior,panel_botones,panel_central;
 	private JButton explorar,mlistas,recientes,nlistas,logout,login,registro,premium;
 	private JLabel etiqueta;
+	private PanelExplorar PExplora;
 	private PanelMisListas panel_mis_listas;
 	private PanelLogin Plogin;
+	private Reproductor reproductor;
 	private VentanaRegistro PRegistro;
 	private PanelNuevaLista PNLista;
 	private Usuario user_actual;
@@ -62,7 +64,6 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					videoWeb= new VideoWeb();
 					VentanaPrincipal frame = new VentanaPrincipal();
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -82,6 +83,8 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 		Plogin= new PanelLogin(this);
 		PRegistro = new VentanaRegistro(this);
 		PNLista= new PanelNuevaLista(this);
+		PExplora= new PanelExplorar(this);
+		reproductor= new Reproductor();
 		
 		setBounds(0,0,900,600);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -113,26 +116,15 @@ private void crearPanelSuperior()
 	
 	panel_superior.add(Box.createRigidArea(new Dimension(105,40)));
 	registro = new JButton("Registro");
-	registro.addMouseListener(new MouseAdapter() {
-		@Override
-		public void mouseClicked(MouseEvent e) {
-			cambioPanel(PRegistro);
-			return;
-		}
-	});
+	registro.addActionListener(this);
+
 	panel_superior.add(registro);
 	
-	login = new JButton("login");
-	panel_superior.add(login);
-	login.addMouseListener(new MouseAdapter() {
-		@Override
-		public void mouseClicked(MouseEvent e) {
-			cambioPanel(Plogin);
-			return;
-			
-		}
-	});
 	
+	login = new JButton("login");
+	login.addActionListener(this);
+	
+	panel_superior.add(login);
 	panel_superior.add(Box.createRigidArea(new Dimension(30,40)));
 	logout = new JButton("logout");
 	panel_superior.add(logout);
@@ -141,8 +133,10 @@ private void crearPanelSuperior()
 
 	
 	premium = new JButton("Premium");
+	premium.addActionListener(this);
 	premium.setForeground(Color.RED);
 	panel_superior.add(premium);
+	
 	contentPane.add(panel_superior,BorderLayout.NORTH);
 	
 }
@@ -157,50 +151,64 @@ private void crearPanelBotones()
 	panel_central = new JPanel();
 	panel_central.setLayout(new BorderLayout(0, 0));
 	
+	panel_botones.setLayout(new BoxLayout(panel_botones, BoxLayout.X_AXIS));
+
+	
 	explorar = new JButton("Explorar");
 	explorar.setForeground(Color.WHITE);
 	explorar.setBackground(Color.LIGHT_GRAY);
-	explorar.addMouseListener(new MouseAdapter() {
-		@Override
-		public void mouseClicked(MouseEvent e) {
-			cambioPanel(new PanelExplorar(VentanaPrincipal.this, videoWeb));
-			return;
-			
-		}
-	});
-	panel_botones.setLayout(new BoxLayout(panel_botones, BoxLayout.X_AXIS));
+	explorar.addActionListener(this);
 	panel_botones.add(explorar);
 	
 	mlistas = new JButton("Mis Listas");
+	mlistas.addActionListener(this);
 	mlistas.setForeground(Color.WHITE);
 	mlistas.setBackground(Color.LIGHT_GRAY);
-	mlistas.addMouseListener(new MouseAdapter() {
-		@Override
-		public void mouseClicked(MouseEvent e) {
-			cambioPanel(panel_mis_listas);
-			return;
-		}
-	});
 	panel_botones.add(mlistas);
 	
 	recientes = new JButton("Recientes");
+	recientes.addActionListener(this);
 	recientes.setForeground(Color.WHITE);
 	recientes.setBackground(Color.LIGHT_GRAY);
 	panel_botones.add(recientes);
 	
 	nlistas = new JButton("Nueva Lista");
-	nlistas.addMouseListener(new MouseAdapter() {
-		@Override
-		public void mouseClicked(MouseEvent e) {
-			cambioPanel(PNLista);
-		}
-	});
+	nlistas.addActionListener(this);
 	nlistas.setForeground(Color.WHITE);
 	nlistas.setBackground(Color.LIGHT_GRAY);
 	panel_botones.add(nlistas);
+	
 	contentPane.add(panel_botones,BorderLayout.SOUTH);
 }
+
+@Override
+public void actionPerformed(ActionEvent e) {
 	
+	if(e.getSource()==registro) {
+		cambioPanel(PRegistro);
+	}
+	if(e.getSource()==login) {
+		cambioPanel(Plogin);
+	}
+	if(e.getSource()==premium) {
+		//POR HACER
+	}
+	if(e.getSource()==explorar) {
+		cambioPanel(PExplora);
+	}
+	if(e.getSource()==mlistas) {
+		cambioPanel(panel_mis_listas);
+	}
+	if(e.getSource()==recientes)  {
+		cambioPanel(reproductor);
+	}
+	if(e.getSource()==nlistas) {
+		cambioPanel(PNLista);
+	}
+
+}
+
+
 public void cambioPanel(JPanel panel) {
 	panel_central.removeAll();
 	panel_central.add(panel,BorderLayout.CENTER);
@@ -210,14 +218,10 @@ public void cambioPanel(JPanel panel) {
 	return;
 }
 
-@Override
-public void actionPerformed(ActionEvent e) {
-
-}
 
 public void actualizarLogin(String text) {
 	etiqueta.setText("Hola "+text+"!");
-	cambioPanel(new PanelExplorar(this,videoWeb));
+	cambioPanel(PExplora);
 
 	
 }
