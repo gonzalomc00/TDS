@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.imageio.ImageIO;
 import javax.swing.AbstractListModel;
 import javax.swing.Box;
@@ -42,6 +43,7 @@ import tds.umu.modelo.CatalogoEtiquetas;
 import tds.umu.modelo.Etiqueta;
 import tds.umu.modelo.Usuario;
 import tds.video.VideoWeb;
+import pulsador.Luz;
 
 public class VentanaPrincipal extends JFrame implements ActionListener {
 
@@ -56,6 +58,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 	private VentanaRegistro PRegistro;
 	private PanelNuevaLista PNLista;
 	private Usuario user_actual;
+	private Luz luz;
 
 	/**
 	 * Launch the application.
@@ -179,6 +182,17 @@ private void crearPanelBotones()
 	panel_botones.add(nlistas);
 	
 	contentPane.add(panel_botones,BorderLayout.SOUTH);
+	
+	luz = new Luz();
+	luz.addMouseListener(new MouseAdapter() {
+		@Override
+		public void mouseClicked(MouseEvent arg0) {
+			JFileChooser chooser= new JFileChooser();
+			chooser.showOpenDialog(VentanaPrincipal.this);
+			File currentFile= chooser.getSelectedFile();
+		}
+	});
+	panel_botones.add(luz);
 }
 
 @Override
