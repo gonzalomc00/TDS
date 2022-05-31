@@ -41,23 +41,19 @@ public class CatalogoUsuarios {
 		return lista;
 	}
 	
-	public Usuario getUsuario(int codigo) {
+	public Usuario getUsuario(String usuario) {
 		for (Usuario c:Usuarios.values()) {
-			if (c.getCodigo()==codigo) return c;
+			if (c.getUsuario()==usuario) return c;
 		}
 		return null;
 	}
 	
-	public Usuario getUsuario(String nombre) {
-		return Usuarios.get(nombre);
-	}
 
-	
 	public void addUsuario(Usuario user) {
 		Usuarios.put(user.getUsuario(),user);
 	}
 	public void removeUsuario (Usuario user) {
-		Usuarios.remove(user.getCodigo());
+		Usuarios.remove(user.getUsuario());
 	}
 	
 	/*Recupera todos los Usuarios para trabajar con ellos en memoria*/

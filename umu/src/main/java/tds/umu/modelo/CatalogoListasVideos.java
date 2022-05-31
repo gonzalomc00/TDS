@@ -11,7 +11,7 @@ import tds.umu.persistencia.IAdaptadorListaVideosDAO;
 
 public class CatalogoListasVideos {
 
-	private Map<Integer,ListaVideos> listasvideos;
+	private Map<String,ListaVideos> listasvideos;
 	private static CatalogoListasVideos unicaInstancia= new CatalogoListasVideos();
 	
 	private FactoriaDAO dao;
@@ -21,7 +21,7 @@ public class CatalogoListasVideos {
 		try {
 			dao= FactoriaDAO.getInstancia(FactoriaDAO.DAO_TDS);
 			adaptadorListaVideos = dao.getListaVideosDAO();
-			listasvideos= new HashMap<Integer,ListaVideos>();
+			listasvideos= new HashMap<String,ListaVideos>();
 			this.cargarCatalogo();
 		} catch(DAOException eDAO) {
 			eDAO.printStackTrace();
@@ -43,7 +43,7 @@ public class CatalogoListasVideos {
 		return lista;
 	}
 
-	public ListaVideos getListaVideos(int codigo) {
+	public ListaVideos getListaVideos(String codigo) {
 		return listasvideos.get(codigo);
 	}
 	
@@ -52,18 +52,18 @@ public class CatalogoListasVideos {
 	
 	//deberia meterlos con codigo o con titulo?
 	public void addListaVideos(ListaVideos lv) {
-		listasvideos.put(lv.getCodigo(), lv);
+		listasvideos.put(lv.getNombre(), lv);
 	}
 	
 	public void removeListaVideos(ListaVideos lv) {
-		listasvideos.remove(lv.getCodigo());
+		listasvideos.remove(lv.getNombre());
 	}
 	
 	
 	private void cargarCatalogo() throws DAOException{
 		List<ListaVideos> lvideosBD= adaptadorListaVideos.recuperarTodosListasVideos();
 		for(ListaVideos lv: lvideosBD)
-			listasvideos.put(lv.getCodigo(), lv);
+			listasvideos.put(lv.getNombre(), lv);
 		
 	}
 }

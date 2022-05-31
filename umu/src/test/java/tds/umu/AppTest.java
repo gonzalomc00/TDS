@@ -50,7 +50,9 @@ public class AppTest
     	
     }
     */
-    @Test
+    
+    /*
+     @Test
     public void persistenciaVideo()
     {
     	vdao=factoria.getVideoDAO();
@@ -64,6 +66,8 @@ public class AppTest
     	assertTrue(videos.size()!=0);
     }
     
+    */
+    /*
     @Test
     public void persistenciaListaVideos()
     {
@@ -87,6 +91,7 @@ public class AppTest
     	assertTrue(listas.size()!=0);
     	
     }
+    */
     
     @Test
     public void pruebaEtqs() {

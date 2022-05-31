@@ -59,6 +59,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 	private PanelNuevaLista PNLista;
 	private Usuario user_actual;
 	private Luz luz;
+	private Controlador controlador= Controlador.getUnicaInstancia();
 
 	/**
 	 * Launch the application.
@@ -184,14 +185,7 @@ private void crearPanelBotones()
 	contentPane.add(panel_botones,BorderLayout.SOUTH);
 	
 	luz = new Luz();
-	luz.addMouseListener(new MouseAdapter() {
-		@Override
-		public void mouseClicked(MouseEvent arg0) {
-			JFileChooser chooser= new JFileChooser();
-			chooser.showOpenDialog(VentanaPrincipal.this);
-			File currentFile= chooser.getSelectedFile();
-		}
-	});
+	luz.addEncendidoListener(controlador);
 	panel_botones.add(luz);
 }
 
@@ -199,31 +193,64 @@ private void crearPanelBotones()
 public void actionPerformed(ActionEvent e) {
 	
 	if(e.getSource()==registro) {
-		cambioPanel(PRegistro);
+		cambioPanel(Paneles.REGISTRO);
 	}
 	if(e.getSource()==login) {
-		cambioPanel(Plogin);
+		cambioPanel(Paneles.LOGIN);
 	}
 	if(e.getSource()==premium) {
 		//POR HACER
 	}
 	if(e.getSource()==explorar) {
-		cambioPanel(PExplora);
+		cambioPanel(Paneles.EXPLORAR);
 	}
 	if(e.getSource()==mlistas) {
-		cambioPanel(panel_mis_listas);
+		cambioPanel(Paneles.MISLISTAS);
 	}
+	//POR HACER
 	if(e.getSource()==recientes)  {
-		cambioPanel(reproductor);
+		cambioPanel(Paneles.LOGIN);
 	}
 	if(e.getSource()==nlistas) {
-		cambioPanel(PNLista);
+		cambioPanel(Paneles.NUEVALISTA);
 	}
-
 }
 
 
-public void cambioPanel(JPanel panel) {
+//Falta el apartado de recientes
+public void cambioPanel(Paneles panel) {
+	videoWeb.cancel();
+	switch (panel) {
+		case REPRODUCTOR:
+		{
+		reproductor.reproducir(PExplora.getVideoSeleccionado());
+		cambio_panel_vista(reproductor);
+		break;
+		}
+		case EXPLORAR:
+			PExplora.renovar();
+			PExplora.actualizarEtiquetasExplora();
+			cambio_panel_vista(PExplora);
+			break;
+		case MISLISTAS:
+			cambio_panel_vista(panel_mis_listas);
+			break;
+		case LOGIN:
+			cambio_panel_vista(Plogin);
+			break;
+		case REGISTRO:
+			cambio_panel_vista(PRegistro);
+			break;
+		case NUEVALISTA:
+			cambio_panel_vista(PNLista);
+			break;
+			
+	default:
+		break;
+	}
+}
+
+public void cambio_panel_vista(JPanel panel) {
 	panel_central.removeAll();
 	panel_central.add(panel,BorderLayout.CENTER);
 	panel_central.revalidate();
@@ -232,10 +259,9 @@ public void cambioPanel(JPanel panel) {
 	return;
 }
 
-
 public void actualizarLogin(String text) {
 	etiqueta.setText("Hola "+text+"!");
-	cambioPanel(PExplora);
+	cambioPanel(Paneles.EXPLORAR);
 
 	
 }

@@ -86,12 +86,8 @@ public class AdaptadorEtiquetaTDS implements IAdaptadorEtiquetaDAO {
 		if(eEtiqueta == null) return null;
 		
 		nombre= servPersistencia.recuperarPropiedadEntidad(eEtiqueta,"nombre");
-		
 		Etiqueta etiqueta= new Etiqueta(nombre);
 		etiqueta.setCodigo(codigo);
-		
-		
-		
 		return etiqueta;
 		
 	}

@@ -1,9 +1,14 @@
 package tds.umu.vista;
 
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JLabel;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.BorderLayout;
@@ -20,7 +25,11 @@ import javax.swing.table.AbstractTableModel;
 
 import tds.umu.controlador.Controlador;
 import tds.umu.modelo.CatalogoEtiquetas;
+import tds.umu.modelo.CatalogoVideos;
 import tds.umu.modelo.Etiqueta;
+import tds.umu.modelo.Video;
+import tds.umu.modelo.VideoRenderer;
+import tds.umu.modelo.VideoRepresent;
 
 import javax.swing.JList;
 import javax.swing.JTextPane;
@@ -37,7 +46,11 @@ public class PanelExplorar extends JPanel {
 	private VideoWeb videoWeb=Controlador.getUnicaInstancia().getReproductor();
 	private DefaultListModel<String> modeloEtiqDisponibles = new DefaultListModel<String>();
 	private DefaultListModel<String> modeloEtiqueSeleccionadas= new DefaultListModel<String>();
-	private DefaultListModel<String> modeloTablaVideos= new DefaultListModel<String>();
+	private DefaultListModel<VideoRepresent> modeloTablaVideos= new DefaultListModel<VideoRepresent>();
+	
+	private Controlador controlador= Controlador.getUnicaInstancia();
+	
+	private Video videoSeleccionado;
 
 	/**
 	 * Create the panel.
@@ -76,7 +89,6 @@ public class PanelExplorar extends JPanel {
 	    panel_6.add(panel_9);
 	    
 	    lista_etiquetas = new JList();
-	    actualizarEtiquetasExplora();
 	    lista_etiquetas.setModel(modeloEtiqDisponibles);
 	    
 	    lista_etiquetas.addListSelectionListener(
@@ -84,9 +96,9 @@ public class PanelExplorar extends JPanel {
 	    			public void valueChanged(ListSelectionEvent event) {
 	    				
 	    				if(!event.getValueIsAdjusting()) {
-	    					JList source=(JList) event.getSource();
-	    					String selected = source.getSelectedValue().toString();
-	    					if(!modeloEtiqueSeleccionadas.contains(selected)) {
+	    					JList<String> source=(JList<String>) event.getSource();
+	    					String selected = source.getSelectedValue();
+	    					if(selected!=null && !modeloEtiqueSeleccionadas.contains(selected)) {
 	    					modeloEtiqueSeleccionadas.addElement(selected);
 	    					}
 	    				}
@@ -119,10 +131,11 @@ public class PanelExplorar extends JPanel {
 	    			public void valueChanged(ListSelectionEvent event) {
 	    				
 	    				if(!event.getValueIsAdjusting()) {
-	    					JList source=(JList) event.getSource();
-	    					int selected = source.getSelectedIndex();
-	    					if(selected>=0) {
-	    						modeloEtiqueSeleccionadas.remove(selected);
+	    					//No usar los indices cuando tratemos con listas. Solo traen problemas. 
+	    					JList<String> source=(JList<String>) event.getSource();
+	    					String selected = source.getSelectedValue();
+	    					if(selected!=null) {
+	    						modeloEtiqueSeleccionadas.removeElement(selected);
 	    					}
 	    					
 	    				}
@@ -156,47 +169,101 @@ public class PanelExplorar extends JPanel {
 	    barra_busqueda.setColumns(40);
 	    
 	    boton_buscar = new JButton("Buscar");
+	    boton_buscar.addMouseListener(new MouseAdapter(){
+	    	
+	    	public void mouseClicked(MouseEvent e) {
+	    		actualizarListaVideos();
+	    	}
+	    	
+	    });
 	    panel_3.add(boton_buscar);
 	    
 	    panel_4 = new JPanel();
 	    panel_4.setBackground(Color.GRAY);
 	    panel_2.add(panel_4);
 	    
-	    n_busqueda = new JButton("Nueva b�squeda");
+	    n_busqueda = new JButton("Nueva búsqueda");
+	    n_busqueda.addMouseListener(new MouseAdapter() {
+	    	
+	    	public void mouseClicked(MouseEvent e) {
+	    		modeloTablaVideos.removeAllElements();
+	    	}
+	    });
 	    panel_4.add(n_busqueda);
 	    
 	    panel_5 = new JPanel();
+	    panel_5.setLayout(new BorderLayout());
 	    panel_5.setBackground(Color.GRAY);
 	    panel_1.add(panel_5, BorderLayout.CENTER);
 	    
+	    
+	    //Tratamiento de la lista de videos
 	    lista_videos = new JList();
+	    lista_videos.setBackground(Color.GRAY);
+	    lista_videos.setVisibleRowCount(-1);
 	    lista_videos.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-	    lista_videos.setVisibleRowCount(2);
-	    modeloTablaVideos.addElement("a");
-	    modeloTablaVideos.addElement("a");
-	    modeloTablaVideos.addElement("a");
-	    modeloTablaVideos.addElement("a");
-	    modeloTablaVideos.addElement("eeeeeeeeeeeeeeee");
-	    modeloTablaVideos.addElement("eeeeeeeeeeeeeeee");
-	    modeloTablaVideos.addElement("eeeeeeeeeeeeeeee");
 	    lista_videos.setModel(modeloTablaVideos);
+	    lista_videos.setCellRenderer(new VideoRenderer());
+	    lista_videos.addListSelectionListener(
+	    		new ListSelectionListener() {
+	    			public void valueChanged(ListSelectionEvent event) {
+	    				
+	    				/*
+	    				 * No se si aquí debería buscar en la base de datos apartir del nombre o algo, o si deberia
+	    				 * incluir la clase que representa a los videos el video en sí. No se si rompe algun patron
+	    				 */
+	    				if(!event.getValueIsAdjusting()) {
+	    					JList<VideoRepresent> source=(JList<VideoRepresent>) event.getSource();
+	    					VideoRepresent selected = source.getSelectedValue();
+	    					if(selected!=null) {
+	    					videoSeleccionado=selected.getVideo();
+	    					ventana.cambioPanel(Paneles.REPRODUCTOR);
+	    				}
+	    			}	
+	    			}
+	    		}
+	    		);
+	
 	 
 	    
-	    panel_5.add(lista_videos);
+	    panel_5.add(new JScrollPane(lista_videos),BorderLayout.CENTER);
 
 	    
 	    
 	}
-	
-
+		
+	public void actualizarListaVideos() {
+		modeloTablaVideos.removeAllElements();
+	    List<Video> videos= controlador.getListaVideos();
+	    videos.stream()
+	    	   .map(v -> new VideoRepresent(v,videoWeb.getSmallThumb(v.getUrl())))
+	    	   .forEach(nv-> modeloTablaVideos.addElement(nv));
+	    validate();
+	    
+	}
 	
 	public void actualizarEtiquetasExplora() {
 		List<Etiqueta> lista_etiquetas_cat;
-		lista_etiquetas_cat= CatalogoEtiquetas.getUnicaInstancia().getEtiquetas();
+		lista_etiquetas_cat= Controlador.getUnicaInstancia().getEtiquetas();
+		for(Etiqueta et: lista_etiquetas_cat) {
+			System.out.println(et.getNombre());
+		}
 		lista_etiquetas_cat.stream()
 					   .map(etq->etq.getNombre())
 					   .forEach(nom->modeloEtiqDisponibles.addElement(nom));
 		
+		
+	}
+	
+	public Video getVideoSeleccionado() {
+		return videoSeleccionado;
+	}
+
+
+	public void renovar() {
+		modeloEtiqDisponibles.removeAllElements();
+		modeloEtiqueSeleccionadas.removeAllElements();
+		modeloTablaVideos.removeAllElements();
 		
 	}
 }

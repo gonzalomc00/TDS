@@ -6,6 +6,7 @@ import java.awt.BorderLayout;
 import javax.swing.BoxLayout;
 
 import tds.umu.controlador.Controlador;
+import tds.umu.modelo.Video;
 import tds.video.VideoWeb;
 import java.awt.GridLayout;
 import java.awt.GridBagLayout;
@@ -18,6 +19,7 @@ public class Reproductor extends JPanel {
 	VideoWeb videoWeb= Controlador.getUnicaInstancia().getReproductor();
 	
 	public Reproductor() {
+		nombreVideo=new JLabel();
 		add(videoWeb, BorderLayout.CENTER);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0};
@@ -26,12 +28,12 @@ public class Reproductor extends JPanel {
 		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
 		
-		JLabel lblNewLabel = new JLabel("New label");
+		
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 0);
 		gbc_lblNewLabel.gridx = 5;
 		gbc_lblNewLabel.gridy = 3;
-		add(lblNewLabel, gbc_lblNewLabel);
+		add(nombreVideo, gbc_lblNewLabel);
 		
 		JPanel panel = new JPanel();
 		GridBagConstraints gbc_panel = new GridBagConstraints();
@@ -40,9 +42,12 @@ public class Reproductor extends JPanel {
 		gbc_panel.gridy = 4;
 		panel.add(videoWeb);
 		add(panel, gbc_panel);
-		
-	    videoWeb.playVideo("https://www.youtube.com/watch?v=4mYBiIO0pfY");
 
+	}
+	
+	public void reproducir(Video v) {
+		nombreVideo.setText(v.getTitulo());
+		videoWeb.playVideo(v.getUrl());
 	}
 
 }

@@ -11,7 +11,7 @@ import tds.umu.persistencia.IAdaptadorVideoDAO;
 
 public class CatalogoVideos {
 	
-	private Map<Integer,Video> videos;
+	private Map<String,Video> videos;
 	private static CatalogoVideos unicaInstancia= new CatalogoVideos();
 	
 	private FactoriaDAO dao;
@@ -21,7 +21,7 @@ public class CatalogoVideos {
 		try {
 			dao= FactoriaDAO.getInstancia(FactoriaDAO.DAO_TDS);
 			adaptadorVideo = dao.getVideoDAO();
-			videos= new HashMap<Integer,Video>();
+			videos= new HashMap<String,Video>();
 			this.cargarCatalogo();
 		} catch(DAOException eDAO) {
 			eDAO.printStackTrace();
@@ -45,27 +45,24 @@ public class CatalogoVideos {
 		return lista;
 	}
 
-	public Video getVideo(int codigo) {
+	public Video getVideo(String codigo) {
 		return videos.get(codigo);
-	}
-	
-	//metodo para obtener video por titulo? no creo
-	
+	}	
 	
 	//deberia meterlos con codigo o con titulo?
 	public void addVideo(Video v) {
-		videos.put(v.getCodigo(), v);
+		videos.put(v.getTitulo(), v);
 	}
 	
 	public void removeVideo(Video v) {
-		videos.remove(v.getCodigo());
+		videos.remove(v.getTitulo());
 	}
 	
 	
 	private void cargarCatalogo() throws DAOException{
 		List<Video> videosBD= adaptadorVideo.recuperarTodosVideos();
 		for(Video v: videosBD)
-			videos.put(v.getCodigo(), v);
+			videos.put(v.getTitulo(), v);
 		
 	}
 	

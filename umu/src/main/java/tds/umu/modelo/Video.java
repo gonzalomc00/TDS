@@ -10,10 +10,10 @@ public class Video {
 	private List<Etiqueta> etiquetas;
 	private int codigo;
 	
-	public Video(String url, String titulo) {
+	public Video(String url, String titulo,List<Etiqueta> etiquetas) {
 		this.url=url;
 		this.titulo=titulo;
-		this.etiquetas= new LinkedList<Etiqueta>();
+		this.etiquetas= etiquetas;
 		this.numReproducciones=0;
 	}
 	
