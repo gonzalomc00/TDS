@@ -42,14 +42,12 @@ public class CatalogoUsuarios {
 	}
 	
 	public Usuario getUsuario(String usuario) {
-		for (Usuario c:Usuarios.values()) {
-			if (c.getUsuario()==usuario) return c;
-		}
-		return null;
+		return Usuarios.get(usuario);
 	}
 	
 
 	public void addUsuario(Usuario user) {
+		System.out.println(user.getUsuario());
 		Usuarios.put(user.getUsuario(),user);
 	}
 	public void removeUsuario (Usuario user) {
@@ -59,7 +57,8 @@ public class CatalogoUsuarios {
 	/*Recupera todos los Usuarios para trabajar con ellos en memoria*/
 	private void cargarCatalogo() throws DAOException {
 		 List<Usuario> UsuariosBD = adaptadorUsuario.recuperarTodosUsuarios();
-		 for (Usuario user: UsuariosBD) 
+		 for (Usuario user: UsuariosBD) {
 			     Usuarios.put(user.getUsuario(),user);
+		 }
 	}
 }

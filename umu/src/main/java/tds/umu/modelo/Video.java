@@ -2,6 +2,7 @@ package tds.umu.modelo;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 public class Video {
 	private String url;
@@ -50,6 +51,28 @@ public class Video {
 
 	public void addEtiqueta(Etiqueta etq) {
 		etiquetas.add(etq);
+		
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(codigo,url,titulo,etiquetas,numReproducciones);
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if(obj == null) 
+			return false;
+		if (obj.getClass() != this.getClass()) 
+			return false;
+		
+		Video otro= (Video) obj;
+		return 	codigo==otro.getCodigo() &&
+				url.equals(otro.getUrl()) &&
+				titulo.equals(otro.getTitulo())&&
+				etiquetas.equals(otro.getEtiquetas()) &&
+				numReproducciones==otro.getNumReproducciones();
 		
 	}
 	

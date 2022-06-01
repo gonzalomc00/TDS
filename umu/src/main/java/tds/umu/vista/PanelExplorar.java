@@ -90,7 +90,8 @@ public class PanelExplorar extends JPanel {
 	    
 	    lista_etiquetas = new JList();
 	    lista_etiquetas.setModel(modeloEtiqDisponibles);
-	    
+	   
+
 	    lista_etiquetas.addListSelectionListener(
 	    		new ListSelectionListener() {
 	    			public void valueChanged(ListSelectionEvent event) {
@@ -200,23 +201,27 @@ public class PanelExplorar extends JPanel {
 	    //Tratamiento de la lista de videos
 	    lista_videos = new JList();
 	    lista_videos.setBackground(Color.GRAY);
+	    lista_videos.setForeground(Color.WHITE);
 	    lista_videos.setVisibleRowCount(-1);
 	    lista_videos.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 	    lista_videos.setModel(modeloTablaVideos);
 	    lista_videos.setCellRenderer(new VideoRenderer());
-	    lista_videos.addListSelectionListener(
-	    		new ListSelectionListener() {
-	    			public void valueChanged(ListSelectionEvent event) {
+	    
+	    //Añadimos un MouseListener para poder llevar la cuenta de los dos clicks
+	    lista_videos.addMouseListener(
+	    		new MouseAdapter() {
+	    			public void mouseClicked(MouseEvent event) {
 	    				
 	    				/*
 	    				 * No se si aquí debería buscar en la base de datos apartir del nombre o algo, o si deberia
 	    				 * incluir la clase que representa a los videos el video en sí. No se si rompe algun patron
 	    				 */
-	    				if(!event.getValueIsAdjusting()) {
+	    				if(event.getClickCount()==2) {
 	    					JList<VideoRepresent> source=(JList<VideoRepresent>) event.getSource();
 	    					VideoRepresent selected = source.getSelectedValue();
 	    					if(selected!=null) {
-	    					videoSeleccionado=selected.getVideo();
+	    					String titulo= selected.getNombre();
+	    					videoSeleccionado=controlador.getVideo(titulo);
 	    					ventana.cambioPanel(Paneles.REPRODUCTOR);
 	    				}
 	    			}	

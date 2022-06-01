@@ -110,12 +110,12 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 	public boolean esUsuarioRegistrado(String login) {
 		// la he cambiado un poco porque creo que habria que comprobar el correo tb
 		//ya veremos lo del correo 
-		return CatalogoUsuarios.getUnicaInstancia().getUsuario(login)!= null;
+		return catalogoUsuarios.getUsuario(login)!= null;
 
 	}
 
 	public boolean loginUsuario(String nombre, String password) {
-		Usuario usuario = CatalogoUsuarios.getUnicaInstancia().getUsuario(nombre);
+		Usuario usuario = catalogoUsuarios.getUsuario(nombre);
 		if (usuario != null && usuario.getContraseña().equals(password)) {
 			this.usuarioActual = usuario;
 			return true;
@@ -130,14 +130,13 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 
 			return false;
 
-		} // tengo que ver como pasar la fecha
+		} 
 		Usuario usuario = new Usuario(nombre, apellidos, fecha, email, login, contra);
 		 /* Adaptador DAO para almacenar el nuevo Usuario en la BD */
 		adaptadorUsuario.registrarUsuario(usuario);
-		CatalogoUsuarios.getUnicaInstancia().addUsuario(usuario);
+		catalogoUsuarios.addUsuario(usuario);
 		return true;
 	}
-//Esto no sería algo q hará el catalogo tambien?
 
 	public boolean borrarUsuario(Usuario usuario) {
 		if (!esUsuarioRegistrado(usuario.getUsuario()))
@@ -200,6 +199,15 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 
 	public List<Etiqueta> getEtiquetas() {
 		return catalogoEtiqueta.getEtiquetas();
+	}
+
+	public void logout() {
+		usuarioActual=null;
+		
+	}
+
+	public Video getVideo(String titulo) {
+		return catalogoVideos.getVideo(titulo);
 	}
 
 }

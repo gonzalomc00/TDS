@@ -60,6 +60,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 	private Usuario user_actual;
 	private Luz luz;
 	private Controlador controlador= Controlador.getUnicaInstancia();
+	private EstadoLogin estado;
 
 	/**
 	 * Launch the application.
@@ -101,7 +102,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 		
 		panel_central.add(Plogin,BorderLayout.CENTER);
 		contentPane.add(panel_central,BorderLayout.CENTER);
-		
+		cambiarEstado(EstadoLogin.LOGOUT);
 	}
 
 
@@ -131,6 +132,7 @@ private void crearPanelSuperior()
 	panel_superior.add(login);
 	panel_superior.add(Box.createRigidArea(new Dimension(30,40)));
 	logout = new JButton("logout");
+	logout.addActionListener(this);
 	panel_superior.add(logout);
 	
 	panel_superior.add(Box.createRigidArea(new Dimension(30,40)));
@@ -214,8 +216,11 @@ public void actionPerformed(ActionEvent e) {
 	if(e.getSource()==nlistas) {
 		cambioPanel(Paneles.NUEVALISTA);
 	}
+	if(e.getSource()==logout) {
+		cierreSesion();
+		cambioPanel(Paneles.LOGIN);
+	}
 }
-
 
 //Falta el apartado de recientes
 public void cambioPanel(Paneles panel) {
@@ -259,11 +264,56 @@ public void cambio_panel_vista(JPanel panel) {
 	return;
 }
 
+
+private void cambiarEstado(EstadoLogin estado) {
+	switch (estado) {
+	
+	case LOGOUT:
+		explorar.setEnabled(false);
+		mlistas.setEnabled(false);
+		recientes.setEnabled(false);
+		nlistas.setEnabled(false);
+		logout.setEnabled(false);
+		premium.setEnabled(false);
+		
+		this.estado=estado;
+		break;
+	
+	case LOGIN:
+		explorar.setEnabled(true);
+		mlistas.setEnabled(true);
+		recientes.setEnabled(true);
+		nlistas.setEnabled(true);
+		logout.setEnabled(true);
+		premium.setEnabled(true);
+		login.setEnabled(false);
+		registro.setEnabled(false);
+		
+		this.estado=estado;
+		break;
+		
+	/*
+	 * TO DO
+	 */
+	case PREMIUM:
+		break;
+	}
+	
+}
+
 public void actualizarLogin(String text) {
 	etiqueta.setText("Hola "+text+"!");
+	cambiarEstado(EstadoLogin.LOGIN);
 	cambioPanel(Paneles.EXPLORAR);
 
 	
+}
+
+private void cierreSesion() {
+	user_actual=null;
+	cambiarEstado(EstadoLogin.LOGOUT);
+	controlador.logout();
+	etiqueta.setText("Inicia sesión o crea una cuenta nueva");
 }
 
 

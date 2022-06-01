@@ -11,14 +11,6 @@ import javax.swing.ListCellRenderer;
 
 public class VideoRenderer extends JLabel implements ListCellRenderer<VideoRepresent> {
 	public VideoRenderer() {
-	}
-
-	@Override
-	public Component getListCellRendererComponent(JList<? extends VideoRepresent> list, VideoRepresent vr, int ind,
-			boolean isSelected, boolean cellHasFocus) {
-		
-		setBackground(Color.GRAY);
-		setForeground(Color.WHITE);
 		setOpaque(true);
 		setPreferredSize(new Dimension(140,110));
 		setVerticalAlignment(CENTER);
@@ -26,6 +18,21 @@ public class VideoRenderer extends JLabel implements ListCellRenderer<VideoRepre
 		setHorizontalTextPosition(JLabel.CENTER);
 		setVerticalTextPosition(JLabel.BOTTOM);
 		
+	}
+
+	@Override
+	public Component getListCellRendererComponent(JList<? extends VideoRepresent> list, VideoRepresent vr, int ind,
+			boolean isSelected, boolean cellHasFocus) {
+		
+		
+		if(isSelected) {
+			setBackground(list.getSelectionBackground());
+			setForeground(list.getSelectionForeground());
+		} else {
+			setBackground(list.getBackground());
+			setForeground(list.getForeground());
+		}
+
 		String nombre= vr.getNombre();
 		ImageIcon imageIcon = vr.getImagen();
 		

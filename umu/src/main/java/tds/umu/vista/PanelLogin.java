@@ -98,7 +98,6 @@ public class PanelLogin extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				if(Controlador.getUnicaInstancia().loginUsuario(textoUser.getText(), textoContrasena.getText())) {
 					ventana.actualizarLogin(textoUser.getText());
-					//CAMBIAR
 				}
 				else {
 					JOptionPane.showMessageDialog(PanelLogin.this, "Nombre de usuario o contrase�a no valido",

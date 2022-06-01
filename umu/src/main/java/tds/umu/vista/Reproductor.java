@@ -3,6 +3,10 @@ package tds.umu.vista;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 
 import tds.umu.controlador.Controlador;
@@ -19,29 +23,17 @@ public class Reproductor extends JPanel {
 	VideoWeb videoWeb= Controlador.getUnicaInstancia().getReproductor();
 	
 	public Reproductor() {
-		nombreVideo=new JLabel();
-		add(videoWeb, BorderLayout.CENTER);
-		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0};
-		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0};
-		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
-		setLayout(gridBagLayout);
 		
+		setLayout(new GridBagLayout());
+		GridBagConstraints gbc= new GridBagConstraints();
+		gbc.gridwidth = GridBagConstraints.REMAINDER;
+		gbc.fill= GridBagConstraints.HORIZONTAL;
 		
-		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
-		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 0);
-		gbc_lblNewLabel.gridx = 5;
-		gbc_lblNewLabel.gridy = 3;
-		add(nombreVideo, gbc_lblNewLabel);
+		nombreVideo= new JLabel();
+		add(nombreVideo,gbc);
+		add(Box.createRigidArea(new Dimension(10,20)),gbc);
+		add(videoWeb,gbc);		
 		
-		JPanel panel = new JPanel();
-		GridBagConstraints gbc_panel = new GridBagConstraints();
-		gbc_panel.fill = GridBagConstraints.BOTH;
-		gbc_panel.gridx = 5;
-		gbc_panel.gridy = 4;
-		panel.add(videoWeb);
-		add(panel, gbc_panel);
 
 	}
 	

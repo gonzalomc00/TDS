@@ -3,6 +3,7 @@ package tds.umu.modelo;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 public class Usuario {
 private Integer codigo;
@@ -25,7 +26,7 @@ public Usuario(String nombre, String apellidos, LocalDate fecha, String email, S
 	this.usuario=usuario;
 	this.contraseña= contraseña;
 	this.isPremium=false;
-	this.setListas(new LinkedList<ListaVideos>());
+	this.listas= new LinkedList<ListaVideos>();
 	
 }
 
@@ -151,7 +152,32 @@ public void eliminarLista(ListaVideos lv) {
 }
 
 
+//Desde Java 7 se puede empezar a usar este metodo
+@Override
+public int hashCode() {
+	return Objects.hash(codigo,nombre,apellidos,fecha,email,usuario,contraseña,isPremium,listas);
+}
 
+@Override
+public boolean equals(Object obj)
+{
+	if(obj == null) 
+		return false;
+	if (obj.getClass() != this.getClass()) 
+		return false;
+	
+	Usuario otro= (Usuario) obj;
+	return	codigo==otro.getCodigo() &&
+			nombre.equals(otro.getNombre()) &&
+			apellidos.equals(otro.getApellidos())&&
+		    fecha.isEqual(otro.getFecha()) &&
+		    email.equals(otro.getEmail()) &&
+		    usuario.equals(otro.getUsuario()) &&
+		    contraseña.equals(otro.getContraseña()) &&
+		    isPremium==otro.isPremium() &&
+		    listas.equals(otro.listas);
+	
+}
 
 
 }

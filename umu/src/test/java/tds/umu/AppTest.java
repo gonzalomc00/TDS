@@ -1,7 +1,9 @@
 package tds.umu;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.junit.Test;
@@ -92,8 +94,7 @@ public class AppTest
     	
     }
     */
-    
-    @Test
+   
     public void pruebaEtqs() {
     	edao= factoria.getEtiquetaDAO();
     	Etiqueta e1= new Etiqueta("musica");
@@ -102,7 +103,7 @@ public class AppTest
     	edao.registrarEtiqueta(e2);
     	CatalogoEtiquetas.getUnicaInstancia().addEtiqueta(e1);
     	CatalogoEtiquetas.getUnicaInstancia().addEtiqueta(e2);
-    	
+  
     	for(Etiqueta etq: edao.recuperarTodosEtiquetas()) {
     		System.out.println("Nombre etq: "+etq.getNombre());
     	}
@@ -110,4 +111,17 @@ public class AppTest
     	assertTrue(true);
     	
     }
+    
+    @Test
+    public void pruebaEquals() {
+    	
+    	Usuario u1 = new Usuario("a","a", LocalDate.now(),"a" ,"a", "a");
+    	Usuario u2 = new Usuario("b","a", LocalDate.now(),"a" ,"a", "a");
+    
+    	assertFalse(u1.equals(u2));
+    }
+    
+    
+    
+    
 }
