@@ -37,7 +37,10 @@ public class ListaVideos {
 	public void añadirVideo(Video v) {
 		videos.add(v);
 	}
-	
+	public Video getVideoIndex(int index) {
+		System.out.println(videos.get(index).getTitulo());
+		return videos.get(index);
+	}
 	
 	@Override
 	public int hashCode() {

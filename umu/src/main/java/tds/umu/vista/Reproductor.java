@@ -23,9 +23,11 @@ public class Reproductor extends JPanel {
 	JLabel reproducciones;
 	Controlador controlador= Controlador.getUnicaInstancia();
 	VideoWeb videoWeb= Controlador.getUnicaInstancia().getReproductor();
+	VentanaPrincipal ventana;
 	
-	public Reproductor() {
+	public Reproductor(VentanaPrincipal v) {
 		
+		ventana=v;
 		setLayout(new GridBagLayout());
 		GridBagConstraints gbc= new GridBagConstraints();
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
@@ -42,11 +44,13 @@ public class Reproductor extends JPanel {
 
 	}
 	
-	public void reproducir() {
+	public void reproducir(int max) {
 		Video v= controlador.getVideoActual();
 		nombreVideo.setText(v.getTitulo());
 		reproducciones.setText("Visualizaciones: "+v.getNumReproducciones());
 		videoWeb.playVideo(v.getUrl());
+	
+		
 	}
 
 	

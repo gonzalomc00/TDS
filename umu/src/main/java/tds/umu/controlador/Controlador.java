@@ -244,11 +244,10 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 			
 	}
 	
-	public void actualizarVideoSeleccionado(String v) {
-		Video vid= catalogoVideos.getVideo(v);
-		vid.aumentarReproduccion();
-		adaptadorVideo.modificarVideo(vid);
-		setVideoActual(vid);
+	public void actualizarVideoSeleccionado(Video v) {
+		v.aumentarReproduccion();
+		adaptadorVideo.modificarVideo(v);
+		setVideoActual(v);
 	}
 
 	public List<ListaVideos> obtenerPlayListsUser() {

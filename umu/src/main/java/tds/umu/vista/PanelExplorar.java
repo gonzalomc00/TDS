@@ -49,12 +49,24 @@ public class PanelExplorar extends JPanel {
 	private DefaultListModel<String> modeloEtiqueSeleccionadas= new DefaultListModel<String>();
 	private DefaultListModel<VideoRepresent> modeloTablaVideos= new DefaultListModel<VideoRepresent>();
 	private LinkedList<String> etiquetas_Sel_Lista= new LinkedList<String>();
+	private List<Video> videos_encontrados;
 	
 	private Controlador controlador= Controlador.getUnicaInstancia();
 	
 
 	/**
 	 * Create the panel.
+	 */
+	
+	
+	/*
+	 * Para enviar los videos al controlador podemos hacerlo de manera directa pues previamente los recuperamos para poder
+	 * representarlos en las listas. Como estas listas no varian entre busqueda y busquedas, los indices de las listas
+	 * (la que contiene las representaciones de los videos y la que contiene los videos en si) coinciden. Sin embargo, con las
+	 * etiquetas no se puede hacer esto para enviarlas al controlador. Esto se debe a que los indices de las etiquetas seleccionadas
+	 * no coinciden con el indice de las etiquetas encontradas, pues son un solo conjunto cambiante a lo largo de toda la ejecución
+	 * 
+	 * Luego en el controlador si que podemos hacer el paso de nombre de etiqueta a etiqueta. 
 	 */
 	public PanelExplorar(VentanaPrincipal ventana) {
 		this.ventana=ventana;
@@ -223,8 +235,9 @@ public class PanelExplorar extends JPanel {
 	    					JList<VideoRepresent> source=(JList<VideoRepresent>) event.getSource();
 	    					VideoRepresent selected = source.getSelectedValue();
 	    					if(selected!=null) {
-	    					String titulo= selected.getNombre();
-	    					controlador.actualizarVideoSeleccionado(titulo);
+	    					//Podemos buscar por indice porque la lista de representacion y la lista de videos efectivos tienen el mismo orden
+	    					// OJO! Cumple patron experto? yo creo que si porque son listas
+	    					controlador.actualizarVideoSeleccionado(videos_encontrados.get(lista_videos.getSelectedIndex()));
 	    					ventana.cambioPanel(Paneles.REPRODUCTOR);
 	    				}
 	    			}	
@@ -242,8 +255,8 @@ public class PanelExplorar extends JPanel {
 		
 	public void actualizarListaVideos() {
 		modeloTablaVideos.removeAllElements();
-	    List<Video> videos= controlador.obtenerBusqueda(barra_busqueda.getText(),etiquetas_Sel_Lista);
-	    videos.stream()
+	    videos_encontrados= controlador.obtenerBusqueda(barra_busqueda.getText(),etiquetas_Sel_Lista);
+	    videos_encontrados.stream()
 	    	   .map(v -> new VideoRepresent(v,videoWeb.getSmallThumb(v.getUrl())))
 	    	   .forEach(nv-> modeloTablaVideos.addElement(nv));
 	    validate();

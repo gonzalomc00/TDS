@@ -86,7 +86,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 	 */
 	public VentanaPrincipal() throws IOException {
 		setResizable(false);
-		reproductor= new Reproductor();
+		reproductor= new Reproductor(this);
 		panel_mis_listas= new PanelMisListas(this);
 		Plogin= new PanelLogin(this);
 		PRegistro = new VentanaRegistro(this);
@@ -233,7 +233,7 @@ public void cambioPanel(Paneles panel) {
 	switch (panel) {
 		case REPRODUCTOR:
 		{
-		reproductor.reproducir();
+		reproductor.reproducir(0);
 		cambio_panel_vista(reproductor);
 		break;
 		}

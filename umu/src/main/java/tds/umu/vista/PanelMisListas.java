@@ -48,6 +48,8 @@ public class PanelMisListas extends JPanel {
 	private DefaultListModel<VideoRepresent> modeloListaVideos= new DefaultListModel<VideoRepresent>();
 	private VideoWeb videoWeb= controlador.getReproductor();
 	private Reproductor reproductor;
+	private List<ListaVideos> vlists_encontradas;
+	private ListaVideos vlist_seleccionada;
 	
 	public PanelMisListas(VentanaPrincipal ventana) {
 
@@ -84,7 +86,7 @@ public class PanelMisListas extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				String selected= (String)comboBox.getSelectedItem();
 				if(selected!=null) {
-				actualizarPanelLateral(selected);
+				actualizarPanelLateral(vlists_encontradas.get(comboBox.getSelectedIndex()));
 			}
 			}
 		});
@@ -100,7 +102,7 @@ public class PanelMisListas extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				cambiarPanelRep();
-				reproducirPlayListCompleta();
+				//reproducirPlayListCompleta();
 				
 			}
 			
@@ -144,9 +146,9 @@ public class PanelMisListas extends JPanel {
 	    					JList<VideoRepresent> source=(JList<VideoRepresent>) event.getSource();
 	    					VideoRepresent selected = source.getSelectedValue();
 	    					if(selected!=null) {
-	    						String titulo= selected.getNombre();
-	    						controlador.actualizarVideoSeleccionado(titulo);
-	    						reproductor.reproducir();
+	    						Video v= vlist_seleccionada.getVideoIndex(lista_videos.getSelectedIndex());
+	    						controlador.actualizarVideoSeleccionado(v);
+	    						reproductor.reproducir(0);
 	    						cambiarPanelRep();
 	    						
 	    				}
@@ -164,40 +166,34 @@ public class PanelMisListas extends JPanel {
 	
 
 	public void actualizarPlayLists() {
-		List<ListaVideos> listas= controlador.obtenerPlayListsUser();
-		for(ListaVideos lv: listas) {
-			System.out.println(lv.getNombre());
-		}
-		listas.stream().
+		vlists_encontradas= controlador.obtenerPlayListsUser();
+		vlists_encontradas.stream().
 			forEach(l->comboBox.addItem(l.getNombre()));
 		
 		
 	}
 	
-	public void actualizarPanelLateral(String lista) {
+	public void actualizarPanelLateral(ListaVideos list) {
 		modeloListaVideos.removeAllElements();
-	    ListaVideos list= controlador.obtenerLista(lista);
-	    for(Video v: list.getVideos()) {
-	    	System.out.println(v.getTitulo());
-	    }
-	    
 	    list.getVideos().stream()
 	    	   .map(v -> new VideoRepresent(v,videoWeb.getSmallThumb(v.getUrl())))
 	    	   .forEach(nv-> modeloListaVideos.addElement(nv));
 	    validate();
+	    vlist_seleccionada=list;
 		
 	}
 	
+	
 	public void reproducirPlayListCompleta() {
-		for(int i=0; i< modeloListaVideos.getSize(); i++) {
-			VideoRepresent v= modeloListaVideos.getElementAt(i);
-			controlador.actualizarVideoSeleccionado(v.getNombre());
-			reproductor.reproducir();
+		//Patron experto?? Yo creo que no 
+		for(Video vid: vlist_seleccionada.getVideos()) {
 			
-		 
 		}
 		
+		
 	}
+	
+	
 	
 	private void cambiarPanelRep() {
 		PanelMisListas.this.add(reproductor);
