@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import javax.swing.JFileChooser;
 
 import pulsador.IEncendidoListener;
+import umu.tds.componente.*;
 import tds.umu.modelo.CatalogoEtiquetas;
 import tds.umu.modelo.CatalogoListasVideos;
 import tds.umu.modelo.CatalogoVideos;
@@ -26,7 +27,7 @@ import tds.umu.persistencia.IAdaptadorVideoDAO;
 import tds.umu.persistencia.TDSFactoriaDAO;
 import tds.umu.vista.VentanaPrincipal;
 import tds.video.VideoWeb;
-import umu.tds.componente.ComponenteBuscadorVideos;
+
 import umu.tds.componente.Videos;
 import umu.tds.componente.VideosEvent;
 import umu.tds.componente.VideosListener;

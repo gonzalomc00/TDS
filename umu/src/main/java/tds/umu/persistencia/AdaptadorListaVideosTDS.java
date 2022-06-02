@@ -72,7 +72,8 @@ public class AdaptadorListaVideosTDS implements IAdaptadorListaVideosDAO {
 				prop.setValor(String.valueOf(listavideos.getCodigo()));
 			}
 			else if(prop.getNombre().equals("videos")) {
-				prop.setValor(String.valueOf(listavideos.getVideos()));
+				String lineas= obtenerCodigosVideos(listavideos.getVideos());
+				prop.setValor(String.valueOf(lineas));
 			}
 		
 			servPersistencia.modificarPropiedad(prop);	

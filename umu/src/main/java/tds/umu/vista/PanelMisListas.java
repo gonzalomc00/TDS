@@ -7,6 +7,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
 import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.border.LineBorder;
@@ -43,13 +44,17 @@ public class PanelMisListas extends JPanel {
 	private JPanel panel_6;
 	private Controlador controlador= Controlador.getUnicaInstancia();
 	private JList lista_videos;
+	private JScrollPane barra_deslizadora;
 	private DefaultListModel<VideoRepresent> modeloListaVideos= new DefaultListModel<VideoRepresent>();
 	private VideoWeb videoWeb= controlador.getReproductor();
+	private Reproductor reproductor;
 	
 	public PanelMisListas(VentanaPrincipal ventana) {
 
 		ventana=ventana;
 		crearPantalla();
+		//No sé si esto se puede hacer
+		reproductor=ventana.getReproductor();
 	}
 	
 	public void crearPantalla()
@@ -77,7 +82,10 @@ public class PanelMisListas extends JPanel {
 		comboBox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				actualizarPanelLateral(comboBox.getSelectedItem().toString());
+				String selected= (String)comboBox.getSelectedItem();
+				if(selected!=null) {
+				actualizarPanelLateral(selected);
+			}
 			}
 		});
 		panel_1.add(comboBox);
@@ -87,6 +95,16 @@ public class PanelMisListas extends JPanel {
 		panel_1.add(panel_4);
 		
 		bReproducir = new JButton("Reproducir");
+		bReproducir.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				cambiarPanelRep();
+				reproducirPlayListCompleta();
+				
+			}
+			
+		});
 		panel_4.add(bReproducir);
 		
 		panel_2 = new JPanel();
@@ -103,9 +121,7 @@ public class PanelMisListas extends JPanel {
 		panel.add(panel_3, BorderLayout.WEST);
 		panel_3.setLayout(new BorderLayout(0, 0));
 		
-		panel_6 = new JPanel();
-		panel_6.setBackground(Color.GRAY);
-		panel.add(panel_6, BorderLayout.CENTER);
+		
 		
 		lista_videos = new JList<VideoRepresent>();
 	    lista_videos.setBackground(Color.GRAY);
@@ -114,6 +130,7 @@ public class PanelMisListas extends JPanel {
 	    lista_videos.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 	    lista_videos.setModel(modeloListaVideos);
 	    lista_videos.setCellRenderer(new VideoRenderer());
+	   
 	    
 	    lista_videos.addMouseListener(
 	    		new MouseAdapter() {
@@ -127,26 +144,30 @@ public class PanelMisListas extends JPanel {
 	    					JList<VideoRepresent> source=(JList<VideoRepresent>) event.getSource();
 	    					VideoRepresent selected = source.getSelectedValue();
 	    					if(selected!=null) {
-	    					String titulo= selected.getNombre();
-	    					controlador.actualizarVideoSeleccionado(titulo);
-	    					ventana.cambioPanel(Paneles.REPRODUCTOR);
+	    						String titulo= selected.getNombre();
+	    						controlador.actualizarVideoSeleccionado(titulo);
+	    						reproductor.reproducir();
+	    						cambiarPanelRep();
+	    						
 	    				}
 	    			}	
 	    			}
 	    		}
 	    		);
-	
-	
-		panel_6.add(lista_videos);
+	    
+	    barra_deslizadora = new JScrollPane(lista_videos);
+		barra_deslizadora.setBackground(Color.GRAY);
+		panel.add(barra_deslizadora, BorderLayout.CENTER);
 		
-		panel_5 = new JPanel();
-		panel_5.setBackground(Color.GRAY);
-		add(panel_5, BorderLayout.CENTER);
 		
 	}
 	
+
 	public void actualizarPlayLists() {
 		List<ListaVideos> listas= controlador.obtenerPlayListsUser();
+		for(ListaVideos lv: listas) {
+			System.out.println(lv.getNombre());
+		}
 		listas.stream().
 			forEach(l->comboBox.addItem(l.getNombre()));
 		
@@ -166,5 +187,26 @@ public class PanelMisListas extends JPanel {
 	    validate();
 		
 	}
+	
+	public void reproducirPlayListCompleta() {
+		for(int i=0; i< modeloListaVideos.getSize(); i++) {
+			VideoRepresent v= modeloListaVideos.getElementAt(i);
+			controlador.actualizarVideoSeleccionado(v.getNombre());
+			reproductor.reproducir();
+			
+		 
+		}
+		
+	}
+	
+	private void cambiarPanelRep() {
+		PanelMisListas.this.add(reproductor);
+		revalidate();
+		repaint();
+		validate();
+	}
+	
+	
+
 
 }

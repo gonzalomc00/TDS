@@ -21,6 +21,7 @@ public class Reproductor extends JPanel {
 
 	JLabel nombreVideo;
 	JLabel reproducciones;
+	Controlador controlador= Controlador.getUnicaInstancia();
 	VideoWeb videoWeb= Controlador.getUnicaInstancia().getReproductor();
 	
 	public Reproductor() {
@@ -41,10 +42,12 @@ public class Reproductor extends JPanel {
 
 	}
 	
-	public void reproducir(Video v) {
+	public void reproducir() {
+		Video v= controlador.getVideoActual();
 		nombreVideo.setText(v.getTitulo());
 		reproducciones.setText("Visualizaciones: "+v.getNumReproducciones());
 		videoWeb.playVideo(v.getUrl());
 	}
 
+	
 }

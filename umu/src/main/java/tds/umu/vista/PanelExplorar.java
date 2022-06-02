@@ -233,7 +233,7 @@ public class PanelExplorar extends JPanel {
 	    		);
 	
 	 
-	    
+	  
 	    panel_5.add(new JScrollPane(lista_videos),BorderLayout.CENTER);
 
 	    
@@ -266,6 +266,7 @@ public class PanelExplorar extends JPanel {
 		modeloEtiqDisponibles.removeAllElements();
 		modeloEtiqueSeleccionadas.removeAllElements();
 		modeloTablaVideos.removeAllElements();
+		etiquetas_Sel_Lista.clear();
 		
 	}
 	

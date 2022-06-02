@@ -53,6 +53,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 	private JLabel etiqueta;
 	private PanelExplorar PExplora;
 	private PanelMisListas panel_mis_listas;
+	private PanelRecientes PReciente;
 	private PanelLogin Plogin;
 	private Reproductor reproductor;
 	private VentanaRegistro PRegistro;
@@ -61,6 +62,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 	private Luz luz;
 	private Controlador controlador= Controlador.getUnicaInstancia();
 	private EstadoLogin estado;
+
 
 	/**
 	 * Launch the application.
@@ -84,12 +86,14 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 	 */
 	public VentanaPrincipal() throws IOException {
 		setResizable(false);
+		reproductor= new Reproductor();
 		panel_mis_listas= new PanelMisListas(this);
 		Plogin= new PanelLogin(this);
 		PRegistro = new VentanaRegistro(this);
 		PNLista= new PanelNuevaLista(this);
 		PExplora= new PanelExplorar(this);
-		reproductor= new Reproductor();
+		PReciente= new PanelRecientes(this);
+
 		
 		setBounds(0,0,900,600);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -209,9 +213,8 @@ public void actionPerformed(ActionEvent e) {
 	if(e.getSource()==mlistas) {
 		cambioPanel(Paneles.MISLISTAS);
 	}
-	//POR HACER
 	if(e.getSource()==recientes)  {
-		cambioPanel(Paneles.LOGIN);
+		cambioPanel(Paneles.RECIENTE);
 	}
 	if(e.getSource()==nlistas) {
 		cambioPanel(Paneles.NUEVALISTA);
@@ -223,12 +226,14 @@ public void actionPerformed(ActionEvent e) {
 }
 
 //Falta el apartado de recientes
+
+//Función que cambia todo el panel central. Permite pasar de una ventana "general" hacia otra. Las ventanas generales son las que ocupan toda la ventana. 
 public void cambioPanel(Paneles panel) {
 	videoWeb.cancel();
 	switch (panel) {
 		case REPRODUCTOR:
 		{
-		reproductor.reproducir(controlador.getVideoActual());
+		reproductor.reproducir();
 		cambio_panel_vista(reproductor);
 		break;
 		}
@@ -249,6 +254,9 @@ public void cambioPanel(Paneles panel) {
 			break;
 		case NUEVALISTA:
 			cambio_panel_vista(PNLista);
+			break;
+		case RECIENTE:
+			cambio_panel_vista(PReciente);
 			break;
 			
 	default:
@@ -315,6 +323,10 @@ private void cierreSesion() {
 	cambiarEstado(EstadoLogin.LOGOUT);
 	controlador.logout();
 	etiqueta.setText("Inicia sesión o crea una cuenta nueva");
+}
+
+public Reproductor getReproductor() {
+	return reproductor;
 }
 
 

@@ -124,7 +124,7 @@ public class AppTest
     	assertFalse(u1.equals(u2));
     }
     
-    @Test
+    
     public void pruebaCrearUsuario() {
     	idao = factoria.getUsuarioDAO();
         
@@ -135,7 +135,7 @@ public class AppTest
     	assertTrue(true);
     }
    
-   @Test
+   
    public void registroListaVideo() {
 	   lvdao= factoria.getListaVideosDAO();
 	   ListaVideos lv= new ListaVideos("prueba");
@@ -150,7 +150,7 @@ public class AppTest
 	   assertTrue(lv.equals(lv2));
    }
 
-   @Test
+ 
    public void pruebaRecuperarLista() {
 	   
 	   CatalogoListasVideos clv=CatalogoListasVideos.getUnicaInstancia();
@@ -160,7 +160,8 @@ public class AppTest
 	   }
 	   
    }
-   @Test
+   
+   
    public void pruebaListaVideo() {
 	  
 	  idao= factoria.getUsuarioDAO();
@@ -172,17 +173,36 @@ public class AppTest
 	  Video v2= cv.getVideo("Elena Tsagrinou - El Diablo - LIVE - Cyprus 🇨🇾 - Grand Final - Eurovision 2021");
 	  CatalogoUsuarios cu= CatalogoUsuarios.getUnicaInstancia();
 	  Usuario a = cu.getUsuario("a");
-	  ListaVideos lv= new ListaVideos("prueba");
+	  ListaVideos lv= new ListaVideos("pruebaS");
+	  ListaVideos lv2= new ListaVideos("prueba2");
 	  lv.añadirVideo(v1);
 	  lv.añadirVideo(v2);
+	  lv2.añadirVideo(v1);
+	  lv2.añadirVideo(v2);
 	  lvdao.registrarListaVideos(lv);
+	  lvdao.registrarListaVideos(lv2);
 	  a.añadirLista(lv);
+	  a.añadirLista(lv2);
 	  idao.modificarUsuario(a);
 	  
 	  
 	  assertTrue(true);
    }
    
+   @Test
+   public void añadirVidaLista() {
+	   lvdao=factoria.getListaVideosDAO();
+	   CatalogoListasVideos lv= CatalogoListasVideos.getUnicaInstancia();
+	   CatalogoVideos cv= CatalogoVideos.getUnicaInstancia();
+	   ListaVideos lv1= lv.getListaVideos("pruebaS");
+	   
+	   Video v1= cv.getVideo("Chanel - SloMo - LIVE - Spain 🇪🇸 - Grand Final - Eurovision 2022");
+	   Video v2= cv.getVideo("Nena del Callejon (feat. Alcover)");
+	   lv1.añadirVideo(v1);
+	   lv1.añadirVideo(v2);
+	   lvdao.modificarListaVideos(lv1);
+	   assertTrue(true);
+   }
 
     
     
