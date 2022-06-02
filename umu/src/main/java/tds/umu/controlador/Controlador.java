@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.EventObject;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.swing.JFileChooser;
 
@@ -13,6 +14,7 @@ import tds.umu.modelo.CatalogoEtiquetas;
 import tds.umu.modelo.CatalogoListasVideos;
 import tds.umu.modelo.CatalogoVideos;
 import tds.umu.modelo.Etiqueta;
+import tds.umu.modelo.ListaVideos;
 import tds.umu.modelo.Usuario;
 import tds.umu.modelo.Video;
 import tds.umu.persistencia.DAOException;
@@ -100,6 +102,10 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 	public Video getVideoActual() {
 		return videoActual;
 	}
+	private void setVideoActual(Video v) {
+		videoActual=v;
+	}
+
 	
 	public VideoWeb getReproductor() {
 		return videoWeb;
@@ -112,6 +118,15 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 		//ya veremos lo del correo 
 		return catalogoUsuarios.getUsuario(login)!= null;
 
+	}
+	public boolean esVideoRegistrado(String vtext) {
+		return catalogoVideos.getVideo(vtext)!=null;
+	}
+	public boolean esEtiqueRegistrado(String etext) {
+		return catalogoEtiqueta.getEtiqueta(etext)!=null;
+	}
+	public boolean esListaVideoRegistrado(String lvtext) {
+		return catalogoListaVideos.getListaVideos(lvtext)!=null;
 	}
 
 	public boolean loginUsuario(String nombre, String password) {
@@ -168,9 +183,14 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 			//Obtenemos los objetos etiqueta vinculado a los videos
 			List<Etiqueta> etiquetas= new LinkedList<Etiqueta>();
 			for(String et: v.getEtiqueta()) {
-				Etiqueta e= new Etiqueta(et);
-				etiquetas.add(e);
-				catalogoEtiqueta.addEtiqueta(e);
+				if(!esEtiqueRegistrado(et)) {
+					Etiqueta e= new Etiqueta(et);
+					etiquetas.add(e);
+					catalogoEtiqueta.addEtiqueta(e);
+				}
+				else {
+					etiquetas.add(catalogoEtiqueta.getEtiqueta(et));
+				}
 			}
 			
 			Video vid= new Video(v.getURL(),v.getTitulo(),etiquetas);
@@ -210,4 +230,35 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 		return catalogoVideos.getVideo(titulo);
 	}
 
+	public List<Video> obtenerBusqueda(String text, LinkedList<String> etiquetas_Sel_Lista) {
+		List<Etiqueta> etiquetas= getEtiqFromText(etiquetas_Sel_Lista);
+		List<Video> videosMatch= catalogoVideos.getBusqueda(text,etiquetas);
+		return videosMatch;
+	}
+
+	private List<Etiqueta> getEtiqFromText(LinkedList<String> etiquetas_Sel_Lista) {
+		return etiquetas_Sel_Lista.stream()
+				.map(text->catalogoEtiqueta.getEtiqueta(text))
+				.collect(Collectors.toList());
+			
+	}
+	
+	public void actualizarVideoSeleccionado(String v) {
+		Video vid= catalogoVideos.getVideo(v);
+		vid.aumentarReproduccion();
+		adaptadorVideo.modificarVideo(vid);
+		setVideoActual(vid);
+	}
+
+	public List<ListaVideos> obtenerPlayListsUser() {
+		return usuarioActual.getListas();
+	}
+
+	public ListaVideos obtenerLista(String lista) {
+		return catalogoListaVideos.getListaVideos(lista);
+	}
+	
+
+
+	
 }

@@ -13,6 +13,9 @@ import tds.umu.persistencia.IAdaptadorEtiquetaDAO;
 import tds.umu.persistencia.IAdaptadorListaVideosDAO;
 import tds.umu.persistencia.IAdaptadorUsuarioDAO;
 import tds.umu.modelo.CatalogoEtiquetas;
+import tds.umu.modelo.CatalogoListasVideos;
+import tds.umu.modelo.CatalogoUsuarios;
+import tds.umu.modelo.CatalogoVideos;
 import tds.umu.modelo.Etiqueta;
 import tds.umu.modelo.ListaVideos;
 import tds.umu.modelo.Video;
@@ -112,7 +115,7 @@ public class AppTest
     	
     }
     
-    @Test
+
     public void pruebaEquals() {
     	
     	Usuario u1 = new Usuario("a","a", LocalDate.now(),"a" ,"a", "a");
@@ -121,6 +124,66 @@ public class AppTest
     	assertFalse(u1.equals(u2));
     }
     
+    @Test
+    public void pruebaCrearUsuario() {
+    	idao = factoria.getUsuarioDAO();
+        
+    
+    	Usuario u1 = new Usuario("a","a", LocalDate.now(),"a" ,"a", "a");
+    	idao.registrarUsuario(u1);
+    	
+    	assertTrue(true);
+    }
+   
+   @Test
+   public void registroListaVideo() {
+	   lvdao= factoria.getListaVideosDAO();
+	   ListaVideos lv= new ListaVideos("prueba");
+	
+	   CatalogoVideos cv= CatalogoVideos.getUnicaInstancia();
+	   Video v1= cv.getVideo("LUM!X feat. Pia Maria - Halo - LIVE - Austria 🇦🇹 - First Semi-Final - Eurovision 2022");
+	   Video v2= cv.getVideo("Elena Tsagrinou - El Diablo - LIVE - Cyprus 🇨🇾 - Grand Final - Eurovision 2021");
+	   lv.añadirVideo(v1);
+	   lv.añadirVideo(v2);
+	   lvdao.registrarListaVideos(lv);
+	   ListaVideos lv2= lvdao.recuperarListaVideos(lv.getCodigo());
+	   assertTrue(lv.equals(lv2));
+   }
+
+   @Test
+   public void pruebaRecuperarLista() {
+	   
+	   CatalogoListasVideos clv=CatalogoListasVideos.getUnicaInstancia();
+	   ListaVideos lv=clv.getListaVideos("prueba");
+	   for(Video v: lv.getVideos()) {
+		   System.out.println(v.getTitulo());
+	   }
+	   
+   }
+   @Test
+   public void pruebaListaVideo() {
+	  
+	  idao= factoria.getUsuarioDAO();
+	  lvdao= factoria.getListaVideosDAO();
+	  vdao=factoria.getVideoDAO();
+	  
+	  CatalogoVideos cv= CatalogoVideos.getUnicaInstancia();
+	  Video v1= cv.getVideo("LUM!X feat. Pia Maria - Halo - LIVE - Austria 🇦🇹 - First Semi-Final - Eurovision 2022");
+	  Video v2= cv.getVideo("Elena Tsagrinou - El Diablo - LIVE - Cyprus 🇨🇾 - Grand Final - Eurovision 2021");
+	  CatalogoUsuarios cu= CatalogoUsuarios.getUnicaInstancia();
+	  Usuario a = cu.getUsuario("a");
+	  ListaVideos lv= new ListaVideos("prueba");
+	  lv.añadirVideo(v1);
+	  lv.añadirVideo(v2);
+	  lvdao.registrarListaVideos(lv);
+	  a.añadirLista(lv);
+	  idao.modificarUsuario(a);
+	  
+	  
+	  assertTrue(true);
+   }
+   
+
     
     
     

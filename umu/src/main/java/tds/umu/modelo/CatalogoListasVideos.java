@@ -47,9 +47,6 @@ public class CatalogoListasVideos {
 		return listasvideos.get(codigo);
 	}
 	
-	//metodo para obtener video por titulo? no creo
-	
-	
 	//deberia meterlos con codigo o con titulo?
 	public void addListaVideos(ListaVideos lv) {
 		listasvideos.put(lv.getNombre(), lv);

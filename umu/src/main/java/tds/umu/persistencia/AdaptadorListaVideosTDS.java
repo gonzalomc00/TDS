@@ -37,10 +37,12 @@ public class AdaptadorListaVideosTDS implements IAdaptadorListaVideosDAO {
 		} catch(NullPointerException e) {}
 		if(eListaVideos!=null) return;
 	
+		
 	AdaptadorVideoTDS adaptadorVideos= AdaptadorVideoTDS.getUnicaInstancia();
 	for(Video v: listavideos.getVideos()) {
 		adaptadorVideos.registrarVideo(v);
 	}
+	
 	
 	eListaVideos= new Entidad();
 	eListaVideos.setNombre("listavideos");

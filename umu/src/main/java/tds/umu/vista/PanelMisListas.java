@@ -3,15 +3,24 @@ package tds.umu.vista;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
 import javax.swing.JScrollBar;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.border.LineBorder;
+
+import tds.umu.controlador.Controlador;
+import tds.umu.modelo.*;
+import tds.video.VideoWeb;
+
 import java.awt.Color;
 import javax.swing.border.BevelBorder;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.Component;
 import java.awt.FlowLayout;
@@ -28,11 +37,14 @@ public class PanelMisListas extends JPanel {
 	private VentanaPrincipal ventana;
 	private JPanel panel,panel_1,panel_2,panel_4,panel_5;
 	private JLabel etiquetaSeleccion;
-	private JComboBox comboBox;
+	private JComboBox<String> comboBox;
 	private JButton bReproducir, bCancelar;
 	private JPanel panel_3;
-	private JScrollBar scrollBar;
 	private JPanel panel_6;
+	private Controlador controlador= Controlador.getUnicaInstancia();
+	private JList lista_videos;
+	private DefaultListModel<VideoRepresent> modeloListaVideos= new DefaultListModel<VideoRepresent>();
+	private VideoWeb videoWeb= controlador.getReproductor();
 	
 	public PanelMisListas(VentanaPrincipal ventana) {
 
@@ -61,7 +73,13 @@ public class PanelMisListas extends JPanel {
 		etiquetaSeleccion.setForeground(Color.WHITE);
 		panel_1.add(etiquetaSeleccion);
 		
-		comboBox = new JComboBox();
+		comboBox = new JComboBox<String>();
+		comboBox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				actualizarPanelLateral(comboBox.getSelectedItem().toString());
+			}
+		});
 		panel_1.add(comboBox);
 		
 		panel_4 = new JPanel();
@@ -85,18 +103,67 @@ public class PanelMisListas extends JPanel {
 		panel.add(panel_3, BorderLayout.WEST);
 		panel_3.setLayout(new BorderLayout(0, 0));
 		
-		scrollBar = new JScrollBar();
-		scrollBar.setBackground(Color.GRAY);
-		scrollBar.setForeground(Color.GRAY);
-		panel.add(scrollBar, BorderLayout.EAST);
-		
 		panel_6 = new JPanel();
 		panel_6.setBackground(Color.GRAY);
 		panel.add(panel_6, BorderLayout.CENTER);
 		
+		lista_videos = new JList<VideoRepresent>();
+	    lista_videos.setBackground(Color.GRAY);
+	    lista_videos.setForeground(Color.WHITE);
+	    lista_videos.setVisibleRowCount(-1);
+	    lista_videos.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+	    lista_videos.setModel(modeloListaVideos);
+	    lista_videos.setCellRenderer(new VideoRenderer());
+	    
+	    lista_videos.addMouseListener(
+	    		new MouseAdapter() {
+	    			public void mouseClicked(MouseEvent event) {
+	    				
+	    				/*
+	    				 * No se si aquí debería buscar en la base de datos apartir del nombre o algo, o si deberia
+	    				 * incluir la clase que representa a los videos el video en sí. No se si rompe algun patron
+	    				 */
+	    				if(event.getClickCount()==2) {
+	    					JList<VideoRepresent> source=(JList<VideoRepresent>) event.getSource();
+	    					VideoRepresent selected = source.getSelectedValue();
+	    					if(selected!=null) {
+	    					String titulo= selected.getNombre();
+	    					controlador.actualizarVideoSeleccionado(titulo);
+	    					ventana.cambioPanel(Paneles.REPRODUCTOR);
+	    				}
+	    			}	
+	    			}
+	    		}
+	    		);
+	
+	
+		panel_6.add(lista_videos);
+		
 		panel_5 = new JPanel();
 		panel_5.setBackground(Color.GRAY);
 		add(panel_5, BorderLayout.CENTER);
+		
+	}
+	
+	public void actualizarPlayLists() {
+		List<ListaVideos> listas= controlador.obtenerPlayListsUser();
+		listas.stream().
+			forEach(l->comboBox.addItem(l.getNombre()));
+		
+		
+	}
+	
+	public void actualizarPanelLateral(String lista) {
+		modeloListaVideos.removeAllElements();
+	    ListaVideos list= controlador.obtenerLista(lista);
+	    for(Video v: list.getVideos()) {
+	    	System.out.println(v.getTitulo());
+	    }
+	    
+	    list.getVideos().stream()
+	    	   .map(v -> new VideoRepresent(v,videoWeb.getSmallThumb(v.getUrl())))
+	    	   .forEach(nv-> modeloListaVideos.addElement(nv));
+	    validate();
 		
 	}
 

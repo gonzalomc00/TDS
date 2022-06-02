@@ -2,6 +2,7 @@ package tds.umu.modelo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -49,6 +50,26 @@ public class CatalogoVideos {
 		return videos.get(codigo);
 	}	
 	
+	public List<Video> getBusqueda(String text, List<Etiqueta> etiquetas) {
+		
+		List<Video> resultado= new LinkedList<Video>();
+		for(String vt: videos.keySet()) {
+			if(vt.contains(text)) {
+				Video v= videos.get(vt);
+				if(etiquetas.size()>0) {
+				if(v.containsEtiqueta(etiquetas))
+					resultado.add(v);
+			}
+				else{
+					resultado.add(v);
+					}
+				}
+			
+		}
+		
+		return resultado;
+	}
+	
 	//deberia meterlos con codigo o con titulo?
 	public void addVideo(Video v) {
 		videos.put(v.getTitulo(), v);
@@ -65,5 +86,7 @@ public class CatalogoVideos {
 			videos.put(v.getTitulo(), v);
 		
 	}
+
+
 	
 }

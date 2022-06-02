@@ -228,7 +228,7 @@ public void cambioPanel(Paneles panel) {
 	switch (panel) {
 		case REPRODUCTOR:
 		{
-		reproductor.reproducir(PExplora.getVideoSeleccionado());
+		reproductor.reproducir(controlador.getVideoActual());
 		cambio_panel_vista(reproductor);
 		break;
 		}
@@ -238,6 +238,7 @@ public void cambioPanel(Paneles panel) {
 			cambio_panel_vista(PExplora);
 			break;
 		case MISLISTAS:
+			panel_mis_listas.actualizarPlayLists();
 			cambio_panel_vista(panel_mis_listas);
 			break;
 		case LOGIN:

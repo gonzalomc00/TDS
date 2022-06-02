@@ -36,6 +36,10 @@ public class Video {
 	public void setNumReproducciones(int numReproducciones) {
 		this.numReproducciones = numReproducciones;
 	}
+	
+	public void aumentarReproduccion() {
+		this.numReproducciones++;
+	}
 	public List<Etiqueta> getEtiquetas() {
 		return etiquetas;
 	}
@@ -74,6 +78,16 @@ public class Video {
 				etiquetas.equals(otro.getEtiquetas()) &&
 				numReproducciones==otro.getNumReproducciones();
 		
+	}
+
+	public boolean containsEtiqueta(List<Etiqueta> etiquetas) {
+		
+		for(Etiqueta et: etiquetas) {
+			if(this.etiquetas.contains(et))
+				return true;
+		}
+		
+		return false;
 	}
 	
 }

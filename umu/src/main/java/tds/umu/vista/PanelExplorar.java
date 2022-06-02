@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.awt.BorderLayout;
 import javax.swing.JButton;
@@ -47,10 +48,10 @@ public class PanelExplorar extends JPanel {
 	private DefaultListModel<String> modeloEtiqDisponibles = new DefaultListModel<String>();
 	private DefaultListModel<String> modeloEtiqueSeleccionadas= new DefaultListModel<String>();
 	private DefaultListModel<VideoRepresent> modeloTablaVideos= new DefaultListModel<VideoRepresent>();
+	private LinkedList<String> etiquetas_Sel_Lista= new LinkedList<String>();
 	
 	private Controlador controlador= Controlador.getUnicaInstancia();
 	
-	private Video videoSeleccionado;
 
 	/**
 	 * Create the panel.
@@ -101,6 +102,7 @@ public class PanelExplorar extends JPanel {
 	    					String selected = source.getSelectedValue();
 	    					if(selected!=null && !modeloEtiqueSeleccionadas.contains(selected)) {
 	    					modeloEtiqueSeleccionadas.addElement(selected);
+	    					etiquetas_Sel_Lista.add(selected);
 	    					}
 	    				}
 	    			}	
@@ -137,6 +139,7 @@ public class PanelExplorar extends JPanel {
 	    					String selected = source.getSelectedValue();
 	    					if(selected!=null) {
 	    						modeloEtiqueSeleccionadas.removeElement(selected);
+	    						etiquetas_Sel_Lista.remove(selected);
 	    					}
 	    					
 	    				}
@@ -221,7 +224,7 @@ public class PanelExplorar extends JPanel {
 	    					VideoRepresent selected = source.getSelectedValue();
 	    					if(selected!=null) {
 	    					String titulo= selected.getNombre();
-	    					videoSeleccionado=controlador.getVideo(titulo);
+	    					controlador.actualizarVideoSeleccionado(titulo);
 	    					ventana.cambioPanel(Paneles.REPRODUCTOR);
 	    				}
 	    			}	
@@ -239,7 +242,7 @@ public class PanelExplorar extends JPanel {
 		
 	public void actualizarListaVideos() {
 		modeloTablaVideos.removeAllElements();
-	    List<Video> videos= controlador.getListaVideos();
+	    List<Video> videos= controlador.obtenerBusqueda(barra_busqueda.getText(),etiquetas_Sel_Lista);
 	    videos.stream()
 	    	   .map(v -> new VideoRepresent(v,videoWeb.getSmallThumb(v.getUrl())))
 	    	   .forEach(nv-> modeloTablaVideos.addElement(nv));
@@ -250,9 +253,6 @@ public class PanelExplorar extends JPanel {
 	public void actualizarEtiquetasExplora() {
 		List<Etiqueta> lista_etiquetas_cat;
 		lista_etiquetas_cat= Controlador.getUnicaInstancia().getEtiquetas();
-		for(Etiqueta et: lista_etiquetas_cat) {
-			System.out.println(et.getNombre());
-		}
 		lista_etiquetas_cat.stream()
 					   .map(etq->etq.getNombre())
 					   .forEach(nom->modeloEtiqDisponibles.addElement(nom));
@@ -260,9 +260,6 @@ public class PanelExplorar extends JPanel {
 		
 	}
 	
-	public Video getVideoSeleccionado() {
-		return videoSeleccionado;
-	}
 
 
 	public void renovar() {
@@ -270,5 +267,9 @@ public class PanelExplorar extends JPanel {
 		modeloEtiqueSeleccionadas.removeAllElements();
 		modeloTablaVideos.removeAllElements();
 		
+	}
+	
+	public LinkedList<String> getEtiquetaSelLista(){
+		return etiquetas_Sel_Lista;
 	}
 }

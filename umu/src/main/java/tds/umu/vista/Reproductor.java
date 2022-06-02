@@ -20,6 +20,7 @@ import java.awt.Insets;
 public class Reproductor extends JPanel {
 
 	JLabel nombreVideo;
+	JLabel reproducciones;
 	VideoWeb videoWeb= Controlador.getUnicaInstancia().getReproductor();
 	
 	public Reproductor() {
@@ -30,7 +31,10 @@ public class Reproductor extends JPanel {
 		gbc.fill= GridBagConstraints.HORIZONTAL;
 		
 		nombreVideo= new JLabel();
+		reproducciones=new JLabel();
 		add(nombreVideo,gbc);
+		add(Box.createRigidArea(new Dimension(10,20)),gbc);
+		add(reproducciones,gbc);
 		add(Box.createRigidArea(new Dimension(10,20)),gbc);
 		add(videoWeb,gbc);		
 		
@@ -39,6 +43,7 @@ public class Reproductor extends JPanel {
 	
 	public void reproducir(Video v) {
 		nombreVideo.setText(v.getTitulo());
+		reproducciones.setText("Visualizaciones: "+v.getNumReproducciones());
 		videoWeb.playVideo(v.getUrl());
 	}
 

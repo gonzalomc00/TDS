@@ -133,7 +133,8 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 				prop.setValor(String.valueOf(usuario.isPremium()));
 				break;
 			case("listasDeVideo"):
-				prop.setValor(String.valueOf(usuario.getListas()));
+				String lineas = obtenerCodigosListasVideos(usuario.getListas());
+				prop.setValor(String.valueOf(lineas));
 			
 			}
 			servPersistencia.modificarPropiedad(prop);
