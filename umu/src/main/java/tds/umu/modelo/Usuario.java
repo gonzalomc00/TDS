@@ -180,4 +180,13 @@ public boolean equals(Object obj)
 }
 
 
+public ListaVideos getLista(String lista) {
+	for(ListaVideos lv: listas) {
+		if(lv.getNombre().equals(lista))
+			return lv;
+	}
+	return null;
+}
+
+
 }

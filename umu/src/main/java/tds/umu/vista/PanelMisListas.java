@@ -101,7 +101,7 @@ public class PanelMisListas extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				cambiarPanelRep();
+				//cambiarPanelRep();
 				//reproducirPlayListCompleta();
 				
 			}
@@ -148,7 +148,7 @@ public class PanelMisListas extends JPanel {
 	    					if(selected!=null) {
 	    						Video v= vlist_seleccionada.getVideoIndex(lista_videos.getSelectedIndex());
 	    						controlador.actualizarVideoSeleccionado(v);
-	    						reproductor.reproducir(0);
+	    						reproductor.reproducir();
 	    						cambiarPanelRep();
 	    						
 	    				}
@@ -183,7 +183,7 @@ public class PanelMisListas extends JPanel {
 		
 	}
 	
-	
+	/*
 	public void reproducirPlayListCompleta() {
 		//Patron experto?? Yo creo que no 
 		for(Video vid: vlist_seleccionada.getVideos()) {
@@ -192,8 +192,7 @@ public class PanelMisListas extends JPanel {
 		
 		
 	}
-	
-	
+	*/
 	
 	private void cambiarPanelRep() {
 		PanelMisListas.this.add(reproductor);

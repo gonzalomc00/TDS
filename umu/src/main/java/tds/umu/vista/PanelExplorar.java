@@ -66,7 +66,7 @@ public class PanelExplorar extends JPanel {
 	 * etiquetas no se puede hacer esto para enviarlas al controlador. Esto se debe a que los indices de las etiquetas seleccionadas
 	 * no coinciden con el indice de las etiquetas encontradas, pues son un solo conjunto cambiante a lo largo de toda la ejecución
 	 * 
-	 * Luego en el controlador si que podemos hacer el paso de nombre de etiqueta a etiqueta. 
+	 * Luego en el controlador si que podemos hacer el paso de nombre de etiqueta a etiqueta
 	 */
 	public PanelExplorar(VentanaPrincipal ventana) {
 		this.ventana=ventana;

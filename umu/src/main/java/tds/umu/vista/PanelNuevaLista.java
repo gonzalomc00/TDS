@@ -36,23 +36,27 @@ public class PanelNuevaLista extends JPanel {
 	private VentanaPrincipal ventana;
 	private JPanel panel,panel_1,panel_2,panel_4,panel_5;
 	private JLabel etiquetaSeleccion;
-	private JButton bReproducir;
+	private JButton bEliminar;
 	private JPanel panel_3;
 	private JPanel panel_6;
 	private Controlador controlador= Controlador.getUnicaInstancia();
-	private JList lista_videos;
-	private DefaultListModel<VideoRepresent> modeloListaVideos= new DefaultListModel<VideoRepresent>();
+	private JList lista_videos,videos_lista;
 	private VideoWeb videoWeb= controlador.getReproductor();
 	private JPanel panel_7;
-	private JButton btnNewButton;
-	private JTextField textField;
-	private JButton btnNewButton_3;
-	private JButton btnNewButton_1;
-	private JButton btnNewButton_2;
-	private JLabel lblNewLabel;
+	private JButton bBuscar;
+	private JTextField campoNombre;
+	private JButton bAceptar;
+	private JButton bAñadir;
+	private JButton bQuitar;
+	private JLabel barra_titulo;
 	private JTextField textField_1;
-	private JButton btnNewButton_4;
-	private JButton btnNewButton_5;
+	private JButton bBusqueda2;
+	private JButton bNuevaBusqueda;
+
+	private DefaultListModel<VideoRepresent> modeloVideosLista= new DefaultListModel<VideoRepresent>();
+	private DefaultListModel<VideoRepresent> modeloListaVideos= new DefaultListModel<VideoRepresent>();
+	
+	private ListaVideos lv_creada;
 	
 	public PanelNuevaLista(VentanaPrincipal ventana) {
 		ventana=ventana;
@@ -84,19 +88,27 @@ public class PanelNuevaLista extends JPanel {
 		panel_1.add(panel_7);
 		panel_7.setLayout(new BoxLayout(panel_7, BoxLayout.X_AXIS));
 		
-		textField = new JTextField();
-		panel_7.add(textField);
-		textField.setColumns(10);
+		campoNombre = new JTextField();
+		panel_7.add(campoNombre);
+		campoNombre.setColumns(10);
 		
-		btnNewButton = new JButton("Buscar");
-		panel_7.add(btnNewButton);
+		bBuscar = new JButton("Buscar");
+		bBuscar.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				actualizacionPlaylist();
+			}
+			
+		});
+		panel_7.add(bBuscar);
 		
 		panel_4 = new JPanel();
 		panel_4.setBackground(Color.GRAY);
 		panel_1.add(panel_4);
 		
-		bReproducir = new JButton("Eliminar");
-		panel_4.add(bReproducir);
+		bEliminar = new JButton("Eliminar");
+		panel_4.add(bEliminar);
 		
 		panel_2 = new JPanel();
 		panel_2.setBackground(Color.GRAY);
@@ -104,22 +116,22 @@ public class PanelNuevaLista extends JPanel {
 		panel.add(panel_2, BorderLayout.SOUTH);
 		panel_2.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		btnNewButton_3 = new JButton("Aceptar");
-		btnNewButton_3.setHorizontalAlignment(SwingConstants.LEFT);
-		panel_2.add(btnNewButton_3);
+		bAceptar = new JButton("Aceptar");
+		bAceptar.setHorizontalAlignment(SwingConstants.LEFT);
+		panel_2.add(bAceptar);
 		
-		btnNewButton_1 = new JButton("Añadir");
-		btnNewButton_1.setHorizontalAlignment(SwingConstants.LEFT);
-		panel_2.add(btnNewButton_1);
+		bAñadir = new JButton("Añadir");
+		bAñadir.setHorizontalAlignment(SwingConstants.LEFT);
+		panel_2.add(bAñadir);
 		
-		btnNewButton_2 = new JButton("Quitar");
-		btnNewButton_2.addActionListener(new ActionListener() {
+		bQuitar = new JButton("Quitar");
+		bQuitar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnNewButton_2.setAlignmentX(Component.CENTER_ALIGNMENT);
-		btnNewButton_2.setHorizontalAlignment(SwingConstants.LEADING);
-		panel_2.add(btnNewButton_2);
+		bQuitar.setAlignmentX(Component.CENTER_ALIGNMENT);
+		bQuitar.setHorizontalAlignment(SwingConstants.LEADING);
+		panel_2.add(bQuitar);
 		
 		panel_3 = new JPanel();
 		panel_3.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
@@ -129,6 +141,7 @@ public class PanelNuevaLista extends JPanel {
 		
 		panel_6 = new JPanel();
 		panel_6.setBackground(Color.GRAY);
+		
 		panel.add(panel_6, BorderLayout.CENTER);
 		
 		lista_videos = new JList<VideoRepresent>();
@@ -138,56 +151,66 @@ public class PanelNuevaLista extends JPanel {
 	    lista_videos.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 	    lista_videos.setModel(modeloListaVideos);
 	    lista_videos.setCellRenderer(new VideoRenderer());
-	    
-	    lista_videos.addMouseListener(
+	   /* lista_videos.addMouseListener(
 	    		new MouseAdapter() {
 	    			public void mouseClicked(MouseEvent event) {
-	    				
-	    				/*
-	    				 * No se si aquí debería buscar en la base de datos apartir del nombre o algo, o si deberia
-	    				 * incluir la clase que representa a los videos el video en sí. No se si rompe algun patron
-	    				 */
 	    				if(event.getClickCount()==2) {
 	    					JList<VideoRepresent> source=(JList<VideoRepresent>) event.getSource();
 	    					VideoRepresent selected = source.getSelectedValue();
 	    					if(selected!=null) {
-	    					String titulo= selected.getNombre();
-	    					controlador.actualizarVideoSeleccionado(titulo);
-	    					ventana.cambioPanel(Paneles.REPRODUCTOR);
+	    						Video v= vlist_seleccionada.getVideoIndex(lista_videos.getSelectedIndex());
+	    						controlador.actualizarVideoSeleccionado(v);
+	    						reproductor.reproducir();
+	    						cambiarPanelRep();
+	    						
+	    				}
 	    				}
 	    			}	
 	    			}
 	    		}
 	    		);
-	
+	*/
 	
 		panel_6.add(lista_videos);
-		
 		panel_5 = new JPanel();
 		panel_5.setBackground(Color.GRAY);
 		add(panel_5, BorderLayout.CENTER);	
 		
-		lblNewLabel = new JLabel("Buscar por titulo:");
-		lblNewLabel.setForeground(Color.WHITE);
-		panel_5.add(lblNewLabel);
+		barra_titulo = new JLabel("Buscar por titulo:");
+		barra_titulo.setForeground(Color.WHITE);
+		panel_5.add(barra_titulo);
 		
 		textField_1 = new JTextField();
 		panel_5.add(textField_1);
 		textField_1.setColumns(10);
 		
-		btnNewButton_4 = new JButton("Buscar");
-		panel_5.add(btnNewButton_4);
+		bBusqueda2 = new JButton("Buscar");
+		panel_5.add(bBusqueda2);
 		
-		btnNewButton_5 = new JButton("Nueva búsqueda");
-		panel_5.add(btnNewButton_5);
-	}
-	public void actualizarPlayLists() {
-		List<ListaVideos> listas= controlador.obtenerPlayListsUser();
-		listas.stream().
-			forEach(l->comboBox.addItem(l.getNombre()));
-		
-		
+		bNuevaBusqueda = new JButton("Nueva búsqueda");
+		panel_5.add(bNuevaBusqueda);
 	}
 
+	
+	private void actualizacionPlaylist() {
+		lv_creada=controlador.obtenerLista(campoNombre.getText());
+		if(lv_creada==null) {
+			lv_creada=controlador.crearLista(campoNombre.getText());
+		}
+			
+		actualizarListaVideos();
+	}
+
+	private void actualizarListaVideos() {
+		modeloListaVideos.removeAllElements();
+	    lv_creada.getVideos().stream()
+	    	   .map(v -> new VideoRepresent(v,videoWeb.getSmallThumb(v.getUrl())))
+	    	   .forEach(nv-> modeloListaVideos.addElement(nv));
+	    validate();
+		
+		
+	}
+	
+	
 
 }

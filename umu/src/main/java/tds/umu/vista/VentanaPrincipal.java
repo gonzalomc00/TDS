@@ -63,28 +63,8 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 	private Controlador controlador= Controlador.getUnicaInstancia();
 	private EstadoLogin estado;
 
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					VentanaPrincipal frame = new VentanaPrincipal();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 * @throws IOException 
-	 */
-	public VentanaPrincipal() throws IOException {
+	
+	public VentanaPrincipal() {
 		setResizable(false);
 		reproductor= new Reproductor(this);
 		panel_mis_listas= new PanelMisListas(this);
@@ -233,7 +213,7 @@ public void cambioPanel(Paneles panel) {
 	switch (panel) {
 		case REPRODUCTOR:
 		{
-		reproductor.reproducir(0);
+		reproductor.reproducir();
 		cambio_panel_vista(reproductor);
 		break;
 		}

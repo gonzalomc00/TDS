@@ -26,7 +26,6 @@ public class Reproductor extends JPanel {
 	VentanaPrincipal ventana;
 	
 	public Reproductor(VentanaPrincipal v) {
-		
 		ventana=v;
 		setLayout(new GridBagLayout());
 		GridBagConstraints gbc= new GridBagConstraints();
@@ -44,12 +43,11 @@ public class Reproductor extends JPanel {
 
 	}
 	
-	public void reproducir(int max) {
+	public void reproducir() {
 		Video v= controlador.getVideoActual();
 		nombreVideo.setText(v.getTitulo());
 		reproducciones.setText("Visualizaciones: "+v.getNumReproducciones());
 		videoWeb.playVideo(v.getUrl());
-	
 		
 	}
 
