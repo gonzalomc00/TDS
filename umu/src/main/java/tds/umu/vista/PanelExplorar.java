@@ -177,7 +177,8 @@ public class PanelExplorar extends JPanel {
 	    panel_3.setBackground(Color.GRAY);
 	    panel_2.add(panel_3);
 	    
-	    etiq_titulo = new JLabel("Buscar t�tulo");
+	    etiq_titulo = new JLabel("Buscar titulo");
+	    etiq_titulo.setForeground(Color.WHITE);
 	    panel_3.add(etiq_titulo);
 	    
 	    barra_busqueda = new JTextField();

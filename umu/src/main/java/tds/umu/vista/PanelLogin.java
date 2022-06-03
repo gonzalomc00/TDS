@@ -17,13 +17,15 @@ import tds.umu.controlador.Controlador;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JPasswordField;
 
 public class PanelLogin extends JPanel {
-	private JTextField textoUser,textoContrasena;
+	private JTextField textoUser;
 	private JPanel panel,panel_1,panel_2,panel_3,panel_4,panel_5,panel_6,panel_7;
 	private JLabel etiquetaUsuario,etiquetaContrasena;
 	private JButton aceptar,cancelar;
 	private VentanaPrincipal ventana;
+	private JPasswordField textoContrasena;
 
 	/**
 	 * Create the panel.
@@ -73,7 +75,7 @@ public class PanelLogin extends JPanel {
 		
 		textoUser = new JTextField();
 		panel_5.add(textoUser);
-		textoUser.setColumns(10);
+		textoUser.setColumns(14);
 		
 		panel_6 = new JPanel();
 		panel_6.setPreferredSize(new Dimension(900, 50));
@@ -83,9 +85,9 @@ public class PanelLogin extends JPanel {
 		etiquetaContrasena = new JLabel("Contrase\u00F1a");
 		panel_6.add(etiquetaContrasena);
 		
-		textoContrasena = new JTextField();
+		textoContrasena = new JPasswordField();
+		textoContrasena.setColumns(12);
 		panel_6.add(textoContrasena);
-		textoContrasena.setColumns(10);
 		
 		panel_7 = new JPanel();
 		panel_7.setPreferredSize(new Dimension(900, 50));
