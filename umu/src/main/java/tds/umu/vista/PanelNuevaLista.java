@@ -134,11 +134,7 @@ public class PanelNuevaLista extends JPanel {
 		panel.add(panel_2, BorderLayout.SOUTH);
 		panel_2.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		bAceptar = new JButton("Aceptar");
-		bAceptar.setHorizontalAlignment(SwingConstants.LEFT);
-	
-		panel_2.add(bAceptar);
-		
+
 		bAñadir = new JButton("Añadir");
 		bAñadir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

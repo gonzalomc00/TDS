@@ -57,11 +57,14 @@ public class Reproductor extends JPanel {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		add(nombreVideo);
 		add(reproducciones);
-		add(videoWeb);
 		
+		p= new JPanel();
+		p.setBackground(Color.GRAY);
+		p.add(videoWeb);
+		add(p);
 		panel = new JPanel();
 		panel.setBackground(Color.GRAY);
-		add(panel);
+	
 		
 		verticalStrut = Box.createVerticalStrut(50);
 		panel.add(verticalStrut);
@@ -76,7 +79,7 @@ public class Reproductor extends JPanel {
 		
 		anadir = new JButton("Añadir");
 		panel.add(anadir);
-		
+		add(panel);
 		
 	}
 	
