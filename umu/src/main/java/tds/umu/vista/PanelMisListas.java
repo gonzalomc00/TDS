@@ -34,6 +34,13 @@ import java.awt.CardLayout;
 import java.awt.GridLayout;
 import javax.swing.UIManager;
 
+
+//PARA GENERAR PDF (SE QUE AQUI NO VA PERO LO DEJO PARA COPIARLO A DONDE SEA)
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Paragraph;
+
 public class PanelMisListas extends JPanel {
 	
 	private VentanaPrincipal ventana;
@@ -220,7 +227,4 @@ public class PanelMisListas extends JPanel {
 		modeloListaVideos.removeAllElements();
 		comboBox.removeAllItems();
 	}
-	
-
-
 }

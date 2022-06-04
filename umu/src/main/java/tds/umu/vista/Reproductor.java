@@ -16,12 +16,14 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 
 import tds.umu.controlador.Controlador;
+import tds.umu.modelo.Etiqueta;
 import tds.umu.modelo.Video;
 import tds.video.VideoWeb;
 import java.awt.GridLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.util.List;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 
@@ -39,7 +41,7 @@ public class Reproductor extends JPanel {
 	private JTextField textField;
 	private JButton anadir;
 	private Component verticalStrut;
-	
+	JList<String> listaetiquetas;
 	public Reproductor(VentanaPrincipal v) {
 		ventana=v;
 		setBackground(Color.LIGHT_GRAY);
@@ -83,7 +85,7 @@ public class Reproductor extends JPanel {
 		anadir = new JButton("Añadir");
 		panel.add(anadir);
 		add(panel);
-		JList<String> listaetiquetas = new JList<String>();
+		 listaetiquetas = new JList<String>();
 		add(listaetiquetas);
 		
 	}
@@ -92,6 +94,7 @@ public class Reproductor extends JPanel {
 		Video v= controlador.getVideoActual();
 		nombreVideo.setText(v.getTitulo());
 		reproducciones.setText("Visto por: "+v.getNumReproducciones()+ " usuarios");
+		listaetiquetas= v.obtenerEtiquetas();
 		videoWeb.playVideo(v.getUrl());
 		
 	}
