@@ -49,7 +49,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 
 	private static VideoWeb videoWeb=Controlador.getUnicaInstancia().getReproductor();
 	private JPanel contentPane,panel_superior,panel_botones,panel_central;
-	private JButton explorar,mlistas,recientes,nlistas,logout,login,registro,premium;
+	private JButton explorar,mlistas,recientes,nlistas,logout,login,registro,premium, masvisto;
 	private JLabel etiqueta;
 	private PanelExplorar PExplora;
 	private PanelMisListas panel_mis_listas;
@@ -58,7 +58,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 	private Reproductor reproductor;
 	private VentanaRegistro PRegistro;
 	private PanelNuevaLista PNLista;
-	private Usuario user_actual;
+	private PanelMasVisto PMVisto;
 	private Luz luz;
 	private Controlador controlador= Controlador.getUnicaInstancia();
 	private EstadoLogin estado;
@@ -73,6 +73,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 		PNLista= new PanelNuevaLista(this);
 		PExplora= new PanelExplorar(this);
 		PReciente= new PanelRecientes(this);
+		PMVisto= new PanelMasVisto(this);
 
 		
 		setBounds(0,0,900,600);
@@ -168,6 +169,12 @@ private void crearPanelBotones()
 	nlistas.setBackground(Color.LIGHT_GRAY);
 	panel_botones.add(nlistas);
 	
+
+	masvisto= new JButton("Más Visto");
+	masvisto.addActionListener(this);
+	masvisto.setForeground(Color.WHITE);
+	masvisto.setBackground(Color.LIGHT_GRAY);
+	panel_botones.add(masvisto);
 	contentPane.add(panel_botones,BorderLayout.SOUTH);
 	
 	luz = new Luz();
@@ -185,7 +192,8 @@ public void actionPerformed(ActionEvent e) {
 		cambioPanel(Paneles.LOGIN);
 	}
 	if(e.getSource()==premium) {
-		//POR HACER
+		controlador.actualizarPremium();
+		cambiarEstado(EstadoLogin.PREMIUM);
 	}
 	if(e.getSource()==explorar) {
 		cambioPanel(Paneles.EXPLORAR);
@@ -202,6 +210,9 @@ public void actionPerformed(ActionEvent e) {
 	if(e.getSource()==logout) {
 		cierreSesion();
 		cambioPanel(Paneles.LOGIN);
+	}
+	if(e.getSource()==masvisto) {
+		cambioPanel(Paneles.MASVISTO);
 	}
 }
 
@@ -241,6 +252,11 @@ public void cambioPanel(Paneles panel) {
 			PReciente.actualizarPanelRecientes();
 			cambio_panel_vista(PReciente);
 			break;
+		case MASVISTO:
+			//MODIFICAR
+			PMVisto.actualizarPanelRecientes();
+			cambio_panel_vista(PMVisto);
+			break;
 			
 	default:
 		break;
@@ -267,6 +283,10 @@ private void cambiarEstado(EstadoLogin estado) {
 		nlistas.setEnabled(false);
 		logout.setEnabled(false);
 		premium.setEnabled(false);
+		masvisto.setEnabled(false);
+		registro.setEnabled(true);
+		login.setEnabled(true);
+		
 		
 		this.estado=estado;
 		break;
@@ -280,14 +300,22 @@ private void cambiarEstado(EstadoLogin estado) {
 		premium.setEnabled(true);
 		login.setEnabled(false);
 		registro.setEnabled(false);
+		masvisto.setEnabled(false);
 		
 		this.estado=estado;
 		break;
 		
-	/*
-	 * TO DO
-	 */
 	case PREMIUM:
+		explorar.setEnabled(true);
+		mlistas.setEnabled(true);
+		recientes.setEnabled(true);
+		nlistas.setEnabled(true);
+		logout.setEnabled(true);
+		premium.setEnabled(false);
+		login.setEnabled(false);
+		registro.setEnabled(false);
+		masvisto.setEnabled(true);
+		this.estado=estado;
 		break;
 	}
 	
@@ -295,14 +323,18 @@ private void cambiarEstado(EstadoLogin estado) {
 
 public void actualizarLogin(String text) {
 	etiqueta.setText("Hola "+text+"!");
-	cambiarEstado(EstadoLogin.LOGIN);
+	if(controlador.esUserPremium()) {
+		cambiarEstado(EstadoLogin.PREMIUM);
+	}
+	else {
+		cambiarEstado(EstadoLogin.LOGIN);
+	}
 	cambioPanel(Paneles.RECIENTE);
 
 	
 }
 
 private void cierreSesion() {
-	user_actual=null;
 	cambiarEstado(EstadoLogin.LOGOUT);
 	controlador.logout();
 	etiqueta.setText("Inicia sesión o crea una cuenta nueva");

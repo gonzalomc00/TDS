@@ -298,7 +298,21 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 	public List<Video> obtenerRecientesUser() {
 		return usuarioActual.getRecientes();
 	}
+
+	//REVISAR USO DE LOS SETS
+	public void actualizarPremium() {
+		usuarioActual.setPremium(true);
+		adaptadorUsuario.modificarUsuario(usuarioActual);
+		
+	}
+
+	public boolean esUserPremium() {
+		return usuarioActual.isPremium();
+	}
 	
+	public List<Video> obtenerMasVisto(){
+		return catalogoVideos.getMasVistos();
+	}
 
 
 	
