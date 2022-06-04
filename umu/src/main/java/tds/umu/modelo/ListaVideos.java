@@ -60,6 +60,12 @@ public class ListaVideos {
 				nombre.equals(otro.getNombre()) &&
 				videos.equals(otro.getVideos());
 	}
+	public Video obtenerVideoIndex(int selectedIndex) {
+		return videos.get(selectedIndex);
+	}
+	public void eliminarVideo(Video v_sel) {
+		videos.remove(v_sel);
+	}
 	
 	
 }

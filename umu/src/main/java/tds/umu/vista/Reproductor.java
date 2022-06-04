@@ -25,13 +25,13 @@ import javax.swing.SwingConstants;
 
 public class Reproductor extends JPanel {
 
-	JLabel nombreVideo;
-	JLabel reproducciones;
+	private JLabel nombreVideo;
+	private JLabel reproducciones;
 	
-	Controlador controlador= Controlador.getUnicaInstancia();
-	VideoWeb videoWeb= Controlador.getUnicaInstancia().getReproductor();
-	VentanaPrincipal ventana;
-	JPanel p;
+	private Controlador controlador= Controlador.getUnicaInstancia();
+	private VideoWeb videoWeb= Controlador.getUnicaInstancia().getReproductor();
+	private VentanaPrincipal ventana;
+	private JPanel p;
 	private JPanel panel;
 	private JLabel tit;
 	private JTextField textField;
@@ -41,29 +41,27 @@ public class Reproductor extends JPanel {
 	public Reproductor(VentanaPrincipal v) {
 		ventana=v;
 		setBackground(Color.LIGHT_GRAY);
-		setPreferredSize(new Dimension(900, 500));
-	    setMaximumSize(new Dimension(900, 500));
-	    setLayout(new BorderLayout(0,0));
-		p = new JPanel();
+	    setLayout(new BorderLayout());
 		
-		p.setBackground(Color.GRAY);
+		
+		setBackground(Color.GRAY);
 		
 		nombreVideo= new JLabel();
 		
 		nombreVideo.setHorizontalAlignment(SwingConstants.CENTER);
 		
-		nombreVideo.setFont(new Font("Vivaldi", Font.BOLD | Font.ITALIC, 35));
+		nombreVideo.setFont(new Font("Verdana", Font.BOLD, 15));
 		nombreVideo.setText("Titulo de un video");
 		reproducciones=new JLabel();
 		reproducciones.setText("Visualizaciones");
-		p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
-		p.add(nombreVideo);
-		p.add(reproducciones);
-		p.add(videoWeb);
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		add(nombreVideo);
+		add(reproducciones);
+		add(videoWeb);
 		
 		panel = new JPanel();
 		panel.setBackground(Color.GRAY);
-		p.add(panel);
+		add(panel);
 		
 		verticalStrut = Box.createVerticalStrut(50);
 		panel.add(verticalStrut);

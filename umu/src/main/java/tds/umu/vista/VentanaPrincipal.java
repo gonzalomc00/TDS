@@ -234,6 +234,7 @@ public void cambioPanel(Paneles panel) {
 			cambio_panel_vista(PRegistro);
 			break;
 		case NUEVALISTA:
+			PNLista.clear();
 			cambio_panel_vista(PNLista);
 			break;
 		case RECIENTE:

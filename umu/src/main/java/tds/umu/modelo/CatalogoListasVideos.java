@@ -53,7 +53,7 @@ public class CatalogoListasVideos {
 	}
 	
 	public void removeListaVideos(ListaVideos lv) {
-		listasvideos.remove(lv.getNombre());
+		listasvideos.remove(lv.getCodigo());
 	}
 	
 	

@@ -124,7 +124,7 @@ public class AppTest
     	assertFalse(u1.equals(u2));
     }
     
-    
+    @Test
     public void pruebaCrearUsuario() {
     	idao = factoria.getUsuarioDAO();
         
@@ -161,7 +161,7 @@ public class AppTest
 	   
    }
    
-   @Test
+
    public void pruebaListaVideo() {
 	  
 	  idao= factoria.getUsuarioDAO();

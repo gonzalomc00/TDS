@@ -113,6 +113,19 @@ public class PanelNuevaLista extends JPanel {
 		panel_1.add(panel_4);
 		
 		bEliminar = new JButton("Eliminar");
+		bEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(lv_creada==null) {
+					JOptionPane.showMessageDialog(PanelNuevaLista.this, "Debes tener una lista de videos seleccionada",
+							"Error", JOptionPane.ERROR_MESSAGE);
+				}
+				else {
+						controlador.borrarLista(lv_creada);
+						modeloVideosLista.removeAllElements();
+						lv_creada=null;
+				}
+			}
+		});
 		panel_4.add(bEliminar);
 		
 		panel_2 = new JPanel();
@@ -123,15 +136,30 @@ public class PanelNuevaLista extends JPanel {
 		
 		bAceptar = new JButton("Aceptar");
 		bAceptar.setHorizontalAlignment(SwingConstants.LEFT);
+	
 		panel_2.add(bAceptar);
 		
 		bAñadir = new JButton("Añadir");
+		bAñadir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(lv_creada!=null && lista_videos.getSelectedValue()!=null) {
+					Video v_sel=videos_encontrados.get(lista_videos.getSelectedIndex());
+					controlador.añadirVideoPlaylist(lv_creada,v_sel);
+					actualizarVideosLista();
+				}
+			}
+		});
 		bAñadir.setHorizontalAlignment(SwingConstants.LEFT);
 		panel_2.add(bAñadir);
 		
 		bQuitar = new JButton("Quitar");
 		bQuitar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(lv_creada!=null && videos_lista.getSelectedValue()!=null) {
+					Video v_sel=lv_creada.obtenerVideoIndex(videos_lista.getSelectedIndex());
+					controlador.eliminarVideoLista(lv_creada,v_sel);
+					actualizarVideosLista();
+				}
 			}
 		});
 		bQuitar.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -144,10 +172,8 @@ public class PanelNuevaLista extends JPanel {
 		panel.add(panel_3, BorderLayout.WEST);
 		panel_3.setLayout(new BorderLayout(0, 0));
 		
-		panel_6 = new JPanel();
-		panel_6.setBackground(Color.GRAY);
+
 		
-		panel.add(panel_6, BorderLayout.CENTER);
 		
 		videos_lista = new JList<VideoRepresent>();
 	    videos_lista.setBackground(Color.GRAY);
@@ -170,7 +196,7 @@ public class PanelNuevaLista extends JPanel {
 	    		);
 	    		
 	    		
-		panel_6.add(videos_lista);
+		panel.add(new JScrollPane(videos_lista));
 		panel_5 = new JPanel();
 		panel_5.setBackground(Color.GRAY);
 		add(panel_5, BorderLayout.CENTER);
@@ -201,6 +227,12 @@ public class PanelNuevaLista extends JPanel {
 		panel_9.add(bBusqueda2);
 		
 		bNuevaBusqueda = new JButton("Nueva búsqueda");
+		bNuevaBusqueda.addMouseListener(new MouseAdapter() {
+		    	
+		    	public void mouseClicked(MouseEvent e) {
+		    		modeloListaVideos.removeAllElements();
+		    	}
+		    });
 		panel_9.add(bNuevaBusqueda);
 		
 
@@ -221,6 +253,7 @@ public class PanelNuevaLista extends JPanel {
 	 * 		Al aparecer el panel de seleccion SI o NO tambien aparece un boton Cancelar.
 	 */
 	private void actualizacionPlaylist() {
+		if(!campoNombre.getText().equals("")) {
 		lv_creada=controlador.obtenerLista(campoNombre.getText());
 		//Si el nombre de la playList introducida no existe entonces se produce a preguntar si se quiere crear,
 		//y hacerlo si corresponde. 
@@ -235,6 +268,12 @@ public class PanelNuevaLista extends JPanel {
 		}
 			
 		actualizarVideosLista();
+		}
+		else {
+			JOptionPane.showMessageDialog(this, "Debes introducir el nombre de una lista de video nueva o existente",
+					"Error", JOptionPane.ERROR_MESSAGE);
+		}
+			
 	}
 
 	private void actualizarVideosLista() {
@@ -257,7 +296,13 @@ public class PanelNuevaLista extends JPanel {
 	    validate();
 	    
 	}
+	
 
+	public void clear() {
+		modeloListaVideos.removeAllElements();
+		modeloVideosLista.removeAllElements();
+		campoNombre.setText("");
+	}
 	
 	
 	

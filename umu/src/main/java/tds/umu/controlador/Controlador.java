@@ -158,8 +158,8 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 		if (!esUsuarioRegistrado(usuario.getUsuario()))
 			return false;
 
-		IAdaptadorUsuarioDAO usuarioDAO = factoria.getUsuarioDAO(); /* Adaptador DAO para borrar el Usuario de la BD */
-		usuarioDAO.borrarUsuario(usuario);
+
+		adaptadorUsuario.borrarUsuario(usuario);
 
 		CatalogoUsuarios.getUnicaInstancia().removeUsuario(usuario);
 		return true;
@@ -264,7 +264,32 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 		ListaVideos lv=  usuarioActual.crearLista(text);
 		adaptadorListaVideos.registrarListaVideos(lv);
 		adaptadorUsuario.modificarUsuario(usuarioActual);
+		catalogoListaVideos.addListaVideos(lv);
 		return lv;
+	}
+
+	public void añadirVideoPlaylist(ListaVideos lv_creada, Video v_sel) {
+		lv_creada.añadirVideo(v_sel);
+		catalogoListaVideos.addListaVideos(lv_creada);
+		adaptadorListaVideos.modificarListaVideos(lv_creada);
+
+		
+	}
+
+	public void eliminarVideoLista(ListaVideos lv_creada, Video v_sel) {
+		lv_creada.eliminarVideo(v_sel);
+		adaptadorListaVideos.modificarListaVideos(lv_creada);
+		
+	}
+
+	public void borrarLista(ListaVideos lv_creada) {
+		
+		adaptadorListaVideos.borrarListaVideos(lv_creada);
+		catalogoListaVideos.removeListaVideos(lv_creada);
+		usuarioActual.eliminarLista(lv_creada);
+		adaptadorUsuario.modificarUsuario(usuarioActual);
+		
+		
 	}
 	
 
