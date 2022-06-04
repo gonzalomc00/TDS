@@ -175,7 +175,7 @@ public class PanelMisListas extends JPanel {
 		
 	}
 	
-	public void actualizarPanelLateral(ListaVideos list) {
+	private void actualizarPanelLateral(ListaVideos list) {
 		modeloListaVideos.removeAllElements();
 	    list.getVideos().stream()
 	    	   .map(v -> new VideoRepresent(v,videoWeb.getSmallThumb(v.getUrl())))
@@ -210,7 +210,7 @@ public class PanelMisListas extends JPanel {
 	
 	
 	private void cambiarPanelRep() {
-		PanelMisListas.this.add(reproductor);
+		add(reproductor,BorderLayout.CENTER);
 		revalidate();
 		repaint();
 		validate();

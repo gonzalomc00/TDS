@@ -247,6 +247,9 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 	public void actualizarVideoSeleccionado(Video v) {
 		v.aumentarReproduccion();
 		adaptadorVideo.modificarVideo(v);
+		//Añadimos el video seleccionado a la lista de recientes del usuario
+		usuarioActual.añadirReciente(v);
+		adaptadorUsuario.modificarUsuario(usuarioActual);
 		setVideoActual(v);
 	}
 
@@ -290,6 +293,10 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 		adaptadorUsuario.modificarUsuario(usuarioActual);
 		
 		
+	}
+
+	public List<Video> obtenerRecientesUser() {
+		return usuarioActual.getRecientes();
 	}
 	
 

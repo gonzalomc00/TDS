@@ -238,6 +238,7 @@ public void cambioPanel(Paneles panel) {
 			cambio_panel_vista(PNLista);
 			break;
 		case RECIENTE:
+			PReciente.actualizarPanelRecientes();
 			cambio_panel_vista(PReciente);
 			break;
 			
@@ -295,7 +296,7 @@ private void cambiarEstado(EstadoLogin estado) {
 public void actualizarLogin(String text) {
 	etiqueta.setText("Hola "+text+"!");
 	cambiarEstado(EstadoLogin.LOGIN);
-	cambioPanel(Paneles.EXPLORAR);
+	cambioPanel(Paneles.RECIENTE);
 
 	
 }
