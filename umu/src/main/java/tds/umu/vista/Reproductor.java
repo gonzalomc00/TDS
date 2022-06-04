@@ -3,6 +3,8 @@ package tds.umu.vista;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
+import javax.swing.JList;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -48,10 +50,11 @@ public class Reproductor extends JPanel {
 		
 		nombreVideo= new JLabel();
 		
-		nombreVideo.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		nombreVideo.setFont(new Font("Verdana", Font.BOLD, 15));
+		nombreVideo.setAlignmentX(Component.CENTER_ALIGNMENT);
 		nombreVideo.setText("Titulo de un video");
+		
 		reproducciones=new JLabel();
 		reproducciones.setText("Visualizaciones");
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -80,6 +83,8 @@ public class Reproductor extends JPanel {
 		anadir = new JButton("Añadir");
 		panel.add(anadir);
 		add(panel);
+		JList<String> listaetiquetas = new JList<String>();
+		add(listaetiquetas);
 		
 	}
 	
