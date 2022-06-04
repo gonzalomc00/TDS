@@ -3,15 +3,27 @@ package tds.umu.vista;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
 import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.border.LineBorder;
+
+import tds.umu.controlador.Controlador;
+import tds.umu.modelo.ListaVideos;
+import tds.umu.modelo.Video;
+import tds.video.VideoWeb;
+
 import java.awt.Color;
 import javax.swing.border.BevelBorder;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.LinkedList;
+import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.Component;
 import javax.swing.UIManager;
@@ -24,11 +36,17 @@ public class PanelRecientes extends JPanel {
 	private JComboBox comboBox;
 	private JButton bReproducir, bCancelar;
 	private JScrollBar scrollBar;
-	private JPanel panel_6;
+	private JList lista_videos;
+	private Reproductor reproductor;
+	private Controlador controlador= Controlador.getUnicaInstancia();
+	private List<Video> recientes= new LinkedList<Video>();
+	private DefaultListModel<VideoRepresent> modeloListaVideos= new DefaultListModel<VideoRepresent>();
+	private VideoWeb videoWeb= controlador.getReproductor();
 	
 	public PanelRecientes(VentanaPrincipal ventana) {
 
 		ventana=ventana;
+		reproductor=ventana.getReproductor();
 		crearPantalla();
 	}
 	
@@ -53,9 +71,6 @@ public class PanelRecientes extends JPanel {
 		etiquetaSeleccion.setForeground(Color.WHITE);
 		panel_1.add(etiquetaSeleccion);
 		
-		comboBox = new JComboBox();
-		panel_1.add(comboBox);
-		
 		panel_4 = new JPanel();
 		panel_4.setBackground(Color.GRAY);
 		panel_1.add(panel_4);
@@ -71,24 +86,58 @@ public class PanelRecientes extends JPanel {
 		bCancelar = new JButton("Cancelar");
 		panel_2.add(bCancelar);
 		
-		panel_3 = new JPanel();
-		panel_3.setBackground(Color.GRAY);
-		panel_3.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
-		panel.add(panel_3, BorderLayout.EAST);
-		panel_3.setLayout(new BorderLayout(0, 0));
 		
-		scrollBar = new JScrollBar();
-		panel_3.add(scrollBar);
 		
-		panel_6 = new JPanel();
-		panel_6.setBorder(UIManager.getBorder("RadioButton.border"));
-		panel_6.setBackground(Color.GRAY);
-		panel.add(panel_6, BorderLayout.CENTER);
-		
-		panel_5 = new JPanel();
-		panel_5.setBackground(Color.GRAY);
-		add(panel_5, BorderLayout.CENTER);
+		lista_videos = new JList<VideoRepresent>();
+	    lista_videos.setBackground(Color.GRAY);
+	    lista_videos.setForeground(Color.WHITE);
+	    lista_videos.setVisibleRowCount(-1);
+	    lista_videos.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+	    lista_videos.setModel(modeloListaVideos);
+	    lista_videos.setCellRenderer(new VideoRenderer());
+	    lista_videos.addMouseListener(
+	    		new MouseAdapter() {
+	    			public void mouseClicked(MouseEvent event) {
+	    				
+	    				/*
+	    				 * No se si aquí debería buscar en la base de datos apartir del nombre o algo, o si deberia
+	    				 * incluir la clase que representa a los videos el video en sí. No se si rompe algun patron
+	    				 */
+	    				if(event.getClickCount()==2) {
+	    					JList<VideoRepresent> source=(JList<VideoRepresent>) event.getSource();
+	    					VideoRepresent selected = source.getSelectedValue();
+	    					if(selected!=null) {
+	    						Video v= recientes.get(lista_videos.getSelectedIndex());
+	    						controlador.actualizarVideoSeleccionado(v);
+	    						reproductor.reproducir();
+	    						cambiarPanelRep();
+	    						
+	    				}
+	    			}	
+	    			}
+	    		}
+	    		);
+	    panel.add(new JScrollPane(lista_videos),BorderLayout.CENTER);
 		
 	}
+	
+	public void actualizarPanelRecientes() {
+		modeloListaVideos.removeAllElements();
+		recientes= controlador.obtenerRecientesUser();
+	    recientes.stream()
+	    	   .map(v -> new VideoRepresent(v,videoWeb.getSmallThumb(v.getUrl())))
+	    	   .forEach(nv-> modeloListaVideos.addElement(nv));
+	    validate();
+		
+	}
+	
+	private void cambiarPanelRep() {
+		add(reproductor,BorderLayout.CENTER);
+		revalidate();
+		repaint();
+		validate();
+	}
+	
+	
 
 }

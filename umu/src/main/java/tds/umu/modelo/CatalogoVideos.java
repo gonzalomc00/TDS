@@ -1,10 +1,12 @@
 package tds.umu.modelo;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import tds.umu.persistencia.DAOException;
 import tds.umu.persistencia.FactoriaDAO;
@@ -50,6 +52,16 @@ public class CatalogoVideos {
 		return videos.get(codigo);
 	}	
 	
+	
+	public List<Video> getMasVistos() {
+		List<Video> resultado=videos.values().stream()
+		.sorted(Comparator.comparingInt(Video::getNumReproducciones).reversed())
+		.limit(Constantes.TOP)
+		.collect(Collectors.toList());
+		
+		return resultado;  
+	}
+	
 	public List<Video> getBusqueda(String text, List<Etiqueta> etiquetas) {
 		
 		List<Video> resultado= new LinkedList<Video>();
@@ -86,6 +98,8 @@ public class CatalogoVideos {
 			videos.put(v.getTitulo(), v);
 		
 	}
+
+
 
 
 	

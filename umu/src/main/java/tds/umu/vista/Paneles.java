@@ -9,5 +9,6 @@ public enum Paneles {
 	LOGIN,
 	LOGOUT,
 	NUEVALISTA,
+	MASVISTO,
 	
 }

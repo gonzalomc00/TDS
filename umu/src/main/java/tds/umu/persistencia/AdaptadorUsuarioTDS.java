@@ -72,7 +72,8 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 						new Propiedad("usuario", usuario.getUsuario()),
 						new Propiedad("contraseña", usuario.getContraseña()),
 					    new Propiedad("listasDeVideo", obtenerCodigosListasVideos(usuario.getListas())),
-						new Propiedad("isPremium", String.valueOf(usuario.isPremium()))
+						new Propiedad("isPremium", String.valueOf(usuario.isPremium())),
+						new Propiedad("recientes",obtenerCodigosRecientes(usuario.getRecientes()))
 						)));
 
 		
@@ -82,6 +83,7 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 		// Se aprovecha el que genera el servicio de persistencia
 		usuario.setCodigo(eUsuario.getId());
 	}
+
 
 	public void borrarUsuario(Usuario usuario) {
 		// Habrá que borrar tambien todas las playlists que tenga este usuario
@@ -135,8 +137,13 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 			case("listasDeVideo"):
 				String lineas = obtenerCodigosListasVideos(usuario.getListas());
 				prop.setValor(String.valueOf(lineas));
+				break;
+			case("recientes"):
+				String lineas_recientes= obtenerCodigosRecientes(usuario.getRecientes());
+				prop.setValor(String.valueOf(lineas_recientes));
 			
 			}
+			
 			servPersistencia.modificarPropiedad(prop);
 		}
 
@@ -156,6 +163,7 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 		String contraseña;
 		String isPremium;
 		List<ListaVideos> lv;
+		List<Video> recientes;
 		
 		try {
 			eUsuario=servPersistencia.recuperarEntidad(codigo);
@@ -172,12 +180,13 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 		contraseña = servPersistencia.recuperarPropiedadEntidad(eUsuario, "contraseña");
 		isPremium = servPersistencia.recuperarPropiedadEntidad(eUsuario, "isPremium");
 		lv= obtenerListaVideosDesdeCodigos(servPersistencia.recuperarPropiedadEntidad(eUsuario, "listasDeVideo"));
+		recientes=obtenerRecientesDesdeCodigos(servPersistencia.recuperarPropiedadEntidad(eUsuario, "recientes"));
 		
 		DateTimeFormatter formattedDate = DateTimeFormatter.ofPattern("dd-MMM-yy");
 		fechaFormateada= LocalDate.parse(fecha,formattedDate);		
 		
 		Usuario usuario = new Usuario(nombre,apellidos, fechaFormateada,email,nombreUsuario,contraseña);
-
+	
 		for(ListaVideos lista: lv) {
 			usuario.añadirLista(lista);
 		}
@@ -187,12 +196,13 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 			usuario.setPremium(true);
 		}
 		
-		
+		// OJO !!!!!!!!! NO SE SI SE PUEDE HACER ESTO
+		usuario.setRecientes((LinkedList<Video>)recientes);
 		usuario.setCodigo(codigo);
 		return usuario;
 	}
 	
-	
+
 
 	public List<Usuario> recuperarTodosUsuarios() {
 
@@ -222,5 +232,24 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
  		
 		return listasvideos;
 	}
+	
+	private String obtenerCodigosRecientes(List<Video> recientes) {
+		String lineas="";
+		for(Video v: recientes )
+			lineas+= v.getCodigo()+" ";
+		return lineas.trim();
+	}
+	
+	private List<Video> obtenerRecientesDesdeCodigos(String lineas) {
+		List<Video> recientes= new LinkedList<Video>();
+		StringTokenizer strTok= new StringTokenizer(lineas," ");
+		AdaptadorVideoTDS adaptadorVideo=AdaptadorVideoTDS.getUnicaInstancia();
+		while(strTok.hasMoreTokens()) {
+			recientes.add(adaptadorVideo.recuperarVideo(Integer.valueOf((String)strTok.nextElement())));
+		}
+ 		
+		return recientes;
+	}
+	
 	
 }

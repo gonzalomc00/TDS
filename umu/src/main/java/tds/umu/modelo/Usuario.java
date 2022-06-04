@@ -15,6 +15,7 @@ private String usuario;
 private String contraseña;
 private boolean isPremium;
 private List<ListaVideos> listas;
+private LinkedList<Video> recientes;
 
 //funcionalidad
 
@@ -26,8 +27,10 @@ public Usuario(String nombre, String apellidos, LocalDate fecha, String email, S
 	this.usuario=usuario;
 	this.contraseña= contraseña;
 	this.isPremium=false;
-	this.listas= new LinkedList<ListaVideos>();
+	this.listas=new LinkedList<ListaVideos>();
+	this.recientes= new LinkedList<Video>();
 	
+
 }
 
 
@@ -192,6 +195,22 @@ public ListaVideos getLista(String lista) {
 			return lv;
 	}
 	return null;
+}
+
+
+public List<Video> getRecientes() {
+	return recientes;
+}
+
+//NO SE SI ESTO SE PUEDE HACER ASI.
+public void setRecientes(LinkedList<Video> v) {
+	recientes=v;
+}
+public void añadirReciente(Video v) {
+	 recientes.addFirst(v);
+	 if(recientes.size()>Constantes.MAX_RECIENTES)
+		 recientes.removeLast();
+	
 }
 
 
