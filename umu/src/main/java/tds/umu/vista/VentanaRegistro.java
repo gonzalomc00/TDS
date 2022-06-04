@@ -152,7 +152,6 @@ public class VentanaRegistro extends JPanel {
 		
 		repetirContra = new JPasswordField();
 		repetirContra.setColumns(10);
-		repetirContra.setHorizontalAlignment(SwingConstants.RIGHT);
 		panel_9.add(repetirContra);
 		
 		Component rigidArea_1 = Box.createRigidArea(new Dimension(20, 20));
