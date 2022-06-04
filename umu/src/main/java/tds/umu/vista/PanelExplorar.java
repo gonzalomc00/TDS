@@ -29,8 +29,6 @@ import tds.umu.modelo.CatalogoEtiquetas;
 import tds.umu.modelo.CatalogoVideos;
 import tds.umu.modelo.Etiqueta;
 import tds.umu.modelo.Video;
-import tds.umu.modelo.VideoRenderer;
-import tds.umu.modelo.VideoRepresent;
 
 import javax.swing.JList;
 import javax.swing.JTextPane;

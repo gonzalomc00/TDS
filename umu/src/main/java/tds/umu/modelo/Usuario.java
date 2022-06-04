@@ -143,6 +143,12 @@ public void setListas(List<ListaVideos> listas) {
 	this.listas = listas;
 }
 
+public ListaVideos crearLista(String text) {
+	ListaVideos lv= new ListaVideos(text);
+	listas.add(lv);
+	return lv;
+}
+
 public void añadirLista(ListaVideos lv) {
 	this.listas.add(lv);
 }
@@ -187,6 +193,8 @@ public ListaVideos getLista(String lista) {
 	}
 	return null;
 }
+
+
 
 
 }

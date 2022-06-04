@@ -223,6 +223,7 @@ public void cambioPanel(Paneles panel) {
 			cambio_panel_vista(PExplora);
 			break;
 		case MISLISTAS:
+			panel_mis_listas.clean();
 			panel_mis_listas.actualizarPlayLists();
 			cambio_panel_vista(panel_mis_listas);
 			break;

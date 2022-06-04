@@ -1,4 +1,4 @@
-package tds.umu.modelo;
+package tds.umu.vista;
 
 import java.awt.Color;
 import java.awt.Component;

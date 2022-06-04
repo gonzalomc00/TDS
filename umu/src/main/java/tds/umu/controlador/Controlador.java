@@ -261,11 +261,9 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 	public ListaVideos crearLista(String text) {
 		//No se si deberia añadir las cosas al catalogo. Creo que deberia dejarlo y asi y que se cargue al catalogo cuando se vuelva
 		//a abrir.
-		ListaVideos lv= new ListaVideos(text);
+		ListaVideos lv=  usuarioActual.crearLista(text);
 		adaptadorListaVideos.registrarListaVideos(lv);
-		usuarioActual.añadirLista(lv);
 		adaptadorUsuario.modificarUsuario(usuarioActual);
-		
 		return lv;
 	}
 	

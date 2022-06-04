@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.BoxLayout;
@@ -15,6 +16,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JScrollBar;
 import javax.swing.border.BevelBorder;
@@ -22,14 +24,13 @@ import javax.swing.border.BevelBorder;
 import tds.umu.controlador.Controlador;
 import tds.umu.modelo.ListaVideos;
 import tds.umu.modelo.Video;
-import tds.umu.modelo.VideoRenderer;
-import tds.umu.modelo.VideoRepresent;
 import tds.video.VideoWeb;
 
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridLayout;
 import javax.swing.SwingConstants;
+import javax.swing.JScrollPane;
 
 public class PanelNuevaLista extends JPanel {
 
@@ -40,7 +41,7 @@ public class PanelNuevaLista extends JPanel {
 	private JPanel panel_3;
 	private JPanel panel_6;
 	private Controlador controlador= Controlador.getUnicaInstancia();
-	private JList lista_videos,videos_lista;
+	private JList videos_lista,lista_videos;
 	private VideoWeb videoWeb= controlador.getReproductor();
 	private JPanel panel_7;
 	private JButton bBuscar;
@@ -49,14 +50,18 @@ public class PanelNuevaLista extends JPanel {
 	private JButton bAñadir;
 	private JButton bQuitar;
 	private JLabel barra_titulo;
-	private JTextField textField_1;
+	private JTextField barra_busqueda;
 	private JButton bBusqueda2;
 	private JButton bNuevaBusqueda;
+	private JPanel panel_9;
+
+
+	
 
 	private DefaultListModel<VideoRepresent> modeloVideosLista= new DefaultListModel<VideoRepresent>();
 	private DefaultListModel<VideoRepresent> modeloListaVideos= new DefaultListModel<VideoRepresent>();
-	
 	private ListaVideos lv_creada;
+	private List<Video> videos_encontrados;
 	
 	public PanelNuevaLista(VentanaPrincipal ventana) {
 		ventana=ventana;
@@ -144,72 +149,116 @@ public class PanelNuevaLista extends JPanel {
 		
 		panel.add(panel_6, BorderLayout.CENTER);
 		
-		lista_videos = new JList<VideoRepresent>();
-	    lista_videos.setBackground(Color.GRAY);
-	    lista_videos.setForeground(Color.WHITE);
-	    lista_videos.setVisibleRowCount(-1);
-	    lista_videos.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-	    lista_videos.setModel(modeloListaVideos);
-	    lista_videos.setCellRenderer(new VideoRenderer());
-	   /* lista_videos.addMouseListener(
+		videos_lista = new JList<VideoRepresent>();
+	    videos_lista.setBackground(Color.GRAY);
+	    videos_lista.setForeground(Color.WHITE);
+	    videos_lista.setVisibleRowCount(-1);
+	    videos_lista.setModel(modeloVideosLista);
+	    videos_lista.setCellRenderer(new VideoRenderer());
+	    videos_lista.addMouseListener(
 	    		new MouseAdapter() {
 	    			public void mouseClicked(MouseEvent event) {
 	    				if(event.getClickCount()==2) {
 	    					JList<VideoRepresent> source=(JList<VideoRepresent>) event.getSource();
 	    					VideoRepresent selected = source.getSelectedValue();
 	    					if(selected!=null) {
-	    						Video v= vlist_seleccionada.getVideoIndex(lista_videos.getSelectedIndex());
-	    						controlador.actualizarVideoSeleccionado(v);
-	    						reproductor.reproducir();
-	    						cambiarPanelRep();
 	    						
-	    				}
 	    				}
 	    			}	
 	    			}
 	    		}
 	    		);
-	*/
-	
-		panel_6.add(lista_videos);
+	    		
+	    		
+		panel_6.add(videos_lista);
 		panel_5 = new JPanel();
 		panel_5.setBackground(Color.GRAY);
-		add(panel_5, BorderLayout.CENTER);	
+		add(panel_5, BorderLayout.CENTER);
+		panel_5.setLayout(new BorderLayout(0, 0));
+		
+		panel_9 = new JPanel();
+		panel_9.setBackground(Color.GRAY);
+		panel_5.add(panel_9, BorderLayout.NORTH);
 		
 		barra_titulo = new JLabel("Buscar por titulo:");
+		panel_9.add(barra_titulo);
 		barra_titulo.setForeground(Color.WHITE);
-		panel_5.add(barra_titulo);
 		
-		textField_1 = new JTextField();
-		panel_5.add(textField_1);
-		textField_1.setColumns(10);
+		barra_busqueda = new JTextField();
+		panel_9.add(barra_busqueda);
+		barra_busqueda.setColumns(10);
 		
 		bBusqueda2 = new JButton("Buscar");
-		panel_5.add(bBusqueda2);
+		bBusqueda2.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				actualizarListaVideos();
+			}
+			
+		});
+	
+		panel_9.add(bBusqueda2);
 		
 		bNuevaBusqueda = new JButton("Nueva búsqueda");
-		panel_5.add(bNuevaBusqueda);
-	}
+		panel_9.add(bNuevaBusqueda);
+		
 
+		//LISTA DE VIDEOS QUE APARECEN EN LA BUSQUEDA
+		lista_videos = new JList<VideoRepresent>();
+	    lista_videos.setBackground(Color.GRAY);
+	    lista_videos.setForeground(Color.WHITE);
+	    lista_videos.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+	    lista_videos.setVisibleRowCount(-1);
+	    lista_videos.setModel(modeloListaVideos);
+	    lista_videos.setCellRenderer(new VideoRenderer());
+		panel_5.add(new JScrollPane(lista_videos),BorderLayout.CENTER);
+		
 	
+	}
+	/*
+	 * REVISAR:
+	 * 		Al aparecer el panel de seleccion SI o NO tambien aparece un boton Cancelar.
+	 */
 	private void actualizacionPlaylist() {
 		lv_creada=controlador.obtenerLista(campoNombre.getText());
+		//Si el nombre de la playList introducida no existe entonces se produce a preguntar si se quiere crear,
+		//y hacerlo si corresponde. 
 		if(lv_creada==null) {
-			lv_creada=controlador.crearLista(campoNombre.getText());
+			int res = JOptionPane.showConfirmDialog(this, "¿Quieres crear la lista de videos "+campoNombre.getText()+"?",
+					"Crear lista de video",JOptionPane.YES_NO_CANCEL_OPTION);
+			
+			if(res==JOptionPane.YES_OPTION)
+				lv_creada=controlador.crearLista(campoNombre.getText());
+			else
+				return;
 		}
 			
-		actualizarListaVideos();
+		actualizarVideosLista();
 	}
 
-	private void actualizarListaVideos() {
-		modeloListaVideos.removeAllElements();
+	private void actualizarVideosLista() {
+		modeloVideosLista.removeAllElements();
 	    lv_creada.getVideos().stream()
 	    	   .map(v -> new VideoRepresent(v,videoWeb.getSmallThumb(v.getUrl())))
-	    	   .forEach(nv-> modeloListaVideos.addElement(nv));
+	    	   .forEach(nv-> modeloVideosLista.addElement(nv));
 	    validate();
 		
 		
 	}
+	
+	//OJO!! CAMBIAR TEMA DE LAS ETIQUETAS. NO SE SI ESTO ES LO MAS OPORTUNO
+	public void actualizarListaVideos() {
+		modeloListaVideos.removeAllElements();
+	    videos_encontrados= controlador.obtenerBusqueda(barra_busqueda.getText(),new LinkedList<String>());  
+	    videos_encontrados.stream()
+	    	   .map(v -> new VideoRepresent(v,videoWeb.getSmallThumb(v.getUrl())))
+	    	   .forEach(nv-> modeloListaVideos.addElement(nv));
+	    validate();
+	    
+	}
+
+	
 	
 	
 

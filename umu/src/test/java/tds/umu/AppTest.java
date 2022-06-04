@@ -161,7 +161,7 @@ public class AppTest
 	   
    }
    
-   
+   @Test
    public void pruebaListaVideo() {
 	  
 	  idao= factoria.getUsuarioDAO();
@@ -173,7 +173,7 @@ public class AppTest
 	  Video v2= cv.getVideo("Elena Tsagrinou - El Diablo - LIVE - Cyprus 🇨🇾 - Grand Final - Eurovision 2021");
 	  CatalogoUsuarios cu= CatalogoUsuarios.getUnicaInstancia();
 	  Usuario a = cu.getUsuario("a");
-	  ListaVideos lv= new ListaVideos("pruebaS");
+	  ListaVideos lv= new ListaVideos("prueba");
 	  ListaVideos lv2= new ListaVideos("prueba2");
 	  lv.añadirVideo(v1);
 	  lv.añadirVideo(v2);
@@ -189,7 +189,7 @@ public class AppTest
 	  assertTrue(true);
    }
    
-   @Test
+   
    public void añadirVidaLista() {
 	   lvdao=factoria.getListaVideosDAO();
 	   CatalogoListasVideos lv= CatalogoListasVideos.getUnicaInstancia();

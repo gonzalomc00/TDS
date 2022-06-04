@@ -1,10 +1,12 @@
-package tds.umu.modelo;
+package tds.umu.vista;
 
 import java.awt.Image;
 
 import javax.swing.ImageIcon;
 
 import tds.umu.modelo.Video;
+
+//TOCAR AL FINAL: CREO QUE NO HARÍA FALTA UTILIZAR ESTA CLASE
 
 public class VideoRepresent {
 	private String nombre;

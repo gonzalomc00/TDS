@@ -8,6 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.JComboBox;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
+import javax.swing.Timer;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.border.LineBorder;
@@ -50,6 +51,7 @@ public class PanelMisListas extends JPanel {
 	private Reproductor reproductor;
 	private List<ListaVideos> vlists_encontradas;
 	private ListaVideos vlist_seleccionada;
+	private Timer timer;
 	
 	public PanelMisListas(VentanaPrincipal ventana) {
 
@@ -101,8 +103,8 @@ public class PanelMisListas extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				//cambiarPanelRep();
-				//reproducirPlayListCompleta();
+				cambiarPanelRep();
+			//	reproducirPlayListCompleta();
 				
 			}
 			
@@ -183,16 +185,29 @@ public class PanelMisListas extends JPanel {
 		
 	}
 	
-	/*
+/*	
 	public void reproducirPlayListCompleta() {
-		//Patron experto?? Yo creo que no 
+		
 		for(Video vid: vlist_seleccionada.getVideos()) {
-			
+			ActionListener taskPerformer= new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					controlador.actualizarVideoSeleccionado(vid);
+					reproductor.reproducir();
+				}
+				
+			};
+			timer=new Timer(10000,taskPerformer);
+			timer.setRepeats(false);
+			timer.start();
 		}
+		timer.stop();
 		
 		
 	}
 	*/
+	
 	
 	private void cambiarPanelRep() {
 		PanelMisListas.this.add(reproductor);
@@ -201,6 +216,10 @@ public class PanelMisListas extends JPanel {
 		validate();
 	}
 	
+	public void clean() {
+		modeloListaVideos.removeAllElements();
+		comboBox.removeAllItems();
+	}
 	
 
 
