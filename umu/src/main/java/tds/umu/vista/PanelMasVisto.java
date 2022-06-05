@@ -106,6 +106,7 @@ public class PanelMasVisto extends JPanel {
 	    						controlador.actualizarVideoSeleccionado(v);
 	    						reproductor.reproducir();
 	    						cambiarPanelRep();
+	    						actualizarPanelRecientes();
 	    						
 	    				}
 	    			}	

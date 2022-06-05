@@ -180,7 +180,7 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 		VideosEvent ve = (VideosEvent) arg0;
 		Videos videos= ve.getVideos();
 		for(umu.tds.componente.Video v: videos.getVideo()) {
-			
+			if(!esVideoRegistrado(v.getTitulo())) {
 			//Obtenemos los objetos etiqueta vinculado a los videos
 			List<Etiqueta> etiquetas= new LinkedList<Etiqueta>();
 			for(String et: v.getEtiqueta()) {
@@ -198,6 +198,7 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 			adaptadorVideo.registrarVideo(vid);
 			//Volvemos a reiniciar los catalogos para tener los nuevos videos y las nuevas etiquetas que hayan podido surgir
 			catalogoVideos.addVideo(vid);
+			}
 		}
 	}
 
