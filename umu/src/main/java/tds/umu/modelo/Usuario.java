@@ -16,6 +16,7 @@ private String contraseña;
 private boolean isPremium;
 private List<ListaVideos> listas;
 private LinkedList<Video> recientes;
+private FiltroVideo filtro;
 
 //funcionalidad
 
@@ -29,6 +30,7 @@ public Usuario(String nombre, String apellidos, LocalDate fecha, String email, S
 	this.isPremium=false;
 	this.listas=new LinkedList<ListaVideos>();
 	this.recientes= new LinkedList<Video>();
+	this.setFiltro(FactoriaFiltros.getUnicaInstancia().getFiltro("NOFILTRO"));
 	
 
 }
@@ -202,15 +204,35 @@ public List<Video> getRecientes() {
 	return recientes;
 }
 
-//NO SE SI ESTO SE PUEDE HACER ASI.
 public void setRecientes(LinkedList<Video> v) {
 	recientes=v;
 }
 public void añadirReciente(Video v) {
+	//Si el video que vamos a ver ahora coincide con el último que hemos visto, no se repite en la lista de recientes.
+	if(!v.equals(recientes.getFirst())) {
 	 recientes.addFirst(v);
 	 if(recientes.size()>Constantes.MAX_RECIENTES)
 		 recientes.removeLast();
+	}
 	
+}
+
+//COMPROBAR 
+public boolean tieneVideo(Video v) {
+	
+	return listas.stream()
+			.flatMap(l-> l.getVideos().stream())
+			.anyMatch(vid-> vid.equals(v));
+}
+
+
+public FiltroVideo getFiltro() {
+	return filtro;
+}
+
+
+public void setFiltro(FiltroVideo filtro) {
+	this.filtro = filtro;
 }
 
 

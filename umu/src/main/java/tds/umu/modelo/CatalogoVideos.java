@@ -62,21 +62,22 @@ public class CatalogoVideos {
 		return resultado;  
 	}
 	
-	public List<Video> getBusqueda(String text, List<Etiqueta> etiquetas) {
+	public List<Video> getBusqueda(String text, List<Etiqueta> etiquetas, FiltroVideo filtroVideo) {
 		
 		List<Video> resultado= new LinkedList<Video>();
 		for(String vt: videos.keySet()) {
 			if(vt.contains(text)) {
 				Video v= videos.get(vt);
-				if(etiquetas.size()>0) {
-				if(v.containsEtiqueta(etiquetas))
-					resultado.add(v);
-			}
-				else{
-					resultado.add(v);
+				if(filtroVideo.esVideoOK(v)) {
+					if(etiquetas.size()>0 ) {
+						if(v.containsEtiqueta(etiquetas) )
+							resultado.add(v);
 					}
-				}
-			
+					else{
+						resultado.add(v);
+						}
+					}
+			}
 		}
 		
 		return resultado;

@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.imageio.ImageIO;
 import javax.swing.AbstractListModel;
@@ -50,6 +51,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 	private static VideoWeb videoWeb=Controlador.getUnicaInstancia().getReproductor();
 	private JPanel contentPane,panel_superior,panel_botones,panel_central;
 	private JButton explorar,mlistas,recientes,nlistas,logout,login,registro,premium, masvisto;
+	private JComboBox<String> filtros_selecter;
 	private JLabel etiqueta;
 	private PanelExplorar PExplora;
 	private PanelMisListas panel_mis_listas;
@@ -175,11 +177,21 @@ private void crearPanelBotones()
 	masvisto.setForeground(Color.WHITE);
 	masvisto.setBackground(Color.LIGHT_GRAY);
 	panel_botones.add(masvisto);
-	contentPane.add(panel_botones,BorderLayout.SOUTH);
+	
+	filtros_selecter=new JComboBox<String>();
+	//Añado los tipos de filtros que hay. Seguro que hay alguna forma mejor de hacerlo 
+	filtros_selecter.addItem("NoFiltro");
+	filtros_selecter.addItem("MisListas");
+	filtros_selecter.addItem("Largos");
+	filtros_selecter.addActionListener(this);
+	panel_botones.add(filtros_selecter);
 	
 	luz = new Luz();
 	luz.addEncendidoListener(controlador);
 	panel_botones.add(luz);
+	contentPane.add(panel_botones,BorderLayout.SOUTH);
+	
+	
 }
 
 @Override
@@ -213,6 +225,9 @@ public void actionPerformed(ActionEvent e) {
 	}
 	if(e.getSource()==masvisto) {
 		cambioPanel(Paneles.MASVISTO);
+	}
+	if(e.getSource()==filtros_selecter) {
+		controlador.cambiarFiltro((String)filtros_selecter.getSelectedItem());
 	}
 }
 
@@ -286,6 +301,7 @@ private void cambiarEstado(EstadoLogin estado) {
 		masvisto.setEnabled(false);
 		registro.setEnabled(true);
 		login.setEnabled(true);
+		filtros_selecter.setEnabled(false);
 		
 		
 		this.estado=estado;
@@ -301,6 +317,7 @@ private void cambiarEstado(EstadoLogin estado) {
 		login.setEnabled(false);
 		registro.setEnabled(false);
 		masvisto.setEnabled(false);
+		filtros_selecter.setEnabled(false);
 		
 		this.estado=estado;
 		break;
@@ -315,6 +332,7 @@ private void cambiarEstado(EstadoLogin estado) {
 		login.setEnabled(false);
 		registro.setEnabled(false);
 		masvisto.setEnabled(true);
+		filtros_selecter.setEnabled(true);
 		this.estado=estado;
 		break;
 	}

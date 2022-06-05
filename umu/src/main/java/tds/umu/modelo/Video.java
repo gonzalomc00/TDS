@@ -96,6 +96,7 @@ public class Video {
 		return etiquetas.stream()
 				.map(etq->etq.getNombre())
 				.collect(Collectors.toList());
-	} 
-	 
+	}
+
+
 } 
