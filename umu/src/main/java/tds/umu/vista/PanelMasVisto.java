@@ -41,7 +41,7 @@ public class PanelMasVisto extends JPanel {
 	public PanelMasVisto(VentanaPrincipal ventana) {
 
 		ventana=ventana;
-		reproductor=ventana.getReproductor();
+		reproductor=Reproductor.getUnicaInstancia();
 		crearPantalla();
 	}
 	
@@ -106,6 +106,7 @@ public class PanelMasVisto extends JPanel {
 	    						controlador.actualizarVideoSeleccionado(v);
 	    						reproductor.reproducir();
 	    						cambiarPanelRep();
+	    						actualizarPanelRecientes();
 	    						
 	    				}
 	    			}	

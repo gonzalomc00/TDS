@@ -15,6 +15,8 @@ import tds.umu.modelo.CatalogoEtiquetas;
 import tds.umu.modelo.CatalogoListasVideos;
 import tds.umu.modelo.CatalogoVideos;
 import tds.umu.modelo.Etiqueta;
+import tds.umu.modelo.FactoriaFiltros;
+import tds.umu.modelo.FiltroVideo;
 import tds.umu.modelo.ListaVideos;
 import tds.umu.modelo.Usuario;
 import tds.umu.modelo.Video;
@@ -52,6 +54,8 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 	private CatalogoListasVideos catalogoListaVideos;
 	
 	private ComponenteBuscadorVideos buscadorVideos;
+	
+	private FactoriaFiltros factoriaFiltros= FactoriaFiltros.getUnicaInstancia();
 
 	private Controlador(){
 		inicializarAdaptadores();
@@ -180,7 +184,7 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 		VideosEvent ve = (VideosEvent) arg0;
 		Videos videos= ve.getVideos();
 		for(umu.tds.componente.Video v: videos.getVideo()) {
-			
+			if(!esVideoRegistrado(v.getTitulo())) {
 			//Obtenemos los objetos etiqueta vinculado a los videos
 			List<Etiqueta> etiquetas= new LinkedList<Etiqueta>();
 			for(String et: v.getEtiqueta()) {
@@ -198,6 +202,7 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 			adaptadorVideo.registrarVideo(vid);
 			//Volvemos a reiniciar los catalogos para tener los nuevos videos y las nuevas etiquetas que hayan podido surgir
 			catalogoVideos.addVideo(vid);
+			}
 		}
 	}
 
@@ -233,7 +238,7 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 
 	public List<Video> obtenerBusqueda(String text, LinkedList<String> etiquetas_Sel_Lista) {
 		List<Etiqueta> etiquetas= getEtiqFromText(etiquetas_Sel_Lista);
-		List<Video> videosMatch= catalogoVideos.getBusqueda(text,etiquetas);
+		List<Video> videosMatch= catalogoVideos.getBusqueda(text,etiquetas,usuarioActual.getFiltro());
 		return videosMatch;
 	}
 
@@ -313,6 +318,20 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 	public List<Video> obtenerMasVisto(){
 		return catalogoVideos.getMasVistos();
 	}
+	
+	
+	
+	//FILTROS -REVISAR-
+	public boolean userTieneVideo(Video v) {
+		return usuarioActual.tieneVideo(v);
+	}
+
+	public void cambiarFiltro(String filtro_selected) {
+		FiltroVideo filtro= factoriaFiltros.getFiltro(filtro_selected);
+		usuarioActual.setFiltro(filtro);
+	}
+	
+	
 
 
 	
