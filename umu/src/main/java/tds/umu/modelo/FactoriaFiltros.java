@@ -3,7 +3,7 @@ package tds.umu.modelo;
 
 
 public class FactoriaFiltros {
-	private static FactoriaFiltros unicaInstancia;
+	private static FactoriaFiltros unicaInstancia=null;
 		
 
 	public static FactoriaFiltros getUnicaInstancia() {

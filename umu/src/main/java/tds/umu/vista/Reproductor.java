@@ -28,8 +28,10 @@ import java.util.List;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 
+//SOLO PUEDE EXISTIR UNA INSTANCIA DE REPRODUCTOR. SI NO, NO SE VE BIEN. 
 public class Reproductor extends JPanel {
 
+	private static Reproductor unicaInstancia= null;
 	private JLabel nombreVideo;
 	private JLabel reproducciones;
 	
@@ -44,9 +46,10 @@ public class Reproductor extends JPanel {
 	private Component verticalStrut;
 	private JList<String> listaetiquetas;
 	private DefaultListModel<String> modeloListaEtiquetas= new DefaultListModel<String>();
+
 	
-	public Reproductor(VentanaPrincipal v) {
-		ventana=v;
+	
+	public Reproductor() {
 		setBackground(Color.LIGHT_GRAY);
 	    setLayout(new BorderLayout());
 		
@@ -99,6 +102,12 @@ public class Reproductor extends JPanel {
 		
 	
 		
+	}
+	
+	public static Reproductor getUnicaInstancia() {
+		if (unicaInstancia == null)
+			unicaInstancia = new Reproductor();
+		return unicaInstancia;
 	}
 	
 	public void reproducir() {

@@ -68,7 +68,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 	
 	public VentanaPrincipal() {
 		setResizable(false);
-		reproductor= new Reproductor(this);
+		reproductor= Reproductor.getUnicaInstancia();
 		panel_mis_listas= new PanelMisListas(this);
 		Plogin= new PanelLogin(this);
 		PRegistro = new VentanaRegistro(this);
@@ -358,9 +358,6 @@ private void cierreSesion() {
 	etiqueta.setText("Inicia sesión o crea una cuenta nueva");
 }
 
-public Reproductor getReproductor() {
-	return reproductor;
-}
 
 
 

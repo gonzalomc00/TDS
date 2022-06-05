@@ -66,7 +66,7 @@ public class PanelMisListas extends JPanel {
 		ventana=ventana;
 		crearPantalla();
 		//No sé si esto se puede hacer
-		reproductor=ventana.getReproductor();
+		reproductor=Reproductor.getUnicaInstancia();
 	}
 	
 	public void crearPantalla()

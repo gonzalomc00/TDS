@@ -46,7 +46,7 @@ public class PanelRecientes extends JPanel {
 	public PanelRecientes(VentanaPrincipal ventana) {
 
 		ventana=ventana;
-		reproductor=ventana.getReproductor();
+		reproductor=Reproductor.getUnicaInstancia();
 		crearPantalla();
 	}
 	
