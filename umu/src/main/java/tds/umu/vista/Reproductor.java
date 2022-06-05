@@ -35,7 +35,6 @@ import javax.swing.border.BevelBorder;
 public class Reproductor extends JPanel {
 
 	private static Reproductor unicaInstancia= null;
-	private JLabel nombreVideo;
 	private JLabel reproducciones;
 	
 	private Controlador controlador= Controlador.getUnicaInstancia();
@@ -52,6 +51,9 @@ public class Reproductor extends JPanel {
 	private Component verticalStrut;
 	private JList<String> listaetiquetas;
 	private DefaultListModel<String> modeloListaEtiquetas= new DefaultListModel<String>();
+	private Component verticalStrut_1;
+	private JLabel nombreVideo;
+	private Component verticalStrut_2;
 
 	
 	
@@ -62,17 +64,21 @@ public class Reproductor extends JPanel {
 		
 		setBackground(Color.GRAY);
 		
-		nombreVideo= new JLabel();
-		
-		
-		nombreVideo.setFont(new Font("Verdana", Font.BOLD, 15));
-		nombreVideo.setAlignmentX(Component.CENTER_ALIGNMENT);
-		nombreVideo.setText("Titulo de un video");
-		
 		reproducciones=new JLabel();
 		reproducciones.setText("Visualizaciones");
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		add(nombreVideo);
+		
+		verticalStrut_1 = Box.createVerticalStrut(20);
+		add(verticalStrut_1, BorderLayout.NORTH);
+		
+		nombreVideo = new JLabel();
+		nombreVideo.setText("Titulo de un video");
+		nombreVideo.setFont(new Font("Verdana", Font.BOLD, 15));
+		nombreVideo.setAlignmentX(0.5f);
+		add(nombreVideo, BorderLayout.NORTH);
+		
+		verticalStrut_2 = Box.createVerticalStrut(20);
+		add(verticalStrut_2, BorderLayout.NORTH);
 		add(reproducciones);
 		
 		p= new JPanel();
