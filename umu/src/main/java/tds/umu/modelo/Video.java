@@ -2,10 +2,9 @@ package tds.umu.modelo;
  
 import java.util.LinkedList; 
 import java.util.List; 
-import java.util.Objects; 
+import java.util.Objects;
+import java.util.stream.Collectors; 
  
-import javax.swing.DefaultListModel; 
-import javax.swing.JList; 
  
 public class Video { 
 	private String url; 
@@ -13,11 +12,6 @@ public class Video {
 	private int numReproducciones; 
 	private List<Etiqueta> etiquetas; 
 	private int codigo; 
-	 
- 
-	private DefaultListModel<String> modelo= new DefaultListModel<String>();; 
-	private JList<String> listaetiquetas; 
-	 
 	 
 	public Video(String url, String titulo,List<Etiqueta> etiquetas) { 
 		this.url=url; 
@@ -98,14 +92,10 @@ public class Video {
 		return false; 
 	} 
  
-	public JList<String> obtenerEtiquetas() { 
-		listaetiquetas= new JList<String>(); 
-	    listaetiquetas.setModel(modelo); 
-	    
-		for (Etiqueta e: etiquetas) { 
-			modelo.addElement(e.toString()); 
-		} 
-		return listaetiquetas; 
+	public List<String> obtenerEtiquetas() { 
+		return etiquetas.stream()
+				.map(etq->etq.getNombre())
+				.collect(Collectors.toList());
 	} 
 	 
 } 

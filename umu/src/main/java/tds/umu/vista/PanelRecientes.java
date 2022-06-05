@@ -111,6 +111,7 @@ public class PanelRecientes extends JPanel {
 	    						controlador.actualizarVideoSeleccionado(v);
 	    						reproductor.reproducir();
 	    						cambiarPanelRep();
+	    						actualizarPanelRecientes();
 	    						
 	    				}
 	    			}	

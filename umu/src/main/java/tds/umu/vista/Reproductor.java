@@ -13,6 +13,7 @@ import java.awt.FlowLayout;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 
 import tds.umu.controlador.Controlador;
@@ -41,7 +42,9 @@ public class Reproductor extends JPanel {
 	private JTextField textField;
 	private JButton anadir;
 	private Component verticalStrut;
-	JList<String> listaetiquetas;
+	private JList<String> listaetiquetas;
+	private DefaultListModel<String> modeloListaEtiquetas= new DefaultListModel<String>();
+	
 	public Reproductor(VentanaPrincipal v) {
 		ventana=v;
 		setBackground(Color.LIGHT_GRAY);
@@ -84,17 +87,27 @@ public class Reproductor extends JPanel {
 		
 		anadir = new JButton("Añadir");
 		panel.add(anadir);
+		
+		listaetiquetas = new JList<String>();
+		listaetiquetas.setBackground(Color.GRAY);
+		listaetiquetas.setForeground(Color.WHITE);
+		listaetiquetas.setVisibleRowCount(-1);
+		listaetiquetas.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+		listaetiquetas.setModel(modeloListaEtiquetas);
+		panel.add(listaetiquetas);
 		add(panel);
-		 listaetiquetas = new JList<String>();
-		add(listaetiquetas);
+		
+	
 		
 	}
 	
 	public void reproducir() {
+		modeloListaEtiquetas.removeAllElements();
 		Video v= controlador.getVideoActual();
 		nombreVideo.setText(v.getTitulo());
 		reproducciones.setText("Visto por: "+v.getNumReproducciones()+ " usuarios");
-		listaetiquetas= v.obtenerEtiquetas();
+		List<String> listaetiquetas= v.obtenerEtiquetas();
+		listaetiquetas.stream().forEach(str->modeloListaEtiquetas.addElement(str));
 		videoWeb.playVideo(v.getUrl());
 		
 	}
