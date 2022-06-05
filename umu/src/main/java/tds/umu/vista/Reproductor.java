@@ -105,7 +105,7 @@ public class Reproductor extends JPanel {
 		modeloListaEtiquetas.removeAllElements();
 		Video v= controlador.getVideoActual();
 		nombreVideo.setText(v.getTitulo());
-		reproducciones.setText("Visto por: "+v.getNumReproducciones()+ " usuarios");
+		reproducciones.setText("Reproducciones: "+v.getNumReproducciones());
 		List<String> listaetiquetas= v.obtenerEtiquetas();
 		listaetiquetas.stream().forEach(str->modeloListaEtiquetas.addElement(str));
 		videoWeb.playVideo(v.getUrl());

@@ -59,6 +59,7 @@ public class PanelMisListas extends JPanel {
 	private List<ListaVideos> vlists_encontradas;
 	private ListaVideos vlist_seleccionada;
 	private Timer timer;
+	private JButton bPDF;
 	
 	public PanelMisListas(VentanaPrincipal ventana) {
 
@@ -122,9 +123,14 @@ public class PanelMisListas extends JPanel {
 		panel_2.setBackground(Color.GRAY);
 		panel_2.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
 		panel.add(panel_2, BorderLayout.SOUTH);
+		panel_2.setLayout(new BorderLayout(0, 0));
 		
 		bCancelar = new JButton("Cancelar");
-		panel_2.add(bCancelar);
+		panel_2.add(bCancelar, BorderLayout.NORTH);
+		
+		bPDF = new JButton("Generar PDF");
+		bPDF.setForeground(Color.RED);
+		panel_2.add(bPDF);
 		
 		panel_3 = new JPanel();
 		panel_3.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
