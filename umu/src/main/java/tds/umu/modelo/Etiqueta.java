@@ -2,15 +2,20 @@ package tds.umu.modelo;
 
 import java.util.Objects;
 
+/*La clase Etiqueta se caracteriza por tener un nombre y un código. Estos se usan para
+ * clasificar a los vídeos en diferentes temas.
+ * */
 public class Etiqueta {
+	/*Nombre de la etiqueta*/
 	private String nombre;
+	/*Código de la etiqueta*/
 	private int codigo;
 
 	public Etiqueta(String nombre)
 	{
 		this.nombre=nombre;
 	}
-	
+	/*Métodos de get/set para las variables*/
 	
 	public String getNombre() {
 		return nombre;
@@ -27,7 +32,7 @@ public class Etiqueta {
 	public void setCodigo(int codigo) {
 		this.codigo = codigo;
 	}
-	
+	/*Métodos para saber si dos objetos son iguales*/
 	@Override
 	public int hashCode() {
 		return Objects.hash(codigo,nombre);
