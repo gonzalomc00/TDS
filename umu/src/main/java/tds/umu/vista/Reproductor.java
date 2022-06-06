@@ -37,7 +37,6 @@ public class Reproductor extends JPanel {
 	
 	private Controlador controlador= Controlador.getUnicaInstancia();
 	private VideoWeb videoWeb= Controlador.getUnicaInstancia().getReproductor();
-	private VentanaPrincipal ventana;
 	private JPanel p;
 	private JPanel panel;
 	private JLabel tit;

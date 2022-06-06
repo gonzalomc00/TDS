@@ -264,12 +264,12 @@ public void cambioPanel(Paneles panel) {
 			cambio_panel_vista(PNLista);
 			break;
 		case RECIENTE:
-			PReciente.actualizarPanelRecientes();
+			PReciente.actualizarPanelLateral();
 			cambio_panel_vista(PReciente);
 			break;
 		case MASVISTO:
 			//MODIFICAR
-			PMVisto.actualizarPanelRecientes();
+			PMVisto.actualizarPanelLateral();
 			cambio_panel_vista(PMVisto);
 			break;
 			
