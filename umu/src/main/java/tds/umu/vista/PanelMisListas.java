@@ -77,7 +77,12 @@ public class PanelMisListas extends PanelGenerico {
 		
 		bPDF=new JButton("PDF");
 		bPDF.addActionListener(ev -> {
-			crearPDF();
+			if(controlador.esUserPremium()) {
+				crearPDF();
+			}
+			else {
+				JOptionPane.showMessageDialog(null, "Para usar esta función debes ser un usuario premium", "No eres Premium",JOptionPane.ERROR_MESSAGE);
+			}
 		});
 		bPDF.setForeground(Color.RED);
 		panel_inferior.add(bPDF);
@@ -97,7 +102,7 @@ public class PanelMisListas extends PanelGenerico {
 	
 	private void crearPDF() {
 		//TODO Hay que mirar un directorio raiz que no sea violao por los permisos de momento si pones tu user aparece
-		String raiz = "C:\\Users\\Trini\\Lista.pdf";
+		String raiz = "C:\\Users\\gonzi\\Lista.pdf";
 		PdfWriter writer = null;
 		try {
 			writer = new PdfWriter(raiz);
@@ -126,10 +131,8 @@ public class PanelMisListas extends PanelGenerico {
 
 		document.add(new Paragraph("MIS LISTAS: "+"\n\n"));
 
-		List<ListaVideos> videos = controlador.obtenerPlayListsUser();
-
 		//Tampoco sé si esto iría aquí o si violamos algun patrón
-		for (ListaVideos v : videos) {
+		for (ListaVideos v : vlists_encontradas) {
 			document.add(new Paragraph("Lista de reproduccion: " + v.getNombre()));
 			for (Video vid : v.getVideos()) {
 				document.add(new Paragraph("Video: " + vid.getTitulo() + "\n Enlace: " + vid.getUrl()

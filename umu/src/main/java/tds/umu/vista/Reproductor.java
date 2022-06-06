@@ -24,6 +24,8 @@ import java.awt.GridLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 import java.awt.Font;
 import javax.swing.SwingConstants;
@@ -53,10 +55,12 @@ public class Reproductor extends JPanel {
 	private Component verticalStrut_1;
 	private JLabel nombreVideo;
 	private Component verticalStrut_2;
+	private Video v;
 
 	
 	
 	public Reproductor() {
+		v=null;
 		setBackground(Color.LIGHT_GRAY);
 	    setLayout(new BorderLayout());
 		
@@ -99,22 +103,28 @@ public class Reproductor extends JPanel {
 		textField.setColumns(40);
 		panel.add(textField);
 		
-		anadir = new JButton("Añadir");
-		panel.add(anadir);
-		panelEtiq = new JPanel();
-		panelEtiq.setBackground(Color.GRAY);
-		listaetiquetas = new JList<String>();
-		listaetiquetas.setBorder(new SoftBevelBorder(BevelBorder.RAISED, Color.CYAN, null, Color.DARK_GRAY, null));
-		listaetiquetas.setBackground(Color.GRAY);
-		listaetiquetas.setForeground(Color.BLACK);
-		listaetiquetas.setVisibleRowCount(1);
-		listaetiquetas.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-		listaetiquetas.setModel(modeloListaEtiquetas);
-		panelEtiq.add(listaetiquetas);
+		anadir = new JButton("Añadir"); 
+		anadir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+					añadirEtiqueta();
+				}
+			
+		});
 		
-		add(panel);
-		add(panelEtiq);
-	
+		panel.add(anadir); 
+		panelEtiq = new JPanel(); 
+		panelEtiq.setBackground(Color.GRAY); 
+		listaetiquetas = new JList<String>(); 
+		listaetiquetas.setBorder(new SoftBevelBorder(BevelBorder.RAISED, Color.CYAN, null, Color.DARK_GRAY, null)); 
+		listaetiquetas.setBackground(Color.GRAY); 
+		listaetiquetas.setForeground(Color.BLACK); 
+		listaetiquetas.setVisibleRowCount(1); 
+		listaetiquetas.setLayoutOrientation(JList.HORIZONTAL_WRAP); 
+		listaetiquetas.setModel(modeloListaEtiquetas); 
+		panelEtiq.add(listaetiquetas); 
+		 
+		add(panel); 
+		add(panelEtiq); 
 		
 	}
 	
@@ -126,11 +136,10 @@ public class Reproductor extends JPanel {
 	
 	public void reproducir() {
 		modeloListaEtiquetas.removeAllElements();
-		Video v= controlador.getVideoActual();
+	    v= controlador.getVideoActual();
 		nombreVideo.setText(v.getTitulo());
 		reproducciones.setText("Reproducciones: "+v.getNumReproducciones());
-		List<String> listaetiquetas= v.obtenerEtiquetas();
-		listaetiquetas.stream().forEach(str->modeloListaEtiquetas.addElement(str));
+		actualizarEtiquetas();
 		videoWeb.playVideo(v.getUrl());
 		
 	}
@@ -138,6 +147,19 @@ public class Reproductor extends JPanel {
 	public void cancelarVideo() {
 		videoWeb.cancel();
 		
+	}
+	
+	public void añadirEtiqueta() {
+		controlador.añadirEtiqueta(textField.getText());
+		actualizarEtiquetas();
+		
+		
+	}
+
+	private void actualizarEtiquetas() {
+		modeloListaEtiquetas.removeAllElements();
+		List<String> listaetiquetas= v.obtenerEtiquetas();
+		listaetiquetas.stream().forEach(str->modeloListaEtiquetas.addElement(str));
 	}
 
 	

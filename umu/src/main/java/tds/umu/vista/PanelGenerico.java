@@ -136,6 +136,10 @@ public abstract class PanelGenerico extends JPanel{
 	public void clean() {
 		modeloListaVideos.removeAllElements();
 		comboBox.removeAllItems();
+		remove(reproductor);
+		revalidate();
+		repaint();
+		validate();
 	}
 	
 	

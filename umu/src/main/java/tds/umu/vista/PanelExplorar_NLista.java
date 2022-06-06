@@ -256,6 +256,7 @@ public class PanelExplorar_NLista extends JPanel {
 		    
 		    lista_etiquetas = new JList();
 		    lista_etiquetas.setModel(modeloEtiqDisponibles);
+		    lista_etiquetas.setFixedCellWidth(120);
 		   
 
 		

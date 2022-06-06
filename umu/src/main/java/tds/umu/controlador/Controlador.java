@@ -26,6 +26,7 @@ import tds.umu.modelo.Video;
 /*Importación de clases de la persistencia*/
 import tds.umu.persistencia.DAOException;
 import tds.umu.persistencia.FactoriaDAO;
+import tds.umu.persistencia.IAdaptadorEtiquetaDAO;
 import tds.umu.persistencia.IAdaptadorListaVideosDAO;
 import tds.umu.persistencia.IAdaptadorUsuarioDAO;
 import tds.umu.persistencia.IAdaptadorVideoDAO;
@@ -58,6 +59,7 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 	private IAdaptadorUsuarioDAO adaptadorUsuario;
 	private IAdaptadorVideoDAO adaptadorVideo;
 	private IAdaptadorListaVideosDAO adaptadorListaVideos;
+	private IAdaptadorEtiquetaDAO adaptadorEtiquetas;
 
 	/* El buscador de vídeos que usamos en la funcionalidad */
 
@@ -90,8 +92,10 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 		}
 		adaptadorUsuario = factoria.getUsuarioDAO();
 		adaptadorVideo = factoria.getVideoDAO();
-		factoria.getEtiquetaDAO();
 		adaptadorListaVideos = factoria.getListaVideosDAO();
+		adaptadorEtiquetas= factoria.getEtiquetaDAO();
+		factoria.getEtiquetaDAO();
+	
 	}
 
 
@@ -377,6 +381,25 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 	public void cambiarFiltro(String filtro_selected) {
 		FiltroVideo filtro = factoriaFiltros.getFiltro(filtro_selected);
 		usuarioActual.setFiltro(filtro);
+	}
+	
+	public void añadirEtiqueta(String text) {
+		
+		if(!esEtiqueRegistrado(text)) {
+			Etiqueta etq=videoActual.crearEtiqueta(text);
+			adaptadorEtiquetas.registrarEtiqueta(etq);
+			catalogoEtiqueta.addEtiqueta(etq);
+		} else {
+			Etiqueta etq=catalogoEtiqueta.getEtiqueta(text);
+			if(!videoActual.contieneEtiqueta(etq)) {
+				videoActual.addEtiqueta(etq);
+			}
+		
+		}
+		
+		adaptadorVideo.modificarVideo(videoActual);
+		
+		
 	}
 
 }

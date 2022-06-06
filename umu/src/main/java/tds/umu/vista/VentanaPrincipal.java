@@ -268,7 +268,7 @@ public void cambioPanel(Paneles panel) {
 			cambio_panel_vista(PReciente);
 			break;
 		case MASVISTO:
-			//MODIFICAR
+			
 			PMVisto.actualizarPanelLateral();
 			cambio_panel_vista(PMVisto);
 			break;
@@ -354,6 +354,7 @@ public void actualizarLogin(String text) {
 
 private void cierreSesion() {
 	cambiarEstado(EstadoLogin.LOGOUT);
+	Plogin.clean();
 	controlador.logout();
 	etiqueta.setText("Inicia sesión o crea una cuenta nueva");
 }

@@ -115,4 +115,10 @@ public class PanelLogin extends JPanel {
 		panel_7.add(cancelar);
 	}
 
+	public void clean() {
+		textoUser.setText("");
+		textoContrasena.setText("");
+		
+	}
+
 }

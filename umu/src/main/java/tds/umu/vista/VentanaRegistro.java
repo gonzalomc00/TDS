@@ -211,6 +211,7 @@ public class VentanaRegistro extends JPanel {
 						if (registrado) {
 							JOptionPane.showMessageDialog(VentanaRegistro.this, "Usuario registrado correctamente.", "Registro",
 									JOptionPane.INFORMATION_MESSAGE);
+							prin.cambioPanel(Paneles.LOGIN);
 	
 						} else {
 							JOptionPane.showMessageDialog(VentanaRegistro.this, "No se ha podido llevar a cabo el registro.\n",

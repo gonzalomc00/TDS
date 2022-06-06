@@ -49,5 +49,6 @@ public class PanelMasVisto extends PanelGenerico {
 		return controlador.obtenerMasVisto();
 	}
 	
+
 }
 	

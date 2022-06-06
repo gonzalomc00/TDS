@@ -73,6 +73,12 @@ public class Video {
 		this.codigo = codigo;
 	}
 
+    /*Si una etiqueta no existe entonces la creamos y la añadimos */
+	public Etiqueta crearEtiqueta(String text) {
+		Etiqueta etq= new Etiqueta(text);
+		addEtiqueta(etq);
+		return etq;
+	}
 	/* Método para asociar una etiqueta a un vídeo */
 	public void addEtiqueta(Etiqueta etq) {
 		etiquetas.add(etq);
@@ -93,6 +99,10 @@ public class Video {
 	/* Método para obtener las etiquetas asociadas a un vídeo */
 	public List<String> obtenerEtiquetas() {
 		return etiquetas.stream().map(etq -> etq.getNombre()).collect(Collectors.toList());
+	}
+	
+	public boolean contieneEtiqueta(Etiqueta etq) {
+		return etiquetas.contains(etq);
 	}
 
 	/* Métodos para comprobar la igualdad de dos objetos */

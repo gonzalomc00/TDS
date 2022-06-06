@@ -82,11 +82,16 @@ public class Usuario {
 	/* Método para añadir al usuario una playlist reciente al usuairo */
 	public void añadirReciente(Video v) {
 		// Si el video que vamos a ver ahora coincide con el último que hemos visto, no
-		// se repite en la lista de recientes.
+		// se repite en la lista de recientes. Hacemos una comprobación inicial por si es el primer video que ve un usuario
+		
+		if(recientes.size()!=0) {
 		if (!v.equals(recientes.getFirst())) {
 			recientes.addFirst(v);
 			if (recientes.size() > Constantes.MAX_RECIENTES)
 				recientes.removeLast();
+		}
+		} else {
+			recientes.addFirst(v);
 		}
 
 	}
