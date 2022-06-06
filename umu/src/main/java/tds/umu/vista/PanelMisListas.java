@@ -76,6 +76,9 @@ public class PanelMisListas extends PanelGenerico {
 		
 		
 		bPDF=new JButton("PDF");
+		bPDF.addActionListener(ev -> {
+			crearPDF();
+		});
 		bPDF.setForeground(Color.RED);
 		panel_inferior.add(bPDF);
 		
@@ -90,23 +93,53 @@ public class PanelMisListas extends PanelGenerico {
 	public List<Video> metodoRelleno() {
 		return vlist_seleccionada.getVideos();
 	}
-
-				@Override
-				public void actionPerformed(ActionEvent arg0) {
-					controlador.actualizarVideoSeleccionado(vid);
-					reproductor.reproducir();
-				}
-				
-			};
-			timer=new Timer(10000,taskPerformer);
-			timer.setRepeats(false);
-			timer.start();
-		}
-		timer.stop();
-		
-		
-	}
-	*/
 	
+	
+	private void crearPDF() {
+		//TODO Hay que mirar un directorio raiz que no sea violao por los permisos de momento si pones tu user aparece
+		String raiz = "C:\\Users\\Trini\\Lista.pdf";
+		PdfWriter writer = null;
+		try {
+			writer = new PdfWriter(raiz);
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		}
+
+		PdfDocument doc = new PdfDocument(writer);
+		doc.addNewPage();
+		
+		Document document = new Document(doc);
+		Paragraph titulo= new Paragraph(" RECOPILACIÓN DE MIS LISTAS DE REPRODUCCIÓN ");
+		titulo.setItalic();
+		titulo.setBold();
+		
+		document.add(titulo);
+		//TODO No sé si esto está bien así 
+		String usuario = "Nombre del usuario: " + controlador.getUsuarioActual().getNombre() +
+
+				"\n" + "Apellidos del usuario: " + controlador.getUsuarioActual().getApellidos() + "\n"
+				+ "Email del usuario: " + controlador.getUsuarioActual().getEmail() + "\n" + "Fecha de nacimiento: "
+				+ controlador.getUsuarioActual().getFecha();
+
+		document.add(new Paragraph(usuario));
+		document.add(new Paragraph("\n"));
+
+		document.add(new Paragraph("MIS LISTAS: "+"\n\n"));
+
+		List<ListaVideos> videos = controlador.obtenerPlayListsUser();
+
+		//Tampoco sé si esto iría aquí o si violamos algun patrón
+		for (ListaVideos v : videos) {
+			document.add(new Paragraph("Lista de reproduccion: " + v.getNombre()));
+			for (Video vid : v.getVideos()) {
+				document.add(new Paragraph("Video: " + vid.getTitulo() + "\n Enlace: " + vid.getUrl()
+						+ "\n Numero de reproducciones: " + vid.getNumReproducciones()));
+			}
+			document.add(new Paragraph("\n\n"));
+		}
+		document.close();
+		JOptionPane.showMessageDialog(null, "El PDF se ha generado correctamente en  C:\\Usuarios\\TuNombre\\Lista.pdf :)).", "PDF generado :)",JOptionPane.INFORMATION_MESSAGE);
+
+	}
 	
 }
