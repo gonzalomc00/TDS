@@ -18,6 +18,7 @@ public class CatalogoUsuarios {
 	private FactoriaDAO dao;
 	private IAdaptadorUsuarioDAO adaptadorUsuario;
 	
+	/*Esta clase contiene el Catálogo de todos los usuarios almacenados en memoria*/
 	private CatalogoUsuarios() {
 		try {
   			dao = FactoriaDAO.getInstancia(FactoriaDAO.DAO_TDS);
@@ -29,32 +30,36 @@ public class CatalogoUsuarios {
   		}
 	}
 	
+	/*Devuelve la instancia del Catálogo */
 	public static CatalogoUsuarios getUnicaInstancia(){
 		return unicaInstancia;
 	}
 	
-	/*devuelve todos los Usuarios*/
+	/*Devuelve una lista con todos los usuarios almacenados en memoria*/
 	public List<Usuario> getUsuarios(){
 		ArrayList<Usuario> lista = new ArrayList<Usuario>();
 		for (Usuario c:Usuarios.values()) 
 			lista.add(c);
 		return lista;
 	}
+	/*Devuelve un objeto de un Usuario en específico*/
 	
 	public Usuario getUsuario(String usuario) {
 		return Usuarios.get(usuario);
 	}
 	
 
+	/*Método que añade un usuario al Catálogo*/
 	public void addUsuario(Usuario user) {
 		System.out.println(user.getUsuario());
 		Usuarios.put(user.getUsuario(),user);
 	}
+	/*Método que elimina a un usuario del Catálogo*/
 	public void removeUsuario (Usuario user) {
 		Usuarios.remove(user.getUsuario());
 	}
 	
-	/*Recupera todos los Usuarios para trabajar con ellos en memoria*/
+	/*Método para recuperar todos en memoria*/
 	private void cargarCatalogo() throws DAOException {
 		 List<Usuario> UsuariosBD = adaptadorUsuario.recuperarTodosUsuarios();
 		 for (Usuario user: UsuariosBD) {

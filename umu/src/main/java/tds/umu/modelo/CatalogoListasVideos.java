@@ -17,6 +17,7 @@ public class CatalogoListasVideos {
 	private FactoriaDAO dao;
 	private IAdaptadorListaVideosDAO adaptadorListaVideos;
 	
+	/*Este catálogo mantiene en memoria todas las listas de vídeos*/
 	private CatalogoListasVideos() {
 		try {
 			dao= FactoriaDAO.getInstancia(FactoriaDAO.DAO_TDS);
@@ -30,12 +31,13 @@ public class CatalogoListasVideos {
 		
 	}
 	
-	//revisar tema del singleton
+	//TODO revisar tema del singleton
+	/*Devuelve la instancia del Catálogo*/
 	public static CatalogoListasVideos getUnicaInstancia() {
 		return unicaInstancia;
 	}
 	
-	
+	/*Devuelve una lista con todos las playlists existentes*/
 	public List<ListaVideos> getListasVideos(){
 		ArrayList<ListaVideos> lista= new ArrayList<ListaVideos>();
 		for(ListaVideos lv: listasvideos.values())
@@ -43,20 +45,25 @@ public class CatalogoListasVideos {
 		return lista;
 	}
 
+	/*Devuelve una playlist específica pasando por parámetro su código*/
+	//TODO mmmm revisar este warning
 	public ListaVideos getListaVideos(String codigo) {
 		return listasvideos.get(codigo);
 	}
 	
-	//deberia meterlos con codigo o con titulo?
+	//TODO deberia meterlos con codigo o con titulo?
+	
+	/*Método para añadir una playlist al catálogo*/
 	public void addListaVideos(ListaVideos lv) {
 		listasvideos.put(lv.getCodigo(), lv);
 	}
 	
+	/*Método para eliminar una playlist del Catálogo*/
 	public void removeListaVideos(ListaVideos lv) {
 		listasvideos.remove(lv.getCodigo());
 	}
 	
-	
+	/*Método para cargar el catálogo en memoria*/
 	private void cargarCatalogo() throws DAOException{
 		List<ListaVideos> lvideosBD= adaptadorListaVideos.recuperarTodosListasVideos();
 		for(ListaVideos lv: lvideosBD)

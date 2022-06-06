@@ -3,7 +3,9 @@ package tds.umu.modelo;
 import tds.umu.controlador.Controlador;
 
 
-//-REVISAR TEMA DEL FILTRO- NO SE SI EL FILTRO PUEDE TENER DENTRO UN CONTROLADOR
+//TODO -REVISAR TEMA DEL FILTRO- NO SE SI EL FILTRO PUEDE TENER DENTRO UN CONTROLADOR
+
+/*Clase que filtra las listas viendo si el vídeo está en alguna de mis listas.*/
 public class FiltroMisListas implements FiltroVideo{
 
 	private Controlador controlador=Controlador.getUnicaInstancia();
@@ -11,7 +13,8 @@ public class FiltroMisListas implements FiltroVideo{
 	
 	@Override
 	public boolean esVideoOK(Video v) {
-		//Por como está hecho el stream del usuario hay que negar el return 
+		
+		/*Si el usuario tiene el vídeo, devolvemos true*/
 		return !controlador.userTieneVideo(v);
 	}
 
