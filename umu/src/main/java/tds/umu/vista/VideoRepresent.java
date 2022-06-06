@@ -13,7 +13,6 @@ public class VideoRepresent {
 	private ImageIcon imagen;
 	
 	
-	//No se si deberia cambiarlo y dejar unicamente los datos del video
 	public VideoRepresent(Video v,ImageIcon imagen) {
 		nombre=v.getTitulo();
 		this.imagen= imagen;

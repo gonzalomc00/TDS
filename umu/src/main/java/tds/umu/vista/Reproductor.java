@@ -121,5 +121,10 @@ public class Reproductor extends JPanel {
 		
 	}
 
+	public void cancelarVideo() {
+		videoWeb.cancel();
+		
+	}
+
 	
 }

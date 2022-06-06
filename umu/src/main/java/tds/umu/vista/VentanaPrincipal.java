@@ -53,13 +53,12 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 	private JButton explorar,mlistas,recientes,nlistas,logout,login,registro,premium, masvisto;
 	private JComboBox<String> filtros_selecter;
 	private JLabel etiqueta;
-	private PanelExplorar PExplora;
+	private PanelExplorar_NLista PExplora_NLista;
 	private PanelMisListas panel_mis_listas;
 	private PanelRecientes PReciente;
 	private PanelLogin Plogin;
 	private Reproductor reproductor;
 	private VentanaRegistro PRegistro;
-	private PanelNuevaLista PNLista;
 	private PanelMasVisto PMVisto;
 	private Luz luz;
 	private Controlador controlador= Controlador.getUnicaInstancia();
@@ -69,13 +68,12 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 	public VentanaPrincipal() {
 		setResizable(false);
 		reproductor= Reproductor.getUnicaInstancia();
-		panel_mis_listas= new PanelMisListas(this);
 		Plogin= new PanelLogin(this);
 		PRegistro = new VentanaRegistro(this);
-		PNLista= new PanelNuevaLista(this);
-		PExplora= new PanelExplorar(this);
-		PReciente= new PanelRecientes(this);
-		PMVisto= new PanelMasVisto(this);
+		PExplora_NLista= new PanelExplorar_NLista(this);
+		panel_mis_listas= new PanelMisListas();
+		PReciente= new PanelRecientes();
+		PMVisto= new PanelMasVisto();
 
 		
 		setBounds(0,0,900,600);
@@ -244,9 +242,10 @@ public void cambioPanel(Paneles panel) {
 		break;
 		}
 		case EXPLORAR:
-			PExplora.renovar();
-			PExplora.actualizarEtiquetasExplora();
-			cambio_panel_vista(PExplora);
+			PExplora_NLista.modoExplorar();
+			PExplora_NLista.renovar();
+			PExplora_NLista.actualizarEtiquetasExplora();
+			cambio_panel_vista(PExplora_NLista);
 			break;
 		case MISLISTAS:
 			panel_mis_listas.clean();
@@ -260,16 +259,17 @@ public void cambioPanel(Paneles panel) {
 			cambio_panel_vista(PRegistro);
 			break;
 		case NUEVALISTA:
-			PNLista.clear();
-			cambio_panel_vista(PNLista);
+			PExplora_NLista.renovar();
+			PExplora_NLista.modoNuevaLista();
+			cambio_panel_vista(PExplora_NLista);
 			break;
 		case RECIENTE:
-			PReciente.actualizarPanelRecientes();
+			PReciente.actualizarPanelLateral();
 			cambio_panel_vista(PReciente);
 			break;
 		case MASVISTO:
 			//MODIFICAR
-			PMVisto.actualizarPanelRecientes();
+			PMVisto.actualizarPanelLateral();
 			cambio_panel_vista(PMVisto);
 			break;
 			
