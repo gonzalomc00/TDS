@@ -27,6 +27,9 @@ import java.awt.Insets;
 import java.util.List;
 import java.awt.Font;
 import javax.swing.SwingConstants;
+import javax.swing.border.Border;
+import javax.swing.border.SoftBevelBorder;
+import javax.swing.border.BevelBorder;
 
 //SOLO PUEDE EXISTIR UNA INSTANCIA DE REPRODUCTOR. SI NO, NO SE VE BIEN. 
 public class Reproductor extends JPanel {
@@ -39,6 +42,9 @@ public class Reproductor extends JPanel {
 	private VideoWeb videoWeb= Controlador.getUnicaInstancia().getReproductor();
 	private JPanel p;
 	private JPanel panel;
+
+	private JPanel panelEtiq;
+
 	private JLabel tit;
 	private JTextField textField;
 	private JButton anadir;
@@ -89,16 +95,19 @@ public class Reproductor extends JPanel {
 		
 		anadir = new JButton("Añadir");
 		panel.add(anadir);
-		
+		panelEtiq = new JPanel();
+		panelEtiq.setBackground(Color.GRAY);
 		listaetiquetas = new JList<String>();
+		listaetiquetas.setBorder(new SoftBevelBorder(BevelBorder.RAISED, Color.CYAN, null, Color.DARK_GRAY, null));
 		listaetiquetas.setBackground(Color.GRAY);
-		listaetiquetas.setForeground(Color.WHITE);
-		listaetiquetas.setVisibleRowCount(-1);
+		listaetiquetas.setForeground(Color.BLACK);
+		listaetiquetas.setVisibleRowCount(1);
 		listaetiquetas.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		listaetiquetas.setModel(modeloListaEtiquetas);
-		panel.add(listaetiquetas);
-		add(panel);
+		panelEtiq.add(listaetiquetas);
 		
+		add(panel);
+		add(panelEtiq);
 	
 		
 	}
@@ -122,3 +131,4 @@ public class Reproductor extends JPanel {
 
 	
 }
+
