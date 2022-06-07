@@ -1,5 +1,6 @@
 package tds.umu.vista;
 
+import javax.swing.*;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import javax.swing.BoxLayout;
@@ -48,12 +49,14 @@ import com.itextpdf.layout.element.Paragraph;
 public class PanelMisListas extends PanelGenerico {
 	
 	private List<ListaVideos> vlists_encontradas;
-	private ListaVideos vlist_seleccionada;
-	private Timer timer;
-	private JButton bPDF;
+	private ListaVideos vlist_seleccionada;	private JButton bPDF,bReproducirTodos;
+	
+	private Timer timer; 
+	private ActionListener eventoTimer;
 	
 	public PanelMisListas() {
 		super();
+		timer= new Timer(0,null);
 		rellenarPantalla();
 	
 	;
@@ -73,6 +76,17 @@ public class PanelMisListas extends PanelGenerico {
 					}	
 			}
 		});
+		
+		bReproducirTodos= new JButton("Reproducir todo");
+		bReproducirTodos.setAlignmentX(Component.CENTER_ALIGNMENT);
+		bReproducirTodos.addMouseListener(
+	    		new MouseAdapter() {
+	    			public void mouseClicked(MouseEvent event) {
+	    					reproducirTodos();
+	    			
+	    			}
+	    		});
+		panel_4.add(bReproducirTodos, BorderLayout.CENTER);
 		
 		
 		bPDF=new JButton("PDF");
@@ -143,6 +157,44 @@ public class PanelMisListas extends PanelGenerico {
 		document.close();
 		JOptionPane.showMessageDialog(null, "El PDF se ha generado correctamente en  C:\\Usuarios\\TuNombre\\Lista.pdf :)).", "PDF generado :)",JOptionPane.INFORMATION_MESSAGE);
 
+	}
+	
+	private void reproducirTodos() {
+		
+		bReproducir.setEnabled(false);
+		bReproducirTodos.setEnabled(false);
+		
+		eventoTimer=new ActionListener() {
+		int counter = 0;
+		int max= videos_relleno.size();
+		
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			if(counter<max) {
+				Video v= videos_relleno.get(counter);
+				controlador.actualizarVideoSeleccionado(v);
+				cambiarPanelRep();
+				counter++;
+				
+			}else {
+				cancelarVideo();
+			}
+			
+		}
+	};
+	timer.addActionListener(eventoTimer);
+	
+	timer.setRepeats(true);
+	timer.setDelay(10000);
+	timer.start();
+
+}
+	protected void cancelarVideo() {
+		super.cancelarVideo();
+		bReproducir.setEnabled(true);
+		bReproducirTodos.setEnabled(true);
+		timer.stop();
+		timer.removeActionListener(eventoTimer);
 	}
 	
 }

@@ -10,6 +10,7 @@ import java.awt.event.MouseEvent;
 import java.util.LinkedList;
 import java.util.List;
 
+
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 
@@ -23,17 +24,19 @@ public abstract class PanelGenerico extends JPanel{
 	protected JComboBox<String> comboBox;
 	private Reproductor reproductor;
 	private JButton bCancelar;
+	protected JButton bReproducir;
 	protected Controlador controlador= Controlador.getUnicaInstancia();
 	protected List<Video> videos_relleno= new LinkedList<Video>();
 	private DefaultListModel<VideoRepresent> modeloListaVideos= new DefaultListModel<VideoRepresent>();
 	private VideoWeb videoWeb= controlador.getReproductor();
 	
+
+	
 	private JLabel etiquetaSeleccion;
-	private JButton bReproducir;
 	
 	public PanelGenerico() {
 
-
+		
 		reproductor=Reproductor.getUnicaInstancia();
 		crearPantalla();
 	}
@@ -68,6 +71,7 @@ public abstract class PanelGenerico extends JPanel{
 		panel_4=new JPanel();
 		panel_4.setBackground(Color.GRAY);
 		bReproducir = new JButton("Reproducir");
+		bReproducir.setAlignmentX(Component.CENTER_ALIGNMENT);
 		bReproducir.addMouseListener(
 	    		new MouseAdapter() {
 	    			public void mouseClicked(MouseEvent event) {
@@ -75,17 +79,15 @@ public abstract class PanelGenerico extends JPanel{
 	    						Video v= getVideoSeleccionado();
 	    						controlador.actualizarVideoSeleccionado(v);
 	    						cambiarPanelRep();
-	    						reproductor.reproducir();
-	    						
 	    						actualizarPanelLateral();
 	    			}	
 	    			}
 	    		});
-		panel_4.add(bReproducir);
+		panel_4.setLayout(new BorderLayout(0, 0));
+		
+		
+		panel_4.add(bReproducir, BorderLayout.NORTH);
 		panel_superior.add(panel_4);
-		
-		
-		
 		panel_inferior = new JPanel();
 		panel_inferior.setBackground(Color.GRAY);
 		panel_inferior.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
@@ -124,8 +126,9 @@ public abstract class PanelGenerico extends JPanel{
 		
 	}
 	
-	private void cambiarPanelRep() {
+	protected void cambiarPanelRep() {
 			add(reproductor,BorderLayout.CENTER);
+			reproductor.reproducir();
 			revalidate();
 			repaint();
 			validate();
@@ -136,10 +139,7 @@ public abstract class PanelGenerico extends JPanel{
 	public void clean() {
 		modeloListaVideos.removeAllElements();
 		comboBox.removeAllItems();
-		remove(reproductor);
-		revalidate();
-		repaint();
-		validate();
+		cancelarVideo();
 	}
 	
 	
@@ -151,15 +151,17 @@ public abstract class PanelGenerico extends JPanel{
 		etiquetaSeleccion.setText(texto);
 	}
 	
-	private void cancelarVideo() {
+	protected void cancelarVideo() {
 		reproductor.cancelarVideo();
-		remove(reproductor);
+		remove(reproductor);	
 		revalidate();
 		repaint();
 		validate();
+
 		
 	}
 	
+
 	public abstract void rellenarPantalla();
 	public abstract List<Video> metodoRelleno();
 	

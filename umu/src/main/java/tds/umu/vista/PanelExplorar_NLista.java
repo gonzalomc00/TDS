@@ -143,7 +143,6 @@ public class PanelExplorar_NLista extends JPanel {
 		
 		campoNombre = new JTextField();
 		panel_listas_busqueda.add(campoNombre);
-		campoNombre.setColumns(10);
 		
 		bBuscar_lista = new JButton("Buscar");
 	

@@ -234,6 +234,9 @@ public void actionPerformed(ActionEvent e) {
 //Función que cambia todo el panel central. Permite pasar de una ventana "general" hacia otra. Las ventanas generales son las que ocupan toda la ventana. 
 public void cambioPanel(Paneles panel) {
 	videoWeb.cancel();
+	
+	//hacemos esto para evitar que una lista de reproducción continue reproduciendose incluso estando en una ventana diferente.
+	panel_mis_listas.clean();
 	switch (panel) {
 		case REPRODUCTOR:
 		{
@@ -248,7 +251,6 @@ public void cambioPanel(Paneles panel) {
 			cambio_panel_vista(PExplora_NLista);
 			break;
 		case MISLISTAS:
-			panel_mis_listas.clean();
 			panel_mis_listas.actualizarPlayLists();
 			cambio_panel_vista(panel_mis_listas);
 			break;
@@ -264,11 +266,12 @@ public void cambioPanel(Paneles panel) {
 			cambio_panel_vista(PExplora_NLista);
 			break;
 		case RECIENTE:
+			PReciente.clean();
 			PReciente.actualizarPanelLateral();
 			cambio_panel_vista(PReciente);
 			break;
 		case MASVISTO:
-			
+			PMVisto.clean();
 			PMVisto.actualizarPanelLateral();
 			cambio_panel_vista(PMVisto);
 			break;
