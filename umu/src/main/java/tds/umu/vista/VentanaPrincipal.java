@@ -100,7 +100,11 @@ private void crearPanelSuperior()
 	panel_superior.setLayout(new BoxLayout(panel_superior,BoxLayout.X_AXIS));
 	
 	etiqueta = new JLabel("Inicia sesión o crea una nueva cuenta");
-	etiqueta.setIcon(new ImageIcon("C:\\Users\\gonzi\\tds\\Prueba_mejor\\img\\dis.png"));
+	ImageIcon imagen= new ImageIcon("resources/AppVideo_logo.png");
+	Image image = imagen.getImage();
+	Image newimg = image.getScaledInstance(120, 70, java.awt.Image.SCALE_SMOOTH);
+	imagen=new ImageIcon(newimg);
+	etiqueta.setIcon(imagen);
 	panel_superior.add(etiqueta);
 	repaint();
 	
