@@ -95,14 +95,14 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 private void crearPanelSuperior()
 {
 	panel_superior = new JPanel();
-	panel_superior.setMaximumSize(new Dimension(900,300));
+	panel_superior.setPreferredSize(new Dimension(900,40));
 	panel_superior.setBorder(new BevelBorder(BevelBorder.LOWERED, Color.LIGHT_GRAY, null, Color.LIGHT_GRAY, null));
 	panel_superior.setLayout(new BoxLayout(panel_superior,BoxLayout.X_AXIS));
 	
 	etiqueta = new JLabel("Inicia sesión o crea una nueva cuenta");
 	ImageIcon imagen= new ImageIcon("resources/AppVideo_logo.png");
 	Image image = imagen.getImage();
-	Image newimg = image.getScaledInstance(120, 70, java.awt.Image.SCALE_SMOOTH);
+	Image newimg = image.getScaledInstance(120, 40, java.awt.Image.SCALE_SMOOTH);
 	imagen=new ImageIcon(newimg);
 	etiqueta.setIcon(imagen);
 	panel_superior.add(etiqueta);

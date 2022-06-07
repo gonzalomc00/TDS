@@ -82,7 +82,8 @@ public class PanelMisListas extends PanelGenerico {
 		bReproducirTodos.addMouseListener(
 	    		new MouseAdapter() {
 	    			public void mouseClicked(MouseEvent event) {
-	    					reproducirTodos();
+	    				String tiempo= JOptionPane.showInputDialog(null,"Introduce los segundos que quieres ver los vídeos.");
+	    					reproducirTodos(Integer.valueOf(tiempo));
 	    			
 	    			}
 	    		});
@@ -159,7 +160,7 @@ public class PanelMisListas extends PanelGenerico {
 
 	}
 	
-	private void reproducirTodos() {
+	private void reproducirTodos(int tiempo) {
 		
 		bReproducir.setEnabled(false);
 		bReproducirTodos.setEnabled(false);
@@ -185,7 +186,7 @@ public class PanelMisListas extends PanelGenerico {
 	timer.addActionListener(eventoTimer);
 	
 	timer.setRepeats(true);
-	timer.setDelay(10000);
+	timer.setDelay(tiempo*1000);
 	timer.start();
 
 }
