@@ -76,7 +76,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 		PMVisto= new PanelMasVisto();
 
 		
-		setBounds(0,0,900,600);
+		setBounds(0,0,1270,720);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		contentPane = new JPanel();
 		setContentPane(contentPane);
