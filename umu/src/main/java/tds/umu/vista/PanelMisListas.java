@@ -100,7 +100,7 @@ public class PanelMisListas extends PanelGenerico {
 			}
 		});
 		bPDF.setForeground(Color.RED);
-		panel_inferior.add(bPDF);
+		panel_inferior.add(bPDF,BorderLayout.CENTER);
 		
 	}
 

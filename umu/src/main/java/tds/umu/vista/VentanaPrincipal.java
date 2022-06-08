@@ -285,7 +285,7 @@ public void cambioPanel(Paneles panel) {
 	}
 }
 
-public void cambio_panel_vista(JPanel panel) {
+private void cambio_panel_vista(JPanel panel) {
 	panel_central.removeAll();
 	panel_central.add(panel,BorderLayout.CENTER);
 	panel_central.revalidate();
@@ -347,7 +347,7 @@ private void cambiarEstado(EstadoLogin estado) {
 }
 
 public void actualizarLogin(String text) {
-	etiqueta.setText("Hola "+text+"!");
+	etiqueta.setText("¡Hola "+text+"!");
 	if(controlador.esUserPremium()) {
 		cambiarEstado(EstadoLogin.PREMIUM);
 	}

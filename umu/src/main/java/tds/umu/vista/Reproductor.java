@@ -33,7 +33,6 @@ import javax.swing.border.Border;
 import javax.swing.border.SoftBevelBorder;
 import javax.swing.border.BevelBorder;
 
-//SOLO PUEDE EXISTIR UNA INSTANCIA DE REPRODUCTOR. SI NO, NO SE VE BIEN. 
 public class Reproductor extends JPanel {
 
 	private static Reproductor unicaInstancia= null;
@@ -68,7 +67,7 @@ public class Reproductor extends JPanel {
 		setBackground(Color.GRAY);
 		
 		reproducciones=new JLabel();
-		reproducciones.setText("Visualizaciones");
+		reproducciones.setForeground(Color.WHITE);
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		verticalStrut_1 = Box.createVerticalStrut(20);
@@ -76,6 +75,7 @@ public class Reproductor extends JPanel {
 		
 		nombreVideo = new JLabel();
 		nombreVideo.setText("Titulo de un video");
+		nombreVideo.setForeground(Color.WHITE);
 		nombreVideo.setFont(new Font("Verdana", Font.BOLD, 15));
 		nombreVideo.setAlignmentX(0.5f);
 		add(nombreVideo, BorderLayout.NORTH);
@@ -160,6 +160,7 @@ public class Reproductor extends JPanel {
 		modeloListaEtiquetas.removeAllElements();
 		List<String> listaetiquetas= v.obtenerEtiquetas();
 		listaetiquetas.stream().forEach(str->modeloListaEtiquetas.addElement(str));
+		textField.setText("");
 	}
 
 	

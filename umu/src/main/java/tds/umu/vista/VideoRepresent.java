@@ -11,11 +11,13 @@ import tds.umu.modelo.Video;
 public class VideoRepresent {
 	private String nombre;
 	private ImageIcon imagen;
+	private Video video;
 	
 	
 	public VideoRepresent(Video v,ImageIcon imagen) {
 		nombre=v.getTitulo();
 		this.imagen= imagen;
+		this.video=v;
 	}
 	
 	
@@ -26,6 +28,9 @@ public class VideoRepresent {
 	public ImageIcon getImagen() {
 		return imagen;
 	}
+	public Video getVideo() {
+		return video;
+	}
 	
 	
 	
@@ -35,3 +40,6 @@ public class VideoRepresent {
 	
 	
 }
+
+	
+

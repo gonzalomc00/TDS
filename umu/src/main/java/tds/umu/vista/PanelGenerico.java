@@ -3,6 +3,7 @@ package tds.umu.vista;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -20,7 +21,7 @@ import tds.video.VideoWeb;
 
 public abstract class PanelGenerico extends JPanel{
 	protected JPanel panel_lateral,panel_superior,panel_inferior,panel_3,panel_4,panel_5;
-	private JList lista_videos;
+	private JList<VideoRepresent> lista_videos;
 	protected JComboBox<String> comboBox;
 	private Reproductor reproductor;
 	private JButton bCancelar;
@@ -47,6 +48,7 @@ public abstract class PanelGenerico extends JPanel{
 		setLayout(new BorderLayout(0, 0));
 		
 		panel_lateral = new JPanel();
+		panel_lateral.setPreferredSize(new Dimension(Constantes.TAM_PANEL_LATERAL_GENRICO_ANCHO,0));
 		panel_lateral.setBackground(Color.GRAY);
 		add(panel_lateral, BorderLayout.WEST);
 		panel_lateral.setLayout(new BorderLayout(0, 0));
@@ -70,20 +72,22 @@ public abstract class PanelGenerico extends JPanel{
 		
 		panel_4=new JPanel();
 		panel_4.setBackground(Color.GRAY);
+		panel_4.setLayout(new BorderLayout(0, 0));
 		bReproducir = new JButton("Reproducir");
 		bReproducir.setAlignmentX(Component.CENTER_ALIGNMENT);
 		bReproducir.addMouseListener(
 	    		new MouseAdapter() {
 	    			public void mouseClicked(MouseEvent event) {
-	    				if(getVideoSeleccionado()!=null) {
-	    						Video v= getVideoSeleccionado();
+	    				VideoRepresent selected= (VideoRepresent) lista_videos.getSelectedValue();
+	    				if(selected!=null) {
+	    						Video v= selected.getVideo();
 	    						controlador.actualizarVideoSeleccionado(v);
 	    						cambiarPanelRep();
 	    						actualizarPanelLateral();
 	    			}	
 	    			}
 	    		});
-		panel_4.setLayout(new BorderLayout(0, 0));
+	
 		
 		
 		panel_4.add(bReproducir, BorderLayout.NORTH);
@@ -91,7 +95,7 @@ public abstract class PanelGenerico extends JPanel{
 		panel_inferior = new JPanel();
 		panel_inferior.setBackground(Color.GRAY);
 		panel_inferior.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
-		//panel_inferior.setLayout(new BorderLayout());
+		panel_inferior.setLayout(new BorderLayout());
 		
 		bCancelar = new JButton("Cancelar");
 		bCancelar.addMouseListener(
@@ -101,7 +105,7 @@ public abstract class PanelGenerico extends JPanel{
 	    			
 	    			}
 	    		});
-		panel_inferior.add(bCancelar);
+		panel_inferior.add(bCancelar,BorderLayout.NORTH);
 		panel_lateral.add(panel_inferior, BorderLayout.SOUTH);
 		
 		lista_videos = new JList<VideoRepresent>();
@@ -111,9 +115,8 @@ public abstract class PanelGenerico extends JPanel{
 	    lista_videos.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 	    lista_videos.setModel(modeloListaVideos);
 	    lista_videos.setCellRenderer(new VideoRenderer());
-	    panel_lateral.add(new JScrollPane(lista_videos),BorderLayout.CENTER);
+	    panel_lateral.add(new JScrollPane(lista_videos));
 	    
-		
 	}
 	
 	public void actualizarPanelLateral() {
@@ -142,10 +145,6 @@ public abstract class PanelGenerico extends JPanel{
 		cancelarVideo();
 	}
 	
-	
-	protected Video getVideoSeleccionado() {
-		return videos_relleno.get(lista_videos.getSelectedIndex());
-	}
 	
 	protected void setTextoEtiqueta(String texto) {
 		etiquetaSeleccion.setText(texto);

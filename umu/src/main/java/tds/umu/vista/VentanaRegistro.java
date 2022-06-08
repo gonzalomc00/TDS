@@ -30,6 +30,9 @@ import tds.umu.controlador.Controlador;
 import tds.umu.modelo.Usuario;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.border.LineBorder;
+import java.awt.Color;
+import javax.swing.border.TitledBorder;
 
 public class VentanaRegistro extends JPanel {
 	/**
@@ -50,118 +53,113 @@ public class VentanaRegistro extends JPanel {
 	 */
 	public VentanaRegistro(VentanaPrincipal prin) {
 		this.prin=prin; //TODO mirar donde se usa en el otro  fichero
-		setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		setBorder(null);
 		FlowLayout flowLayout = (FlowLayout) getLayout();
 		flowLayout.setVgap(80);
 		
-		JPanel panel = new JPanel();
-		panel.setToolTipText("");
-		panel.setBackground(SystemColor.inactiveCaptionBorder);
-		panel.setBorder(new SoftBevelBorder(BevelBorder.RAISED, SystemColor.infoText, null, null, null));
-		add(panel);
-		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		JPanel panel_datos = new JPanel();
+		panel_datos.setToolTipText("");
+		panel_datos.setBackground(SystemColor.inactiveCaptionBorder);
+		panel_datos.setBorder(null);
+		add(panel_datos);
+		panel_datos.setLayout(new BoxLayout(panel_datos, BoxLayout.Y_AXIS));
 		
-		JPanel panel_1 = new JPanel();
-		panel.add(panel_1);
-		panel_1.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+		JPanel panel_na = new JPanel();
+		panel_na.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_datos.add(panel_na);
+		panel_na.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 		
-		JLabel lblNewLabel = new JLabel("Nombre  ");
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		panel_1.add(lblNewLabel);
+		JLabel etiqueta_nombre = new JLabel("Nombre  ");
+		etiqueta_nombre.setHorizontalAlignment(SwingConstants.CENTER);
+		panel_na.add(etiqueta_nombre);
 		
 		campoNombre = new JTextField();
 		campoNombre.setAlignmentX(Component.LEFT_ALIGNMENT);
 		campoNombre.setHorizontalAlignment(SwingConstants.LEFT);
 		campoNombre.setColumns(10);
-		panel_1.add(campoNombre);
-		
-		JPanel panel_2 = new JPanel();
-		panel_1.add(panel_2);
-		panel_2.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+		panel_na.add(campoNombre);
 		
 		JLabel lblNewLabel_1 = new JLabel("Apellidos");
+		panel_na.add(lblNewLabel_1);
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		panel_2.add(lblNewLabel_1);
 		
 		campoApellidos = new JTextField();
+		panel_na.add(campoApellidos);
 		campoApellidos.setText("");
-		panel_2.add(campoApellidos);
 		campoApellidos.setColumns(10);
 		
-		JPanel panel_3 = new JPanel();
-		panel.add(panel_3);
-		panel_3.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+		JPanel panel_fecha = new JPanel();
+		panel_fecha.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_datos.add(panel_fecha);
+		panel_fecha.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 		
-		JLabel lblNewLabel_2 = new JLabel("Fecha de nacimiento");
-		panel_3.add(lblNewLabel_2);
+		JLabel etiqueta_fecha = new JLabel("Fecha de nacimiento");
+		panel_fecha.add(etiqueta_fecha);
 		
 		calendar = new JCalendar();
-		panel_3.add(calendar);
+		panel_fecha.add(calendar);
 		
-		JPanel panel_4 = new JPanel();
-		panel.add(panel_4);
-		panel_4.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+		JPanel panel_email = new JPanel();
+		panel_email.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_datos.add(panel_email);
+		panel_email.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 		
-		JLabel lblNewLabel_3 = new JLabel("Email");
-		panel_4.add(lblNewLabel_3);
+		JLabel etiqueta_email = new JLabel("Email");
+		panel_email.add(etiqueta_email);
 		
 		campoEmail = new JTextField();
 		campoEmail.setForeground(SystemColor.textInactiveText);
 		campoEmail.setText("pepico@dominio.algo");
 		campoEmail.setHorizontalAlignment(SwingConstants.CENTER);
-		panel_4.add(campoEmail);
+		panel_email.add(campoEmail);
 		campoEmail.setColumns(15);
 		
-		JPanel panel_5 = new JPanel();
-		panel.add(panel_5);
-		panel_5.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+		JPanel panel_user_contra = new JPanel();
+		panel_user_contra.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_datos.add(panel_user_contra);
+		panel_user_contra.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 		
-		JLabel lblNewLabel_4 = new JLabel("Usuario");
-		panel_5.add(lblNewLabel_4);
+		JLabel etiqueta_usuario = new JLabel("Usuario");
+		panel_user_contra.add(etiqueta_usuario);
 		
 		campoUsuario = new JTextField();
 		campoUsuario.setForeground(SystemColor.textInactiveText);
 		campoUsuario.setText("pepico45");
-		panel_5.add(campoUsuario);
+		panel_user_contra.add(campoUsuario);
 		campoUsuario.setColumns(10);
 		
-		JPanel panel_6 = new JPanel();
-		panel_5.add(panel_6);
-		panel_6.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
-		
-		JLabel lblNewLabel_5 = new JLabel("Contrase\u00F1a");
-		panel_6.add(lblNewLabel_5);
+		JLabel etiqueta_contra = new JLabel("Contrase\u00F1a");
+		panel_user_contra.add(etiqueta_contra);
 		
 		campoContra = new JPasswordField();
+		panel_user_contra.add(campoContra);
 		campoContra.setColumns(10);
-		panel_6.add(campoContra);
 		
-		JPanel panel_8 = new JPanel();
-		panel.add(panel_8);
-		panel_8.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		JPanel panel_contra2 = new JPanel();
+		panel_contra2.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_datos.add(panel_contra2);
+		panel_contra2.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		Component rigidArea = Box.createRigidArea(new Dimension(100, 20));
-		panel_8.add(rigidArea);
+		panel_contra2.add(rigidArea);
 		
-		JPanel panel_9 = new JPanel();
-		panel_8.add(panel_9);
-		
-		JLabel lblNewLabel_6 = new JLabel("Repetir Contraseña");
-		lblNewLabel_6.setHorizontalAlignment(SwingConstants.RIGHT);
-		panel_9.add(lblNewLabel_6);
+		JLabel etiqueta_contra2 = new JLabel("Repetir Contraseña");
+		panel_contra2.add(etiqueta_contra2);
+		etiqueta_contra2.setHorizontalAlignment(SwingConstants.RIGHT);
 		
 		repetirContra = new JPasswordField();
+		panel_contra2.add(repetirContra);
 		repetirContra.setColumns(10);
-		panel_9.add(repetirContra);
 		
 		Component rigidArea_1 = Box.createRigidArea(new Dimension(20, 20));
-		panel.add(rigidArea_1);
+		panel_datos.add(rigidArea_1);
 		
-		JPanel panel_7 = new JPanel();
-		FlowLayout flowLayout_1 = (FlowLayout) panel_7.getLayout();
-		flowLayout_1.setAlignOnBaseline(true);
-		flowLayout_1.setAlignment(FlowLayout.RIGHT);
-		panel.add(panel_7);
+		JPanel panel_botones = new JPanel();
+		panel_botones.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		FlowLayout fl_panel_botones = (FlowLayout) panel_botones.getLayout();
+		fl_panel_botones.setAlignOnBaseline(true);
+		fl_panel_botones.setAlignment(FlowLayout.RIGHT);
+		panel_datos.add(panel_botones);
 		
 		JButton botonRegistrarse = new JButton("Registrarse");
 		botonRegistrarse.addMouseListener(new MouseAdapter() {
@@ -170,10 +168,10 @@ public class VentanaRegistro extends JPanel {
 				
 			}
 		});
-		panel_7.add(botonRegistrarse);
+		panel_botones.add(botonRegistrarse);
 		
 		JButton botonCancelar = new JButton("Cancelar");
-		panel_7.add(botonCancelar);
+		panel_botones.add(botonCancelar);
 		botonCancelar.addActionListener(new ActionListener() {
 			
 			@Override
@@ -184,6 +182,7 @@ public class VentanaRegistro extends JPanel {
 				campoUsuario.setText("");
 				campoContra.setText("");
 				repetirContra.setText("");
+				prin.cambioPanel(Paneles.LOGIN);
 			}
 		});
 		

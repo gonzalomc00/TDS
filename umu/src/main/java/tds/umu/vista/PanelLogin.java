@@ -21,9 +21,9 @@ import javax.swing.JPasswordField;
 
 public class PanelLogin extends JPanel {
 	private JTextField textoUser;
-	private JPanel panel,panel_1,panel_2,panel_3,panel_4,panel_5,panel_6,panel_7;
+	private JPanel panel_relleno_izq,panel_relleno_sup,panel_relleno_der,panel_relleno_inf,panel_campos,panel_nombre,panel_contraseña,panel_boton;
 	private JLabel etiquetaUsuario,etiquetaContrasena;
-	private JButton aceptar,cancelar;
+	private JButton aceptar;
 	private VentanaPrincipal ventana;
 	private JPasswordField textoContrasena;
 
@@ -40,59 +40,54 @@ public class PanelLogin extends JPanel {
 	{
 		setLayout(new BorderLayout(0, 0));
 		
-		panel = new JPanel();
-		panel.setBackground(Color.GRAY);
-		panel.add(Box.createRigidArea(new Dimension(105,70)));
-		add(panel, BorderLayout.WEST);
+		panel_relleno_izq = new JPanel();
+		panel_relleno_izq.setBackground(Color.GRAY);
+		panel_relleno_izq.add(Box.createRigidArea(new Dimension(220, 70)));
+		add(panel_relleno_izq, BorderLayout.WEST);
 		
-		panel_1 = new JPanel();
-		panel_1.setBackground(Color.GRAY);
-		panel_1.add(Box.createRigidArea(new Dimension(105,70)));
-		add(panel_1, BorderLayout.NORTH);
+		panel_relleno_sup = new JPanel();
+		panel_relleno_sup.setBackground(Color.GRAY);
+		panel_relleno_sup.add(Box.createRigidArea(new Dimension(105, 150)));
+		add(panel_relleno_sup, BorderLayout.NORTH);
 		
-		panel_2 = new JPanel();
-		panel_2.setBackground(Color.GRAY);
-		panel_2.add(Box.createRigidArea(new Dimension(105,70)));
-		add(panel_2, BorderLayout.EAST);
+		panel_relleno_der = new JPanel();
+		panel_relleno_der.setBackground(Color.GRAY);
+		panel_relleno_der.add(Box.createRigidArea(new Dimension(220, 70)));
+		add(panel_relleno_der, BorderLayout.EAST);
 		
-		panel_3 = new JPanel();
-		panel_3.setBackground(Color.GRAY);
-		panel_3.add(Box.createRigidArea(new Dimension(105,100)));
-		add(panel_3, BorderLayout.SOUTH);
+		panel_relleno_inf = new JPanel();
+		panel_relleno_inf.setBackground(Color.GRAY);
+		panel_relleno_inf.add(Box.createRigidArea(new Dimension(105, 190)));
+		add(panel_relleno_inf, BorderLayout.SOUTH);
 		
-		panel_4 = new JPanel();
-		panel_4.setBorder(new LineBorder(new Color(0, 0, 0)));
-		add(panel_4, BorderLayout.CENTER);
-		panel_4.setLayout(new BoxLayout(panel_4, BoxLayout.Y_AXIS));
+		panel_campos = new JPanel();
+		panel_campos.setBorder(new LineBorder(new Color(0, 0, 0)));
+		add(panel_campos, BorderLayout.CENTER);
+		panel_campos.setLayout(new BorderLayout(0, 0));
 		
-		panel_5 = new JPanel();
-		panel_5.setPreferredSize(new Dimension(900, 50));
-	    panel_5.setMaximumSize(new Dimension(900, 50));
-		panel_4.add(panel_5);
+		panel_nombre = new JPanel();
+		panel_nombre.setPreferredSize(new Dimension(900, 50));
+		panel_campos.add(panel_nombre, BorderLayout.NORTH);
 		
 		etiquetaUsuario = new JLabel("Usuario");
-		panel_5.add(etiquetaUsuario);
+		panel_nombre.add(etiquetaUsuario);
 		
 		textoUser = new JTextField();
-		panel_5.add(textoUser);
+		panel_nombre.add(textoUser);
 		textoUser.setColumns(14);
 		
-		panel_6 = new JPanel();
-		panel_6.setPreferredSize(new Dimension(900, 50));
-	    panel_6.setMaximumSize(new Dimension(900, 50));
-		panel_4.add(panel_6);
+		panel_contraseña = new JPanel();
+		panel_campos.add(panel_contraseña, BorderLayout.CENTER);
 		
 		etiquetaContrasena = new JLabel("Contrase\u00F1a");
-		panel_6.add(etiquetaContrasena);
+		panel_contraseña.add(etiquetaContrasena);
 		
 		textoContrasena = new JPasswordField();
 		textoContrasena.setColumns(12);
-		panel_6.add(textoContrasena);
+		panel_contraseña.add(textoContrasena);
 		
-		panel_7 = new JPanel();
-		panel_7.setPreferredSize(new Dimension(900, 50));
-	    panel_7.setMaximumSize(new Dimension(900, 50));
-		panel_4.add(panel_7);
+		panel_boton = new JPanel();
+		panel_campos.add(panel_boton, BorderLayout.SOUTH);
 		
 		aceptar = new JButton("Aceptar");
 		aceptar.addMouseListener(new MouseAdapter() {
@@ -102,17 +97,14 @@ public class PanelLogin extends JPanel {
 					ventana.actualizarLogin(textoUser.getText());
 				}
 				else {
-					JOptionPane.showMessageDialog(PanelLogin.this, "Nombre de usuario o contrase�a no valido",
+					JOptionPane.showMessageDialog(PanelLogin.this, "Nombre de usuario o contraseña no valido",
 							"Error", JOptionPane.ERROR_MESSAGE);
 				
 
 				}
 			}
 		});
-		panel_7.add(aceptar);
-		
-		cancelar = new JButton("Cancelar");
-		panel_7.add(cancelar);
+		panel_boton.add(aceptar);
 	}
 
 	public void clean() {

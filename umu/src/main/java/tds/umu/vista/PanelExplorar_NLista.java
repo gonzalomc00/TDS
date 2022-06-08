@@ -47,12 +47,12 @@ public class PanelExplorar_NLista extends JPanel {
 	private JPanel panel_etiquetas,panelBusqueda,panelControl,panel_control_superior,panel_control_inferior,panel_etiquetas_disponibles,panel_lista_etiquetas_disp,panel_etiquetas_selec,panel_lista_etiquetas_selec,panel_resultados;
 	private JPanel panel_listas,panel_lista_supeior,panel_listas_inferior,panel_eliminar_lista,panel_listas_busqueda,panel_3;
 	private JButton n_busqueda,boton_buscar,bEliminar,bBuscar_lista,bAñadir,bQuitar;
-	private JLabel etiq_titulo,etiquetas_disp,b_etiquetas_selec,etiquetaSeleccion;
+	private JLabel etiq_titulo,etiquetas_disp,b_etiquetas_selec,etiquetaSeleccion,etiquetaNomLista;
 	private JTextField barra_busqueda,campoNombre;
 	private VentanaPrincipal ventana;
 	private JList lista_etiquetas,lista_etiquetas_sel,lista_videos,videos_lista;
 	private VideoWeb videoWeb=Controlador.getUnicaInstancia().getReproductor();
-
+	private List<Video> videos_encontrados;
 
 
 
@@ -62,7 +62,6 @@ public class PanelExplorar_NLista extends JPanel {
 	private DefaultListModel<String> modeloEtiqueSeleccionadas= new DefaultListModel<String>();
 	
 	//VARIABLE PROPIAS DE UNA BUSQUEDA
-	private List<Video> videos_encontrados;
 	private DefaultListModel<VideoRepresent> modeloTablaVideos= new DefaultListModel<VideoRepresent>();
 	
 	//VARIABLES PROPIAS DE LA VENTANA NUEVAS LISTAS
@@ -74,6 +73,7 @@ public class PanelExplorar_NLista extends JPanel {
 	private MouseListener event;
 	private boolean activo;
 	private Controlador controlador= Controlador.getUnicaInstancia();
+	private JPanel panel_nombre;
 	
 
 	/**
@@ -101,7 +101,7 @@ public class PanelExplorar_NLista extends JPanel {
 					JList<VideoRepresent> source=(JList<VideoRepresent>) event.getSource();
 					VideoRepresent selected = source.getSelectedValue();
 					if(selected!=null) {
-						controlador.actualizarVideoSeleccionado(videos_encontrados.get(lista_videos.getSelectedIndex()));
+						controlador.actualizarVideoSeleccionado(selected.getVideo());
 						ventana.cambioPanel(Paneles.REPRODUCTOR);
 				}
 			}	
@@ -121,6 +121,7 @@ public class PanelExplorar_NLista extends JPanel {
 	
 	private void construirPanelListaVideos() {
 		panel_listas= new JPanel();
+		panel_listas.setPreferredSize(new Dimension(Constantes.TAM_PANEL_LATERAL_ANCHO,200));
 		panel_listas.setBackground(Color.GRAY);
 		add(panel_listas, BorderLayout.WEST);
 		panel_listas.setLayout(new BorderLayout(0, 0));
@@ -155,6 +156,13 @@ public class PanelExplorar_NLista extends JPanel {
 		bEliminar = new JButton("Eliminar");
 		panel_eliminar_lista.add(bEliminar);
 		
+		panel_nombre = new JPanel();
+		panel_nombre.setBackground(Color.GRAY);
+		panel_lista_supeior.add(panel_nombre);
+		etiquetaNomLista= new JLabel("");
+		etiquetaNomLista.setForeground(Color.WHITE);
+		panel_nombre.add(etiquetaNomLista);
+		
 		panel_listas_inferior = new JPanel();
 		panel_listas_inferior.setBackground(Color.GRAY);
 		panel_listas_inferior.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
@@ -171,11 +179,6 @@ public class PanelExplorar_NLista extends JPanel {
 		bQuitar.setHorizontalAlignment(SwingConstants.LEADING);
 		panel_listas_inferior.add(bQuitar);
 		
-		panel_3 = new JPanel();
-		panel_3.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
-		panel_3.setBackground(Color.GRAY);
-		panel_listas.add(panel_3, BorderLayout.WEST);
-		panel_3.setLayout(new BorderLayout(0, 0));
 		
 		videos_lista = new JList<VideoRepresent>();
 	    videos_lista.setBackground(Color.GRAY);
@@ -199,21 +202,22 @@ public class PanelExplorar_NLista extends JPanel {
 		bEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(lv_creada==null) {
-					JOptionPane.showMessageDialog(null, "Debes tener una lista de videos seleccionada",
+					  JOptionPane.showMessageDialog(null, "Debes tener una lista de videos seleccionada",
 							"Error", JOptionPane.ERROR_MESSAGE);
 				}
 				else {
-						controlador.borrarLista(lv_creada);
-						modeloVideosLista.removeAllElements();
-						lv_creada=null;
+					int input= JOptionPane.showConfirmDialog(null,"¿Quieres eliminar la lista de videos "+ lista_videos.getName()+"?","Borrar lista",JOptionPane.YES_NO_OPTION);
+					if(input==0)
+						eliminarLista();
 				}
 			}
 		});
 		
 		bAñadir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(lv_creada!=null && lista_videos.getSelectedValue()!=null) {
-					Video v_sel=videos_encontrados.get(lista_videos.getSelectedIndex());
+				VideoRepresent selected = (VideoRepresent) lista_videos.getSelectedValue();
+				if(lv_creada!=null && selected!=null) {
+					Video v_sel= selected.getVideo();
 					controlador.añadirVideoPlaylist(lv_creada,v_sel);
 					actualizarVideosLista();
 				}
@@ -222,8 +226,9 @@ public class PanelExplorar_NLista extends JPanel {
 		
 		bQuitar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(lv_creada!=null && videos_lista.getSelectedValue()!=null) {
-					Video v_sel=lv_creada.obtenerVideoIndex(videos_lista.getSelectedIndex());
+				VideoRepresent selected = (VideoRepresent) videos_lista.getSelectedValue();
+				if(lv_creada!=null && selected!=null) {
+					Video v_sel= selected.getVideo();
 					controlador.eliminarVideoLista(lv_creada,v_sel);
 					actualizarVideosLista();
 				}
@@ -238,6 +243,7 @@ public class PanelExplorar_NLista extends JPanel {
 		    panel_etiquetas = new JPanel();
 		    panel_etiquetas.setBackground(Color.GRAY);
 		    panel_etiquetas.setBorder(new LineBorder(new Color(0, 0, 0)));
+			panel_etiquetas.setPreferredSize(new Dimension(Constantes.TAM_PANEL_LATERAL_ANCHO,0));
 		    add(panel_etiquetas, BorderLayout.EAST);
 		    panel_etiquetas.setLayout(new BoxLayout(panel_etiquetas, BoxLayout.Y_AXIS));
 		   
@@ -429,7 +435,7 @@ public class PanelExplorar_NLista extends JPanel {
 			else
 				return;
 		}
-			
+		etiquetaNomLista.setText("Lista: "+lv_creada.getNombre());
 		actualizarVideosLista();
 		}
 		else {
@@ -447,6 +453,13 @@ public class PanelExplorar_NLista extends JPanel {
 	    validate();
 		
 		
+	}
+	
+	private void eliminarLista() {
+		controlador.borrarLista(lv_creada);
+		modeloVideosLista.removeAllElements();
+		lv_creada=null;
+		etiquetaNomLista.setText("");
 	}
 	
 //FUNCIONES DE MANTENIMIENTO 
@@ -473,6 +486,7 @@ public class PanelExplorar_NLista extends JPanel {
 		
 		modeloVideosLista.removeAllElements();
 		campoNombre.setText("");
+		etiquetaNomLista.setText("");
 		
 	}
 	
