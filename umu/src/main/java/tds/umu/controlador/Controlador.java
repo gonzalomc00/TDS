@@ -69,7 +69,7 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 	private FactoriaFiltros factoriaFiltros = FactoriaFiltros.getUnicaInstancia();
 
 	private Controlador() {
-/* Inicializamos todos los componentes de AppVideo*/
+		/* Inicializamos todos los componentes de AppVideo */
 		inicializarAdaptadores();
 		inicializarCatalogos();
 		usuarioActual = null;
@@ -82,7 +82,8 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 			e.printStackTrace();
 		}
 	}
-/*Método para inicializar los adaptadores de la factoria asociada*/
+
+	/* Método para inicializar los adaptadores de la factoria asociada */
 	private void inicializarAdaptadores() {
 		FactoriaDAO factoria = null;
 		try {
@@ -93,14 +94,15 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 		adaptadorUsuario = factoria.getUsuarioDAO();
 		adaptadorVideo = factoria.getVideoDAO();
 		adaptadorListaVideos = factoria.getListaVideosDAO();
-		adaptadorEtiquetas= factoria.getEtiquetaDAO();
+		adaptadorEtiquetas = factoria.getEtiquetaDAO();
 		factoria.getEtiquetaDAO();
-	
+
 	}
 
+	/*---------------- C A T A L O G O S --------------------------*/
 
-/*Método para inicializar los catálogos */
-	
+	/* Método para inicializar los catálogos */
+
 	private void inicializarCatalogos() {
 		catalogoUsuarios = CatalogoUsuarios.getUnicaInstancia();
 		catalogoVideos = CatalogoVideos.getUnicaInstancia();
@@ -109,18 +111,36 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 
 	}
 
+	/* Métodos para comprobar si los atributos están registrados en los catálogos */
+	public boolean esUsuarioRegistrado(String login) {
+		// TODO la he cambiado un poco porque creo que habria que comprobar el correo tb
+		// ya veremos lo del correo
+		return catalogoUsuarios.getUsuario(login) != null;
 
-/*Método para obtener el controlador asociado*/
-	
+	}
+
+	public boolean esVideoRegistrado(String vtext) {
+		return catalogoVideos.getVideo(vtext) != null;
+	}
+
+	public boolean esEtiqueRegistrado(String etext) {
+		return catalogoEtiqueta.getEtiqueta(etext) != null;
+	}
+
+	public boolean esListaVideoRegistrado(String lvtext) {
+		return catalogoListaVideos.getListaVideos(lvtext) != null;
+	}
+
+	/* Método para obtener el controlador asociado */
+
 	public static Controlador getUnicaInstancia() {
 		if (unicaInstancia == null)
 			unicaInstancia = new Controlador();
 		return unicaInstancia;
 	}
 
+	/* Métodos para obtener/establecer los atributos del controlador */
 
-/*Métodos para obtener/establecer los atributos del controlador*/
-	
 	public Usuario getUsuarioActual() {
 		return usuarioActual;
 	}
@@ -142,7 +162,6 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 		return videoWeb;
 	}
 
-
 	public List<Video> getListaVideos() {
 		return catalogoVideos.getVideos();
 
@@ -156,31 +175,9 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 		return catalogoVideos.getVideo(titulo);
 	}
 
+	/*---------------- U S U A R I O  --------------------------*/
 
-
-/*Métodos para comprobar si los atributos están registrados en los catálogos*/	
-	public boolean esUsuarioRegistrado(String login) {
-		// TODO la he cambiado un poco porque creo que habria que comprobar el correo tb
-		// ya veremos lo del correo
-		return catalogoUsuarios.getUsuario(login) != null;
-
-	}
-	
-	public boolean esVideoRegistrado(String vtext) {
-		return catalogoVideos.getVideo(vtext) != null;
-	}
-
-	public boolean esEtiqueRegistrado(String etext) {
-		return catalogoEtiqueta.getEtiqueta(etext) != null;
-	}
-
-	public boolean esListaVideoRegistrado(String lvtext) {
-		return catalogoListaVideos.getListaVideos(lvtext) != null;
-	}
-
-	
-
-/*Método para comprobar si el usuario ha hecho el login correctamente*/
+	/* Método para comprobar si el usuario ha hecho el login correctamente */
 	public boolean loginUsuario(String nombre, String password) {
 		Usuario usuario = catalogoUsuarios.getUsuario(nombre);
 		if (usuario != null && usuario.getContraseña().equals(password)) {
@@ -190,7 +187,7 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 		return false;
 	}
 
-/*Método para registrar a un usuario en el sistema*/
+	/* Método para registrar a un usuario en el sistema */
 	public boolean registrarUsuario(String nombre, String apellidos, LocalDate fecha, String email, String login,
 			String contra) {
 
@@ -206,8 +203,7 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 		return true;
 	}
 
-
-/*Método para borrar a un usuario del sistema*/
+	/* Método para borrar a un usuario del sistema */
 	public boolean borrarUsuario(Usuario usuario) {
 		if (!esUsuarioRegistrado(usuario.getUsuario()))
 			return false;
@@ -218,14 +214,65 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 		return true;
 	}
 
-	
-/*Método para cargar el fichero xml que contiene los videos en el sistema*/
+	/* Método que cierra sesión en un usuario */
+	public void logout() {
+		usuarioActual = null;
+
+	}
+	// TODO REVISAR USO DE LOS SETS
+	/* Método para actualizar a premium a un usuario */
+
+	public void actualizarPremium() {
+		usuarioActual.setPremium(true);
+		adaptadorUsuario.modificarUsuario(usuarioActual);
+
+	}
+
+	/* Método para consultar si el usuario es premium */
+	public boolean esUserPremium() {
+		return usuarioActual.isPremium();
+	}
+
+	// TODO FILTROS -REVISAR-
+
+	/*
+	 * Método para comprobar si un usuario tiene un vídeo en alguna de sus playlists
+	 */
+
+	public boolean userTieneVideo(Video v) {
+		return usuarioActual.tieneVideo(v);
+	}
+
+	/* Método para cambiarle el filtro a un usuario */
+	public void cambiarFiltro(String filtro_selected) {
+		FiltroVideo filtro = factoriaFiltros.getFiltro(filtro_selected);
+		usuarioActual.setFiltro(filtro);
+	}
+	/*---------------- G E S T I O N  F I C H E R O  X M L --------------------------*/
+
+	/* Método para cargar el fichero xml que contiene los videos en el sistema */
 	public void cargarVideos(File xml) {
 		buscadorVideos.setFichero(xml);
 
 	}
 
-	/*Método que comprueba si se han subido los vídeos correctamente*/
+	/*
+	 * Método para comprobar si se ha cargado el archivo que contiene los vídeos de
+	 * forma correcta
+	 */
+
+	@Override
+	public void enteradoCambioEncendido(EventObject arg0) {
+		JFileChooser chooser = new JFileChooser();
+		int returnVal = chooser.showOpenDialog(null);
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			File currentFile = chooser.getSelectedFile();
+			cargarVideos(currentFile);
+		}
+
+	}
+
+	/* Método que comprueba si se han subido los vídeos correctamente */
 
 	@Override
 	public void enteradoSubidaVideos(EventObject arg0) {
@@ -254,37 +301,16 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 		}
 	}
 
-	/*Método para comprobar si se ha cargado el archivo que contiene los vídeos de forma correcta*/
+	/*---------------- V I D E O S--------------------------*/
 
-	@Override
-	public void enteradoCambioEncendido(EventObject arg0) {
-		JFileChooser chooser = new JFileChooser();
-		int returnVal = chooser.showOpenDialog(null);
-		if (returnVal == JFileChooser.APPROVE_OPTION) {
-			File currentFile = chooser.getSelectedFile();
-			cargarVideos(currentFile);
-		}
-
-	}
-	/*Método que cierra sesión en un usuario*/
-	public void logout() {
-		usuarioActual = null;
-
-	}
-
-/*Método para obtener los resultados de una búsqueda*/
+	/* Método para obtener los resultados de una búsqueda */
 	public List<Video> obtenerBusqueda(String text, LinkedList<String> etiquetas_Sel_Lista) {
 		List<Etiqueta> etiquetas = getEtiqFromText(etiquetas_Sel_Lista);
 		List<Video> videosMatch = catalogoVideos.getBusqueda(text, etiquetas, usuarioActual.getFiltro());
 		return videosMatch;
 	}
-	/*Método para obtener las etiquetas asociadas a una lista de etiquetas seleccionadas*/
-	private List<Etiqueta> getEtiqFromText(LinkedList<String> etiquetas_Sel_Lista) {
-		return etiquetas_Sel_Lista.stream().map(text -> catalogoEtiqueta.getEtiqueta(text))
-				.collect(Collectors.toList());
 
-	}
-	/*Método para actualizar la información asociada a un vídeo */
+	/* Método para actualizar la información asociada a un vídeo */
 
 	public void actualizarVideoSeleccionado(Video v) {
 		v.aumentarReproduccion();
@@ -294,21 +320,61 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 		adaptadorUsuario.modificarUsuario(usuarioActual);
 		setVideoActual(v);
 	}
-	/*Método para obtener las playlists asociadas a un usuario*/
+
+	/* Método para obtener una lista con los vídeos más vistos */
+
+	public List<Video> obtenerMasVisto() {
+		return catalogoVideos.getMasVistos();
+	}
+
+	/*---------------- E T I Q U E T A S --------------------------*/
+
+	/*
+	 * Método para obtener las etiquetas asociadas a una lista de etiquetas
+	 * seleccionadas
+	 */
+	private List<Etiqueta> getEtiqFromText(LinkedList<String> etiquetas_Sel_Lista) {
+		return etiquetas_Sel_Lista.stream().map(text -> catalogoEtiqueta.getEtiqueta(text))
+				.collect(Collectors.toList());
+
+	}
+
+	public void añadirEtiqueta(String text) {
+
+		if (!esEtiqueRegistrado(text)) {
+			Etiqueta etq = videoActual.crearEtiqueta(text);
+			adaptadorEtiquetas.registrarEtiqueta(etq);
+			catalogoEtiqueta.addEtiqueta(etq);
+		} else {
+			Etiqueta etq = catalogoEtiqueta.getEtiqueta(text);
+			if (!videoActual.contieneEtiqueta(etq)) {
+				videoActual.addEtiqueta(etq);
+			}
+
+		}
+
+		adaptadorVideo.modificarVideo(videoActual);
+
+	}
+
+	/*---------------- L I S T A S  D E  V I D E O S--------------------------*/
+
+	/* Método para obtener las playlists asociadas a un usuario */
 
 	public List<ListaVideos> obtenerPlayListsUser() {
 		return usuarioActual.getListas();
 	}
-	/*Método para obtener una playlist a través de su nombre*/
+	/* Método para obtener una playlist a través de su nombre */
 
 	public ListaVideos obtenerLista(String lista) {
 		return usuarioActual.getLista(lista);
 	}
 
-	/*Método para creat una playlist*/
+	/* Método para crear una playlist */
 
 	public ListaVideos crearLista(String text) {
-		//TODO No se si deberia añadir las cosas al catalogo. Creo que deberia dejarlo y asi
+		// TODO No se si deberia añadir las cosas al catalogo. Creo que deberia dejarlo
+		// y asi
 		// y que se cargue al catalogo cuando se vuelva
 		// a abrir.
 		ListaVideos lv = usuarioActual.crearLista(text);
@@ -317,7 +383,8 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 		catalogoListaVideos.addListaVideos(lv);
 		return lv;
 	}
-	/*Método para añadir videos a la playlist*/
+
+	/* Método para añadir videos a la playlist */
 
 	public void añadirVideoPlaylist(ListaVideos lv_creada, Video v_sel) {
 		lv_creada.añadirVideo(v_sel);
@@ -325,14 +392,14 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 		adaptadorListaVideos.modificarListaVideos(lv_creada);
 
 	}
-	/*Método para eliminar videos de la playlist*/
+	/* Método para eliminar videos de la playlist */
 
 	public void eliminarVideoLista(ListaVideos lv_creada, Video v_sel) {
 		lv_creada.eliminarVideo(v_sel);
 		adaptadorListaVideos.modificarListaVideos(lv_creada);
 
 	}
-	/*Método para eliminar la playlist*/
+	/* Método para eliminar la playlist */
 
 	public void borrarLista(ListaVideos lv_creada) {
 
@@ -343,63 +410,10 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 
 	}
 
-	/*Método para obtener una playlist de videos recientes del usuario*/
+	/* Método para obtener una playlist de videos recientes del usuario */
 
 	public List<Video> obtenerRecientesUser() {
 		return usuarioActual.getRecientes();
-	}
-
-	//TODO REVISAR USO DE LOS SETS
-	/*Método para actualizar a premium a un usuario*/
-
-	public void actualizarPremium() {
-		usuarioActual.setPremium(true);
-		adaptadorUsuario.modificarUsuario(usuarioActual);
-
-	}
-
-	/*Método para consultar si el usuario es premium*/
-	public boolean esUserPremium() {
-		return usuarioActual.isPremium();
-	}
-
-	/*Método para obtener una lista con los vídeos más vistos*/
-
-	public List<Video> obtenerMasVisto() {
-		return catalogoVideos.getMasVistos();
-	}
-
-	//TODO FILTROS -REVISAR-
-	
-	/*Método para comprobar si un usuario tiene un vídeo en alguna de sus playlists*/
-
-	public boolean userTieneVideo(Video v) {
-		return usuarioActual.tieneVideo(v);
-	}
-
-	/*Método para cambiarle el filtro a un usuario*/
-	public void cambiarFiltro(String filtro_selected) {
-		FiltroVideo filtro = factoriaFiltros.getFiltro(filtro_selected);
-		usuarioActual.setFiltro(filtro);
-	}
-	
-	public void añadirEtiqueta(String text) {
-		
-		if(!esEtiqueRegistrado(text)) {
-			Etiqueta etq=videoActual.crearEtiqueta(text);
-			adaptadorEtiquetas.registrarEtiqueta(etq);
-			catalogoEtiqueta.addEtiqueta(etq);
-		} else {
-			Etiqueta etq=catalogoEtiqueta.getEtiqueta(text);
-			if(!videoActual.contieneEtiqueta(etq)) {
-				videoActual.addEtiqueta(etq);
-			}
-		
-		}
-		
-		adaptadorVideo.modificarVideo(videoActual);
-		
-		
 	}
 
 }
