@@ -32,7 +32,7 @@ public class Usuario {
 	/* Filtros aplicados por el usuario */
 	private FiltroVideo filtro;
 
-	/* Método de inicialización de la clase Usuario */
+	/* Constructor de la clase Usuario */
 	public Usuario(String nombre, String apellidos, LocalDate fecha, String email, String usuario, String contraseña) {
 		this.nombre = nombre;
 		this.apellidos = apellidos;
@@ -47,8 +47,8 @@ public class Usuario {
 
 	}
 
-	/* Método para iniciar sesión en el usuario específico */
-	public boolean login(String contraseña) {
+	/* Método para comprobar la contraseña del usuario*/
+	public boolean checkLogin(String contraseña) {
 
 		return this.contraseña.equals(contraseña);
 	}
@@ -179,7 +179,7 @@ public class Usuario {
 		this.listas = listas;
 	}
 
-	/* Método para recuperar/establecer un filtro asociado */
+	/* Métodos para recuperar/establecer un filtro asociado */
 	public FiltroVideo getFiltro() {
 		return filtro;
 	}
@@ -198,10 +198,10 @@ public class Usuario {
 		recientes = v;
 	}
 
-	/* Métodos para comprobar la igualdad de clases */
+	/* Métodos para comprobar la igualdad de entidades */
 	@Override
 	public int hashCode() {
-		return Objects.hash(codigo, nombre, apellidos, fecha, email, usuario, contraseña, isPremium, listas);
+		return Objects.hash(codigo, nombre, apellidos, fecha, email, usuario, contraseña, isPremium, listas,recientes);
 	}
 
 	@Override
@@ -215,7 +215,8 @@ public class Usuario {
 		return codigo == otro.getCodigo() && nombre.equals(otro.getNombre()) && apellidos.equals(otro.getApellidos())
 				&& fecha.isEqual(otro.getFecha()) && email.equals(otro.getEmail()) && usuario.equals(otro.getUsuario())
 				&& contraseña.equals(otro.getContraseña()) && isPremium == otro.isPremium()
-				&& listas.equals(otro.listas);
+				&& listas.equals(otro.listas)
+				&& recientes.equals(otro.recientes);
 
 	}
 
