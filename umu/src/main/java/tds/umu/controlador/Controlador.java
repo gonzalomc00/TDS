@@ -76,11 +76,7 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 		videoWeb = new VideoWeb();
 		buscadorVideos = new ComponenteBuscadorVideos();
 		buscadorVideos.addVideosListener(this);
-		try {
-			FactoriaDAO.getInstancia();
-		} catch (DAOException e) {
-			e.printStackTrace();
-		}
+		
 	}
 
 	/* Método para inicializar los adaptadores de la factoria asociada */
@@ -94,9 +90,14 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 		adaptadorUsuario = factoria.getUsuarioDAO();
 		adaptadorVideo = factoria.getVideoDAO();
 		adaptadorListaVideos = factoria.getListaVideosDAO();
+<<<<<<< HEAD
 		adaptadorEtiquetas = factoria.getEtiquetaDAO();
 		factoria.getEtiquetaDAO();
 
+=======
+		adaptadorEtiquetas= factoria.getEtiquetaDAO();
+	
+>>>>>>> main
 	}
 
 	/*---------------- C A T A L O G O S --------------------------*/
@@ -292,7 +293,10 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 					}
 				}
 
-				Video vid = new Video(v.getURL(), v.getTitulo(), etiquetas);
+				Video vid = new Video(v.getURL(), v.getTitulo());
+				for(Etiqueta etq: etiquetas) {
+					vid.addEtiqueta(etq);
+				}
 				adaptadorVideo.registrarVideo(vid);
 				// Volvemos a reiniciar los catalogos para tener los nuevos videos y las nuevas
 				// etiquetas que hayan podido surgir

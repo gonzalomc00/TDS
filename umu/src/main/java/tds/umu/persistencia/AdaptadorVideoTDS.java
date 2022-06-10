@@ -114,7 +114,10 @@ public class AdaptadorVideoTDS  implements IAdaptadorVideoDAO {
 		etiquetas= obtenerEtiquetasDesdeCodigos(servPersistencia.recuperarPropiedadEntidad(eVideo, "etiquetas"));
 		
 		
-		Video video= new Video(url,titulo,etiquetas);
+		Video video= new Video(url,titulo);
+		for(Etiqueta et: etiquetas) {
+			video.addEtiqueta(et);
+		}
 		video.setNumReproducciones(numReproducciones);
 		video.setCodigo(codigo);
 		return video;

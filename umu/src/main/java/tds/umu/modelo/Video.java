@@ -1,5 +1,6 @@
 package tds.umu.modelo;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -19,10 +20,10 @@ public class Video {
 	private int codigo;
 
 	/* Método para inicializar un objeto Vídeo */
-	public Video(String url, String titulo, List<Etiqueta> etiquetas) {
+	public Video(String url, String titulo) {
 		this.url = url;
 		this.titulo = titulo;
-		this.etiquetas = etiquetas;
+		this.etiquetas = new LinkedList<Etiqueta>();
 		this.numReproducciones = 0;
 	}
 
