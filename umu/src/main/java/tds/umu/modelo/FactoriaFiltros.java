@@ -1,8 +1,11 @@
 package tds.umu.modelo;
 
 
-/*Usamos el patrón Factoría para poder generar varios filtros de la manera más eficiente posible.
- * Partimos de la factoría, y según el tipo de filtro derivamos a su respectiva clase.*/
+/*Usamos el patrón factoría para hacer uso de la creación de los objetos utilizados para filtrar los videos por un usuario.
+ * A partir del nombre del filtro, esta clase nos devolverá el objeto adecuado en cada momento. 
+ * 
+ * Como solo puede haber una de estas factorías, además implementa el patrón Singleton. 
+ * */
 public class FactoriaFiltros {
 	private static FactoriaFiltros unicaInstancia=null;
 		
@@ -15,7 +18,7 @@ public class FactoriaFiltros {
 		return unicaInstancia;
 	}
 	
-	/*Creamos el objeto filtro correspondiente dependiendo del filtro seleccionado*/
+	/*Creamos el objeto filtro correspondiente dependiendo del nombre del filtro seleccionado*/
 	public FiltroVideo getFiltro(String filtro) {
 		if(filtro.equalsIgnoreCase("NOFILTRO"))
 			return new NoFiltro();

@@ -1,6 +1,5 @@
 package tds.umu.modelo;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,25 +9,16 @@ import tds.umu.persistencia.DAOException;
 import tds.umu.persistencia.FactoriaDAO;
 import tds.umu.persistencia.IAdaptadorEtiquetaDAO;
 
-
-
-//TODO DEBERIA METERSE EN EL CATALOGO POR NOMBRE O POR CODIGO??
 public class CatalogoEtiquetas {
-	
-	
 	private Map<String,Etiqueta> etiquetas;
 	private static CatalogoEtiquetas unicaInstancia= new CatalogoEtiquetas();
-	/*Usamos el patrón FactoríaDAO*/
 	private FactoriaDAO dao;
-	/*Usamos diferentes adaptadores para cumplir con el patrón Adaptador y FactoríaDAO*/
 	private IAdaptadorEtiquetaDAO adaptadorEtiqueta;
-	
-	
-	
-	
-	
-	/*Esta clase mantiene todas las etiquetas usadas en memoria*/
-	/**/
+
+	/*
+	 * Esta clase mantiene en memoria todas las etiquetas usadas. De esta forma no hace falta entrar todo el rato a la base
+	 * de datos a obtener  los objetos. 
+	 */
 	private CatalogoEtiquetas() {
 		try {
 			dao= FactoriaDAO.getInstancia(FactoriaDAO.DAO_TDS);
@@ -38,13 +28,9 @@ public class CatalogoEtiquetas {
 		} catch(DAOException eDAO) {
 			eDAO.printStackTrace();
 		}
-		
-		
 	}
-	
-	//TODO revisar tema del singleton
-	
-	/*Devuelve el Catálogo*/
+
+	/*Devuelve el Catálogo - Patrón Singleton*/
 	public static CatalogoEtiquetas getUnicaInstancia() {
 		return unicaInstancia;
 	}
@@ -60,13 +46,13 @@ public class CatalogoEtiquetas {
 		return lista;
 	}
 
-	/*Devuelve una etiqueta específica llamada "nombre"*/
+	/*Devuelve una etiqueta según su nombre*/
 	public Etiqueta getEtiqueta(String nombre) {
 		return etiquetas.get(nombre);
 	}
 	
 	
-	/*Añade una etiqueta pasada por parámetro*/
+	/*Añade al catálogo una etiqueta pasada por parámetro*/
 	public void addEtiqueta(Etiqueta etq) {
 		etiquetas.put(etq.getNombre(), etq);
 	}
@@ -77,7 +63,7 @@ public class CatalogoEtiquetas {
 	}
 	
 	
-	/*Carga el catálogo de etiquetas en memoria*/
+	/*Carga el catálogo de etiquetas en memoria utilizando el adaptador*/
 	private void cargarCatalogo() throws DAOException{
 		List<Etiqueta> etiquetasBD= adaptadorEtiqueta.recuperarTodosEtiquetas();
 		for(Etiqueta etq: etiquetasBD)

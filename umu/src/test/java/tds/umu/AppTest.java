@@ -135,7 +135,7 @@ public class AppTest
 	   assertTrue(lv.equals(lv2));
    }
 
- 
+ /*
    public void pruebaRecuperarLista() {
 	   
 	   CatalogoListasVideos clv=CatalogoListasVideos.getUnicaInstancia();
@@ -146,7 +146,7 @@ public class AppTest
 	   
    }
    
-
+*/
    public void pruebaListaVideo() {
 	  
 	  idao= factoria.getUsuarioDAO();
@@ -174,6 +174,7 @@ public class AppTest
 	  assertTrue(true);
    }
    
+   /*
    
    public void añadirVidaLista() {
 	   lvdao=factoria.getListaVideosDAO();
@@ -190,6 +191,6 @@ public class AppTest
    }
 
     
-    
+ */   
     
 }

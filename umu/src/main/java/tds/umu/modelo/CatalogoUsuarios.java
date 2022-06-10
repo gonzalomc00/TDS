@@ -14,11 +14,13 @@ public class CatalogoUsuarios {
 
 	private Map<String,Usuario> Usuarios; 
 	private static CatalogoUsuarios unicaInstancia = new CatalogoUsuarios();
-	
 	private FactoriaDAO dao;
 	private IAdaptadorUsuarioDAO adaptadorUsuario;
 	
-	/*Esta clase contiene el Catálogo de todos los usuarios almacenados en memoria*/
+	/*
+	 * Esta clase mantiene en memoria todos los usuarios registrados. De esta forma no hace falta entrar todo el rato a la base
+	 * de datos a obtener  los objetos. 
+	 */
 	private CatalogoUsuarios() {
 		try {
   			dao = FactoriaDAO.getInstancia(FactoriaDAO.DAO_TDS);
@@ -30,7 +32,7 @@ public class CatalogoUsuarios {
   		}
 	}
 	
-	/*Devuelve la instancia del Catálogo */
+	/*Devuelve la instancia del Catálogo - Patrón Singleton*/
 	public static CatalogoUsuarios getUnicaInstancia(){
 		return unicaInstancia;
 	}
@@ -42,8 +44,9 @@ public class CatalogoUsuarios {
 			lista.add(c);
 		return lista;
 	}
-	/*Devuelve un objeto de un Usuario en específico*/
 	
+	
+	/*Devuelve un Usuario en específico mediante su nombre de usuario*/
 	public Usuario getUsuario(String usuario) {
 		return Usuarios.get(usuario);
 	}
@@ -59,7 +62,7 @@ public class CatalogoUsuarios {
 		Usuarios.remove(user.getUsuario());
 	}
 	
-	/*Método para recuperar todos en memoria*/
+	/*Método para recuperar todos los usuarios en memoria utilizando el adaptador*/
 	private void cargarCatalogo() throws DAOException {
 		 List<Usuario> UsuariosBD = adaptadorUsuario.recuperarTodosUsuarios();
 		 for (Usuario user: UsuariosBD) {

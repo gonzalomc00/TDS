@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/*Clase que contiene la funcionalidad asociada a un vídeo , además de sus atributos básicos como
- * su url, su titulo, el número de reproducciones, las etiquetas asociadas y su código*/
+/*Clase que contiene la funcionalidad deun vídeo , además de sus atributos básicos como
+ * su url, su titulo, el número de reproducciones, sus etiquetas y su código*/
 public class Video {
 	/* URL asociada al video */
 	private String url;
@@ -19,7 +19,7 @@ public class Video {
 	/* Código único para cada video */
 	private int codigo;
 
-	/* Método para inicializar un objeto Vídeo */
+	/* Constructor de la clase Vídeo */
 	public Video(String url, String titulo) {
 		this.url = url;
 		this.titulo = titulo;
@@ -27,8 +27,47 @@ public class Video {
 		this.numReproducciones = 0;
 	}
 
-	/* Métodos get/set para los atributos asociados al vídeo */
+	/* Método para incrementar las reproducciones si reproducimos el vídeo */
+	public void aumentarReproduccion() {
+		this.numReproducciones++;
+	}
 
+    /* La clase vídeo será la encargada de crear las etiquetas en caso de que no existan, ya que es quien las contiene. */
+	public Etiqueta crearEtiqueta(String text) {
+		Etiqueta etq= new Etiqueta(text);
+		addEtiqueta(etq);
+		return etq;
+	}
+	/* Método para asociar una etiqueta ya existente a un vídeo */
+	public void addEtiqueta(Etiqueta etq) {
+		etiquetas.add(etq);
+
+	}
+
+	/* Método para comprobar si un vídeo contiene una etiqueta */
+	public boolean containsEtiqueta(List<Etiqueta> etiquetas) {
+
+		for (Etiqueta et : etiquetas) {
+			if (this.etiquetas.contains(et))
+				return true;
+		}
+
+		return false;
+	}
+
+	/* Método para obtener los nombres de las etiquetas del video */
+	public List<String> obtenerEtiquetas() {
+		return etiquetas.stream().map(etq -> etq.getNombre()).collect(Collectors.toList());
+	}
+
+	/* Método para comprobar si un vídeo contiene una etiqueta. */
+	public boolean contieneEtiqueta(Etiqueta etq) {
+		return etiquetas.contains(etq);
+	}
+
+	
+	/* 		MÉTODOS GET Y SET	*/
+	
 	public String getUrl() {
 		return url;
 	}
@@ -52,12 +91,8 @@ public class Video {
 	public void setNumReproducciones(int numReproducciones) {
 		this.numReproducciones = numReproducciones;
 	}
-
-	/* Método para incrementas las reproducciones si reproducimos el vídeo */
-	public void aumentarReproduccion() {
-		this.numReproducciones++;
-	}
-
+	
+	
 	public List<Etiqueta> getEtiquetas() {
 		return etiquetas;
 	}
@@ -75,40 +110,6 @@ public class Video {
 	}
 
 	
-	/*--------------F U N C I O N A L I D A D----------------------*/
-	
-    /*Si una etiqueta no existe entonces la creamos y la añadimos */
-	public Etiqueta crearEtiqueta(String text) {
-		Etiqueta etq= new Etiqueta(text);
-		addEtiqueta(etq);
-		return etq;
-	}
-	/* Método para asociar una etiqueta a un vídeo */
-	public void addEtiqueta(Etiqueta etq) {
-		etiquetas.add(etq);
-
-	}
-
-	/* Método para comprobar si un vídeo contiene una etiqueta */
-	public boolean containsEtiqueta(List<Etiqueta> etiquetas) {
-
-		for (Etiqueta et : etiquetas) {
-			if (this.etiquetas.contains(et))
-				return true;
-		}
-
-		return false;
-	}
-
-	/* Método para obtener las etiquetas asociadas a un vídeo */
-	public List<String> obtenerEtiquetas() {
-		return etiquetas.stream().map(etq -> etq.getNombre()).collect(Collectors.toList());
-	}
-	
-	public boolean contieneEtiqueta(Etiqueta etq) {
-		return etiquetas.contains(etq);
-	}
-
 	/* Métodos para comprobar la igualdad de dos objetos */
 	@Override
 	public int hashCode() {

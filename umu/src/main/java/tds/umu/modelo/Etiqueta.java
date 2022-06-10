@@ -2,7 +2,7 @@ package tds.umu.modelo;
 
 import java.util.Objects;
 
-/*La clase Etiqueta se caracteriza por tener un nombre y un código. Estos se usan para
+/*La clase Etiqueta se caracteriza por tener un nombre y un código. Estas se usan para
  * clasificar a los vídeos en diferentes temas.
  * */
 public class Etiqueta {

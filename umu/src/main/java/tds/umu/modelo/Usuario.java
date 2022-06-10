@@ -7,7 +7,7 @@ import java.util.Objects;
 
 /*Clase que contiene la funcionalidad de un usuario de nuestra AppVideo.
  * Este se compone de unos atributos tales como sus datos, sus playlists, si es premium o no y
- * si aplica filtros o no*/
+ * el filtro que aplica en tiempo de ejecución.*/
 public class Usuario {
 	/* Código único y asociado a un usuario */
 	private Integer codigo;
@@ -25,14 +25,14 @@ public class Usuario {
 	private String contraseña;
 	/* Si tiene funcionalidad premium o no */
 	private boolean isPremium;
-	/* Playlists asociadas al usuario */
+	/* Playlists del usuario */
 	private List<ListaVideos> listas;
 	/* Vídeos más recientes reproducidos por el usuario */
 	private LinkedList<Video> recientes;
-	/* Filtros aplicados por el usuario */
+	/* Filtro actual aplicado por el usuario */
 	private FiltroVideo filtro;
 
-	/* Constructor de la clase Usuario */
+	/* Constructor de la clase Usuario. Por defecto, un usuario tiene como filtro "NOFILTRO" */
 	public Usuario(String nombre, String apellidos, LocalDate fecha, String email, String usuario, String contraseña) {
 		this.nombre = nombre;
 		this.apellidos = apellidos;
@@ -65,12 +65,12 @@ public class Usuario {
 		this.listas.add(lv);
 	}
 
-	/* Método para eliminar una playlist de las asociadas al usuario */
+	/* Método para eliminar una playlist del usuario */
 	public void eliminarLista(ListaVideos lv) {
 		this.listas.remove(lv);
 	}
 
-	/* Método para recuperar una lista asociada al usuario */
+	/* Método para recuperar una lista del usuario mediante su nombre */
 	public ListaVideos getLista(String lista) {
 		for (ListaVideos lv : listas) {
 			if (lv.getNombre().equals(lista))
@@ -79,11 +79,13 @@ public class Usuario {
 		return null;
 	}
 
-	/* Método para añadir al usuario una playlist reciente al usuairo */
+	/* Método para añadir al usuario un video en su lista de videos recientes. 
+	 * Su funcionamiento es el siguiente: si un usuario visualiza su video más reciente más de una vez seguida, este no se volverá a introducir en la lista de recientes.
+	 * Si un usuario ve sus videos recientes de manera intercalada, entonces si se añadirá de forma repetida. Sigue un funcionamiento similar al de páginas como Youtube. 
+	 */
 	public void añadirReciente(Video v) {
-		// Si el video que vamos a ver ahora coincide con el último que hemos visto, no
-		// se repite en la lista de recientes. Hacemos una comprobación inicial por si es el primer video que ve un usuario
-		
+
+		//Comprobación inicial necesaria por si es el primer vídeo que ve un usuario. 
 		if(recientes.size()!=0) {
 		if (!v.equals(recientes.getFirst())) {
 			recientes.addFirst(v);
@@ -100,8 +102,7 @@ public class Usuario {
 	public boolean tieneVideo(Video v) {
 
 		/*
-		 * Usamos un stream que recorre todos las listas y va comprobando la igualidad
-		 * por cada vídeo que contiene esa playlist
+		 * Usamos un stream que realiza un flatmap de todos los videos de un usuario. Entonces comprueba si alguno coincide con el que buscamos. 
 		 */
 		return listas.stream().flatMap(l -> l.getVideos().stream()).anyMatch(vid -> vid.equals(v));
 	}
@@ -179,7 +180,7 @@ public class Usuario {
 		this.listas = listas;
 	}
 
-	/* Métodos para recuperar/establecer un filtro asociado */
+	/* Métodos para recuperar/establecer un filtro */
 	public FiltroVideo getFiltro() {
 		return filtro;
 	}
@@ -188,12 +189,11 @@ public class Usuario {
 		this.filtro = filtro;
 	}
 
-	/* Método para recuperar los vídeos recientes asociados al usuario */
+	/* Método para recuperar los vídeos recientes del usuario */
 	public List<Video> getRecientes() {
 		return recientes;
 	}
 
-	/* Método para asociar una playlist de recientes al usuario */
 	public void setRecientes(LinkedList<Video> v) {
 		recientes = v;
 	}

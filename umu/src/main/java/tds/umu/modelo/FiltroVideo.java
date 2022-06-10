@@ -1,5 +1,8 @@
 package tds.umu.modelo;
-/*Clase que comprueba que el vídeo sea correcto*/
+
+/*
+ * Interfaz utilizada por los filtros. 
+ */
 public interface FiltroVideo {
 	
 	public boolean esVideoOK(Video v);

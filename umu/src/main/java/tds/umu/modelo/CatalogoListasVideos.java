@@ -17,7 +17,13 @@ public class CatalogoListasVideos {
 	private FactoriaDAO dao;
 	private IAdaptadorListaVideosDAO adaptadorListaVideos;
 	
-	/*Este catálogo mantiene en memoria todas las listas de vídeos*/
+	/*
+	 * Esta clase mantiene en memoria todas las listas de video de todos los usuarios. De esta forma no hace falta entrar todo el rato a la base
+	 * de datos a obtener  los objetos. 
+	 * 
+	 * Como pueden haber varias listas de video con el mismo nombre, pertenecientes a usuarios distintos, entonces el mapa de las listas estará indexado mediante
+	 * el código de las listas y no por su nombre. 
+	 */
 	private CatalogoListasVideos() {
 		try {
 			dao= FactoriaDAO.getInstancia(FactoriaDAO.DAO_TDS);
@@ -31,7 +37,6 @@ public class CatalogoListasVideos {
 		
 	}
 	
-	//TODO revisar tema del singleton
 	/*Devuelve la instancia del Catálogo*/
 	public static CatalogoListasVideos getUnicaInstancia() {
 		return unicaInstancia;
@@ -46,12 +51,9 @@ public class CatalogoListasVideos {
 	}
 
 	/*Devuelve una playlist específica pasando por parámetro su código*/
-	//TODO mmmm revisar este warning
-	public ListaVideos getListaVideos(String codigo) {
+	public ListaVideos getListaVideos(int codigo) {
 		return listasvideos.get(codigo);
 	}
-	
-	//TODO deberia meterlos con codigo o con titulo?
 	
 	/*Método para añadir una playlist al catálogo*/
 	public void addListaVideos(ListaVideos lv) {
@@ -63,7 +65,7 @@ public class CatalogoListasVideos {
 		listasvideos.remove(lv.getCodigo());
 	}
 	
-	/*Método para cargar el catálogo en memoria*/
+	/*Método para cargar el catálogo en memoria utilizando el adaptador*/
 	private void cargarCatalogo() throws DAOException{
 		List<ListaVideos> lvideosBD= adaptadorListaVideos.recuperarTodosListasVideos();
 		for(ListaVideos lv: lvideosBD)

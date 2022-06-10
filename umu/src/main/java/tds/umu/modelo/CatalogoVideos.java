@@ -20,7 +20,10 @@ public class CatalogoVideos {
 	private FactoriaDAO dao;
 	private IAdaptadorVideoDAO adaptadorVideo;
 	
-	/*Clase que almacena todos los vídeos en memoria*/
+	/*
+	 * Esta clase mantiene en memoria todos los videos almacenados. De esta forma no hace falta entrar todo el rato a la base
+	 * de datos a obtener  los objetos. 
+	 */
 	private CatalogoVideos() {
 		try {
 			dao= FactoriaDAO.getInstancia(FactoriaDAO.DAO_TDS);
@@ -34,14 +37,12 @@ public class CatalogoVideos {
 		
 	}
 	
-	//TODO revisar tema del singleton
-	
-	/*Método para recuperar el catálogo*/
+	/*Método para recuperar el catálogo - Patrón Singleton*/
 	public static CatalogoVideos getUnicaInstancia() {
 		return unicaInstancia;
 	}
 	
-	/*Método que recupera una lista de vídeos almacenados en memoria*/
+	/*Método que recupera todos los vídeos almacenados en memoria*/
 	public List<Video> getVideos(){
 		ArrayList<Video> lista= new ArrayList<Video>();
 		for(Video v: videos.values())
@@ -51,15 +52,17 @@ public class CatalogoVideos {
 		return lista;
 	}
 
-	/*Método que recupera un vídeo en específico a través de su código*/
-	public Video getVideo(String codigo) {
-		return videos.get(codigo);
+	/*Método que recupera un vídeo en específico a través de su titulo*/
+	public Video getVideo(String titulo) {
+		return videos.get(titulo);
 	}	
 	
 	
 	/*Método que recupera una lista con los vídeos más vistos*/
 	public List<Video> getMasVistos() {
-		/*Usamos un stream para ir comparando el número de reproducciones*/
+		/*
+		 * Usamos un stream para ir comparando el número de reproducciones de todos los videos del catálogo. 
+		 */
 		List<Video> resultado=videos.values().stream()
 		.sorted(Comparator.comparingInt(Video::getNumReproducciones).reversed())
 		.limit(Constantes.TOP)
@@ -69,9 +72,12 @@ public class CatalogoVideos {
 	}
 	
 	
-	/*Método para recuperar una lista de vídeos que corresponden a una búsqueda en específico*/
+	/*
+	 *  Método para recuperar una lista de vídeos que corresponden a una búsqueda en específico. Para realizar la búsqueda se utiliza
+	 * una cadena de texto que filtra el título del vídeo, una lista de etiquetas que deben contener(en su totalidad o parcial) los vídeos encontrados
+	 * y, además, se le aplica el filtro que tenga actualmente seleccionado el usuario.  
+	 */
 	public List<Video> getBusqueda(String text, List<Etiqueta> etiquetas, FiltroVideo filtroVideo) {
-		
 		
 		List<Video> resultado= new LinkedList<Video>();
 		for(String vt: videos.keySet()) {
@@ -91,9 +97,6 @@ public class CatalogoVideos {
 		
 		return resultado;
 	}
-	
-	//TODO deberia meterlos con codigo o con titulo?
-	
 	
 	/*Método para añadir un vídeo al catálogo*/
 	public void addVideo(Video v) {
