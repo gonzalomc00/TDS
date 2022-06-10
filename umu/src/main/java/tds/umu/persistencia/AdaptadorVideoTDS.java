@@ -30,7 +30,7 @@ public class AdaptadorVideoTDS  implements IAdaptadorVideoDAO {
 	}
 	
 	
-	
+	/*Registramos un vídeo*/
 	@Override
 	public void registrarVideo(Video video) {
 		Entidad eVideo=null;
@@ -56,7 +56,7 @@ public class AdaptadorVideoTDS  implements IAdaptadorVideoDAO {
 	video.setCodigo(eVideo.getId());
 	
 	}
-
+	/*Borramos un video*/
 	@Override
 	public void borrarVideo(Video video) {
 		//PROBABLEMENTE ESTÉ MAL, SUPER REVISAR
@@ -65,7 +65,7 @@ public class AdaptadorVideoTDS  implements IAdaptadorVideoDAO {
 		eVideo= servPersistencia.recuperarEntidad(video.getCodigo());
 		servPersistencia.borrarEntidad(eVideo);
 	}
-
+/*Modificamos un vídeo */
 	@Override
 	public void modificarVideo(Video video) {
 		Entidad eVideo= servPersistencia.recuperarEntidad(video.getCodigo());
@@ -92,7 +92,8 @@ public class AdaptadorVideoTDS  implements IAdaptadorVideoDAO {
 		}
 		
 	}
-
+	/*Recuperamos un vídeo a partir de su codigo */
+	
 	@Override
 	public Video recuperarVideo(int codigo) {
 		
@@ -122,7 +123,8 @@ public class AdaptadorVideoTDS  implements IAdaptadorVideoDAO {
 		video.setCodigo(codigo);
 		return video;
 	}
-
+	/*Recuperamos todos los vídeos*/
+	
 	@Override
 	public List<Video> recuperarTodosVideos() {
 		
@@ -135,6 +137,7 @@ public class AdaptadorVideoTDS  implements IAdaptadorVideoDAO {
 		
 		return videos;
 	}
+	/*-----FUNCIONES AUXILIARES-------*/
 	
 	private String obtenerCodigosEtiquetas(List<Etiqueta> etiquetas) {
 		String lineas="";
@@ -143,7 +146,7 @@ public class AdaptadorVideoTDS  implements IAdaptadorVideoDAO {
 		return lineas.trim();
 		
 	}
-	
+	/*Obtenemos etiquetas a partir de codigos*/
 	private List<Etiqueta> obtenerEtiquetasDesdeCodigos(String lineas){
 		List<Etiqueta> etiquetas= new LinkedList<Etiqueta>();
 		StringTokenizer strTok= new StringTokenizer(lineas," ");

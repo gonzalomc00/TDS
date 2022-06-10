@@ -90,14 +90,13 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 		adaptadorUsuario = factoria.getUsuarioDAO();
 		adaptadorVideo = factoria.getVideoDAO();
 		adaptadorListaVideos = factoria.getListaVideosDAO();
-<<<<<<< HEAD
+
 		adaptadorEtiquetas = factoria.getEtiquetaDAO();
 		factoria.getEtiquetaDAO();
 
-=======
+
 		adaptadorEtiquetas= factoria.getEtiquetaDAO();
-	
->>>>>>> main
+
 	}
 
 	/*---------------- C A T A L O G O S --------------------------*/

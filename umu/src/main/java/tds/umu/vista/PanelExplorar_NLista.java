@@ -49,7 +49,6 @@ public class PanelExplorar_NLista extends JPanel {
 	private JButton n_busqueda,boton_buscar,bEliminar,bBuscar_lista,bAñadir,bQuitar;
 	private JLabel etiq_titulo,etiquetas_disp,b_etiquetas_selec,etiquetaSeleccion,etiquetaNomLista;
 	private JTextField barra_busqueda,campoNombre;
-	private VentanaPrincipal ventana;
 	private JList lista_etiquetas,lista_etiquetas_sel,lista_videos,videos_lista;
 	private VideoWeb videoWeb=Controlador.getUnicaInstancia().getReproductor();
 	private List<Video> videos_encontrados;
@@ -91,7 +90,6 @@ public class PanelExplorar_NLista extends JPanel {
 	 * Luego en el controlador si que podemos hacer el paso de nombre de etiqueta a etiqueta
 	 */
 	public PanelExplorar_NLista(VentanaPrincipal ventana) {
-		this.ventana=ventana;
 		this.activo=false;
 		crearPantalla();
 		
@@ -109,6 +107,7 @@ public class PanelExplorar_NLista extends JPanel {
 		};
 	}
 
+	/*Metodo por el cual vamos a crear la pantalla de explorar junto con sus otras. */
 	private void crearPantalla() {
 		setBackground(Color.LIGHT_GRAY);
 	    setLayout(new BorderLayout(0, 0));
@@ -119,6 +118,7 @@ public class PanelExplorar_NLista extends JPanel {
 	    
 	}
 	
+	/*Método para construir la vista del panel que contiene las listas de vídeos*/
 	private void construirPanelListaVideos() {
 		panel_listas= new JPanel();
 		panel_listas.setPreferredSize(new Dimension(Constantes.TAM_PANEL_LATERAL_ANCHO,200));
@@ -238,7 +238,7 @@ public class PanelExplorar_NLista extends JPanel {
 		
 		
 	}
-
+/*Método para construir la vista del panel que contiene las etiquetas*/
 	public void construirPanelEtiquetas() {
 		    panel_etiquetas = new JPanel();
 		    panel_etiquetas.setBackground(Color.GRAY);
@@ -326,7 +326,7 @@ public class PanelExplorar_NLista extends JPanel {
 		    
 	}
 	
-	
+	/*Método para construir la vista que contiene el panel de búsqueda*/
 	public void construirPanelBusqueda() {
 		panelBusqueda = new JPanel();
 	    panelBusqueda.setBackground(Color.GRAY);
@@ -399,7 +399,9 @@ public class PanelExplorar_NLista extends JPanel {
 
 	}
 		
-	//METODOS DE EXPLORAR Y BUSQUEDA
+	//METODOS DE PANEL EXPLORAR Y BUSQUEDA
+	
+	/*Métodos para actualzar los campos modificados*/
 	public void actualizarListaVideos() {
 		modeloTablaVideos.removeAllElements();
 	    videos_encontrados= controlador.obtenerBusqueda(barra_busqueda.getText(),etiquetas_Sel_Lista);
@@ -419,8 +421,9 @@ public class PanelExplorar_NLista extends JPanel {
 		
 	}
 	
-	//METODOS DE NUEVA LISTA
+	//METODOS DE PANEL NUEVA LISTA
 
+	/*Métodos para actualzar los campos modificados*/
 	private void actualizacionPlaylist() {
 		if(!campoNombre.getText().equals("")) {
 		lv_creada=controlador.obtenerLista(campoNombre.getText());
@@ -454,7 +457,7 @@ public class PanelExplorar_NLista extends JPanel {
 		
 		
 	}
-	
+	/*Método para eliminar listas de vídeos*/
 	private void eliminarLista() {
 		controlador.borrarLista(lv_creada);
 		modeloVideosLista.removeAllElements();
@@ -462,7 +465,7 @@ public class PanelExplorar_NLista extends JPanel {
 		etiquetaNomLista.setText("");
 	}
 	
-//FUNCIONES DE MANTENIMIENTO 
+/*------------------funciones auxiliares de mantenimiento-------------*/
 	public void modoExplorar() {
 		panel_listas.setVisible(false);
 		panel_etiquetas.setVisible(true);

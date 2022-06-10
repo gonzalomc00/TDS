@@ -19,7 +19,7 @@ import beans.Propiedad;
 
 
 
-//Usa un pool para evitar problemas doble referencia con ventas
+//Usamos un pool para evitar problemas doble referencia con ventas
 public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 	private static ServicioPersistencia servPersistencia;
 	private static AdaptadorUsuarioTDS unicaInstancia = null;
@@ -94,7 +94,7 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 		Entidad eUsuario = servPersistencia.recuperarEntidad(usuario.getCodigo());
 		servPersistencia.borrarEntidad(eUsuario);
 	}
-
+/*Modificamos un usuario */
 	public void modificarUsuario(Usuario usuario) {
 
 		Entidad eUsuario = servPersistencia.recuperarEntidad(usuario.getCodigo());
@@ -196,13 +196,12 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 			usuario.setPremium(true);
 		}
 		
-		// OJO !!!!!!!!! NO SE SI SE PUEDE HACER ESTO
 		usuario.setRecientes((LinkedList<Video>)recientes);
 		usuario.setCodigo(codigo);
 		return usuario;
 	}
 	
-
+/*Recuperar todos los usuarios de la base de datos*/
 
 	public List<Usuario> recuperarTodosUsuarios() {
 
@@ -215,12 +214,15 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 		return usuarios;
 	}
 
+	/*-------------------FUNCIONES AUXILIARES------------------*/
+	/*Obtenemos los codigos a partir de una lista de videos*/
 	private String obtenerCodigosListasVideos(List<ListaVideos> lvideos) {
 		String lineas="";
 		for(ListaVideos lv: lvideos)
 			lineas+= lv.getCodigo()+" ";
 		return lineas.trim();
 	}
+	/*Obtenemos una lista de videos a partir de sus codigos*/
 	
 	private List<ListaVideos> obtenerListaVideosDesdeCodigos(String lineas){
 		List<ListaVideos> listasvideos= new LinkedList<ListaVideos>();
@@ -232,6 +234,7 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
  		
 		return listasvideos;
 	}
+	/*Obtenemos los codigos de los videos recientes*/
 	
 	private String obtenerCodigosRecientes(List<Video> recientes) {
 		String lineas="";
@@ -239,6 +242,8 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 			lineas+= v.getCodigo()+" ";
 		return lineas.trim();
 	}
+	
+	/*Obtenemos los videos recientes a partir de sus codigos*/
 	
 	private List<Video> obtenerRecientesDesdeCodigos(String lineas) {
 		List<Video> recientes= new LinkedList<Video>();

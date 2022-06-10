@@ -28,7 +28,7 @@ public class AdaptadorListaVideosTDS implements IAdaptadorListaVideosDAO {
 	private AdaptadorListaVideosTDS() {
 		servPersistencia = FactoriaServicioPersistencia.getInstance().getServicioPersistencia();
 	}
-	
+	/*Registramos una Lista de Vídeos asociándola a un código*/
 	@Override
 	public void registrarListaVideos(ListaVideos listavideos) {
 		Entidad eListaVideos=null;
@@ -53,6 +53,7 @@ public class AdaptadorListaVideosTDS implements IAdaptadorListaVideosDAO {
 	listavideos.setCodigo(eListaVideos.getId());
 	}
 
+	/*Borramos una Lista de videos */
 	@Override
 	public void borrarListaVideos(ListaVideos listavideos) {
 		Entidad eListaVideos;
@@ -60,6 +61,8 @@ public class AdaptadorListaVideosTDS implements IAdaptadorListaVideosDAO {
 		servPersistencia.borrarEntidad(eListaVideos);
 	}
 
+	
+	/*Modificamos una lista de Vídeos*/
 	@Override
 	public void modificarListaVideos(ListaVideos listavideos) {
 		Entidad eListaVideos=servPersistencia.recuperarEntidad(listavideos.getCodigo());
@@ -81,6 +84,7 @@ public class AdaptadorListaVideosTDS implements IAdaptadorListaVideosDAO {
 		
 	}
 
+	/*Recuperamos una lista de videos asociadas a un código*/
 	@Override
 	public ListaVideos recuperarListaVideos(int codigo) {
 		
@@ -106,6 +110,7 @@ public class AdaptadorListaVideosTDS implements IAdaptadorListaVideosDAO {
 		return listavideos;
 	}
 
+	/*Recuperamos todas las listas de videos*/
 	@Override
 	public List<ListaVideos> recuperarTodosListasVideos() {
 		
@@ -117,14 +122,15 @@ public class AdaptadorListaVideosTDS implements IAdaptadorListaVideosDAO {
 		
 		return listas;
 	}
-
+/*FUNCIONES AUXILIARES*/
+	/*Obtenemos el código de los vídeos */
 	private String obtenerCodigosVideos(List<Video> videos) {
 		String lineas="";
 		for(Video v: videos)
 			lineas+= v.getCodigo()+" ";
 		return lineas.trim();
 	}
-	
+	/*Obtenemos los vídeos a partir de sus códigos*/
 	private List<Video> obtenerVideosDesdeCodigos(String lineas){
 		List<Video> videos= new LinkedList<Video>();
 		StringTokenizer strTok= new StringTokenizer(lineas," ");

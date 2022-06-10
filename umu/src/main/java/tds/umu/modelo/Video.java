@@ -74,6 +74,9 @@ public class Video {
 		this.codigo = codigo;
 	}
 
+	
+	/*--------------F U N C I O N A L I D A D----------------------*/
+	
     /*Si una etiqueta no existe entonces la creamos y la añadimos */
 	public Etiqueta crearEtiqueta(String text) {
 		Etiqueta etq= new Etiqueta(text);
