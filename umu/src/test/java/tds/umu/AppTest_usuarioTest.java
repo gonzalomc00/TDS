@@ -34,8 +34,8 @@ public class AppTest_usuarioTest {
 		u1=new Usuario("Gonzalo","Manzanares Carmona",LocalDate.of(2000, 05, 07),"gonzalo.manzanaresc@um.es","gonzalo","prueba1");
 		u2= new Usuario("Trinidad","Quinto Ibáñez",LocalDate.of(2000,02,15),"trinidad.quintoi@um.es","trini","prueba2");
 		u3= new Usuario("Gonzalo","Manzanares Carmona",LocalDate.of(2000, 05, 07),"gonzalo.manzanaresc@um.es","gonzalo","prueba1");
-		v1= new Video("v1","url1", new LinkedList<Etiqueta>());
-		v2= new Video("v2","url2", new LinkedList<Etiqueta>());
+		v1= new Video("v1","url1");
+		v2= new Video("v2","url2");
 		}
 		
 		

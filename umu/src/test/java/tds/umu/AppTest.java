@@ -40,23 +40,8 @@ public class AppTest
     {
         assertTrue( true );
     }
-    /*
-    @Test
-   /public void persistencia()
-    {
-    	idao = factoria.getUsuarioDAO();
-    
-    	idao.registrarUsuario(a);
-    	List<Usuario> clientes = idao.recuperarTodosUsuarios();
-    	for (Usuario cliente : clientes) {
-			System.out.println("mi nombre es " + cliente.getNombre() + "\n");
-		}
-    	assertTrue(clientes.size()!=0);
-    	
-    }
-    */
-    
-    /*
+
+ 
      @Test
     public void persistenciaVideo()
     {
@@ -71,7 +56,7 @@ public class AppTest
     	assertTrue(videos.size()!=0);
     }
     
-    */
+
     /*
     @Test
     public void persistenciaListaVideos()
