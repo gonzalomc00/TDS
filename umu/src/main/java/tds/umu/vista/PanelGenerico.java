@@ -52,6 +52,7 @@ public abstract class PanelGenerico extends JPanel{
 	
 	public void crearPantalla()
 	{
+		//Disposición del panel genérico
 		setBackground(Color.GRAY);
 		setLayout(new BorderLayout(0, 0));
 		
@@ -83,6 +84,8 @@ public abstract class PanelGenerico extends JPanel{
 		panel_4.setLayout(new BorderLayout(0, 0));
 		bReproducir = new JButton("Reproducir");
 		bReproducir.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		//Manejador que selecciona un vídeo de una lista de vídeos
 		bReproducir.addMouseListener(
 	    		new MouseAdapter() {
 	    			public void mouseClicked(MouseEvent event) {
@@ -106,6 +109,8 @@ public abstract class PanelGenerico extends JPanel{
 		panel_inferior.setLayout(new BorderLayout());
 		
 		bCancelar = new JButton("Cancelar");
+		
+		//Manejador que gestiona el hecho de clicar para cancelar una selección
 		bCancelar.addMouseListener(
 	    		new MouseAdapter() {
 	    			public void mouseClicked(MouseEvent event) {
@@ -113,6 +118,7 @@ public abstract class PanelGenerico extends JPanel{
 	    			
 	    			}
 	    		});
+		
 		panel_inferior.add(bCancelar,BorderLayout.NORTH);
 		panel_lateral.add(panel_inferior, BorderLayout.SOUTH);
 		

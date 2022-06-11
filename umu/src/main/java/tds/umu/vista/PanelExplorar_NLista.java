@@ -118,6 +118,8 @@ public class PanelExplorar_NLista extends JPanel {
 	
 	/*Método para construir la vista del panel que contiene las listas de vídeos. Este panel solo estará visible en el modo Nueva Lista.*/
 	private void construirPanelListaVideos() {
+		
+		/*DISPOSICIÓN DE ELEMENTOS EN EL PANEL DE LA LISTA DE VÍDEOS*/
 		panel_listas= new JPanel();
 		panel_listas.setPreferredSize(new Dimension(Constantes.TAM_PANEL_LATERAL_ANCHO,200));
 		panel_listas.setBackground(Color.GRAY);
@@ -248,6 +250,8 @@ public class PanelExplorar_NLista extends JPanel {
 	}
 /*Método para construir la vista del panel que contiene las etiquetas, el cual solo será visible en el modo Explorar. */
 	public void construirPanelEtiquetas() {
+
+		/*DISPOSICIÓN DE ELEMENTOS EN EL PANEL DE ETIQUETAS*/
 		    panel_etiquetas = new JPanel();
 		    panel_etiquetas.setBackground(Color.GRAY);
 		    panel_etiquetas.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -325,7 +329,6 @@ public class PanelExplorar_NLista extends JPanel {
 		    			public void valueChanged(ListSelectionEvent event) {
 		    				
 		    				if(!event.getValueIsAdjusting()) {
-		    					//No usar los indices cuando tratemos con listas. Solo traen problemas. 
 		    					JList<String> source=(JList<String>) event.getSource();
 		    					String selected = source.getSelectedValue();
 		    					if(selected!=null) {
@@ -343,6 +346,8 @@ public class PanelExplorar_NLista extends JPanel {
 	
 	/*Método para construir el panel que contendrá los componentes para realizar la búsqueda, visible en ambos modos.*/
 	public void construirPanelBusqueda() {
+
+		/*DISPOSICIÓN DE ELEMENTOS EN EL PANEL DE BÚSQUEDA*/
 		panelBusqueda = new JPanel();
 	    panelBusqueda.setBackground(Color.GRAY);
 	    add(panelBusqueda, BorderLayout.CENTER);
@@ -383,7 +388,7 @@ public class PanelExplorar_NLista extends JPanel {
 	    panelBusqueda.add(panel_resultados, BorderLayout.CENTER);
 	    
 	    
-	    //Tratamiento de la lista de videos
+	 
 	    lista_videos = new JList();
 	    lista_videos.setBackground(Color.GRAY);
 	    lista_videos.setForeground(Color.WHITE);
@@ -420,7 +425,6 @@ public class PanelExplorar_NLista extends JPanel {
 
 	}
 		
-	//METODOS DE PANEL EXPLORAR Y BUSQUEDA
 	
 	/*
 	 * Métodos para actualizar el panel central de búsqueda con los resultados de la misma. Se construirá un objetos VideoRepresent por cada vídeo encontrado 
@@ -493,6 +497,7 @@ public class PanelExplorar_NLista extends JPanel {
 		
 		
 	}
+	
 	/*Método para eliminar listas de vídeos*/
 	private void eliminarLista() {
 		controlador.borrarLista(lv_creada);
