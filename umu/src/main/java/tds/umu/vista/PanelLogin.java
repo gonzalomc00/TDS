@@ -19,6 +19,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JPasswordField;
 
+/*
+ * Panel que va a permitir que el usuario inicie sesión mediante su nickname y contraseña. 
+ */
 public class PanelLogin extends JPanel {
 	private JTextField textoUser;
 	private JPanel panel_relleno_izq,panel_relleno_sup,panel_relleno_der,panel_relleno_inf,panel_campos,panel_nombre,panel_contraseña,panel_boton;
@@ -79,7 +82,7 @@ public class PanelLogin extends JPanel {
 		panel_contraseña = new JPanel();
 		panel_campos.add(panel_contraseña, BorderLayout.CENTER);
 		
-		etiquetaContrasena = new JLabel("Contrase\u00F1a");
+		etiquetaContrasena = new JLabel("Contraseña");
 		panel_contraseña.add(etiquetaContrasena);
 		
 		textoContrasena = new JPasswordField();
@@ -90,6 +93,11 @@ public class PanelLogin extends JPanel {
 		panel_campos.add(panel_boton, BorderLayout.SOUTH);
 		
 		aceptar = new JButton("Aceptar");
+		
+		/*
+		 * Al hacer click sobre el botón Aceptar, se pasan los datos de inicio de sesión al controlador quien comprobará si estos son correctos. Si lo son, 
+		 * entonces se procede a establecer al usuario como usuario_actual en el controlador y se pasa al panel de Recientes (método actualizarLogin())
+		 */
 		aceptar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -107,6 +115,9 @@ public class PanelLogin extends JPanel {
 		panel_boton.add(aceptar);
 	}
 
+	/*
+	 * Método para limpiar los campos de datos
+	 */
 	public void clean() {
 		textoUser.setText("");
 		textoContrasena.setText("");

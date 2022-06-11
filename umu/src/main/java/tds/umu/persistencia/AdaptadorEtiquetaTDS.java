@@ -28,17 +28,18 @@ public class AdaptadorEtiquetaTDS implements IAdaptadorEtiquetaDAO {
 	private AdaptadorEtiquetaTDS() {
 		servPersistencia = FactoriaServicioPersistencia.getInstance().getServicioPersistencia();
 	}
-	/*Registramos una etiqueta asociándola a un código*/
+	/*Registramos una etiqueta asignándole un código*/
 	@Override
 	public void registrarEtiqueta(Etiqueta etiqueta) {
 		
 		Entidad eEtiqueta=null;
+		//Si está registrada no se hace nada
 		try {
-			//si está registrada no se hace nada
 			eEtiqueta=servPersistencia.recuperarEntidad(etiqueta.getCodigo());
 		} catch(NullPointerException e) {}
 		if(eEtiqueta!=null) return;
-		//si no se crea
+		
+		//Si no, se crea
 		eEtiqueta= new Entidad();
 		eEtiqueta.setNombre("etiqueta");
 		eEtiqueta.setPropiedades(new ArrayList<Propiedad>(Arrays.asList(new Propiedad("nombre",etiqueta.getNombre()))));
@@ -51,14 +52,13 @@ public class AdaptadorEtiquetaTDS implements IAdaptadorEtiquetaDAO {
 	/*Borramos una etiqueta de la BBDD*/
 	@Override
 	public void borrarEtiqueta(Etiqueta etiqueta) {
-		//No se tiene en cuenta las restricciones de integridad
 		Entidad eEtiqueta;
 		eEtiqueta= servPersistencia.recuperarEntidad(etiqueta.getCodigo());
 		servPersistencia.borrarEntidad(eEtiqueta);
 		
 	}
 
-	/*Modificamos a un usuario guardado en la BBDD*/
+	/*Modificamos a una etiqueta ya guardada en la BBDD*/
 	@Override
 	public void modificarEtiqueta(Etiqueta etiqueta) {
 		Entidad eEtiqueta= servPersistencia.recuperarEntidad(etiqueta.getCodigo());
@@ -75,7 +75,7 @@ public class AdaptadorEtiquetaTDS implements IAdaptadorEtiquetaDAO {
 		
 	}
 
-	/*Recuperamos una etiqueta asociada a un codigo */
+	/*Recuperamos una etiqueta mediante su código*/
 	@Override
 	public Etiqueta recuperarEtiqueta(int codigo) {
 		

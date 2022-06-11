@@ -17,23 +17,31 @@ import javax.swing.border.BevelBorder;
 
 import tds.umu.controlador.Controlador;
 import tds.umu.modelo.Video;
+import tds.umu.modelo.VideoRepresent;
 import tds.video.VideoWeb;
 
+
+/*
+ * Clase genérica que permite muestra un panel lateral y permite utilizar el reproductor para visualizar videos. Esta clase contiene la mayoría de elementos que tendrán todas las clases hijas,
+ * incluyendo componentes y métodos comunes. Algunas clases (como PanelMisListas) pueden introducir elementos únicos al panel, mientras que otros cambiarán el método para rellenar el panel lateral.
+ * 
+ * En un principìo teniamos pensado establecer el método para rellenar el panel lateral mediante un patrón Estrategia, pero viendo la complejidad de la clases PanelMisListas decidimos optar por realizar
+ * esta clase abstracta.
+ */
 public abstract class PanelGenerico extends JPanel{
-	protected JPanel panel_lateral,panel_superior,panel_inferior,panel_3,panel_4,panel_5;
+	protected JPanel panel_lateral,panel_superior,panel_inferior,panel_4;
 	private JList<VideoRepresent> lista_videos;
 	protected JComboBox<String> comboBox;
-	private Reproductor reproductor;
+	private JLabel etiquetaSeleccion;
 	private JButton bCancelar;
 	protected JButton bReproducir;
+	
+	private Reproductor reproductor;
 	protected Controlador controlador= Controlador.getUnicaInstancia();
 	protected List<Video> videos_relleno= new LinkedList<Video>();
+
 	private DefaultListModel<VideoRepresent> modeloListaVideos= new DefaultListModel<VideoRepresent>();
 	private VideoWeb videoWeb= controlador.getReproductor();
-	
-
-	
-	private JLabel etiquetaSeleccion;
 	
 	public PanelGenerico() {
 
@@ -119,6 +127,10 @@ public abstract class PanelGenerico extends JPanel{
 	    
 	}
 	
+	/*
+	 * Método que actualiza el contenido de la barra lateral. Dependiendo de la clase en la que nos encontremos (MisListas,Recientes o MasVistos) el método variará. Obtiene
+	 * todos los vídeos que se necesiten y entonces se construirán los objetos VideoRepresent que sean necesarios.
+	 */
 	public void actualizarPanelLateral() {
 		modeloListaVideos.removeAllElements();
 		videos_relleno= metodoRelleno();
@@ -129,6 +141,9 @@ public abstract class PanelGenerico extends JPanel{
 		
 	}
 	
+	/*
+	 * Método para mostrar el reproductor cuando seleccionemos un vídeo.
+	 */
 	protected void cambiarPanelRep() {
 			add(reproductor,BorderLayout.CENTER);
 			reproductor.reproducir();
@@ -138,18 +153,25 @@ public abstract class PanelGenerico extends JPanel{
 
 	}
 	
-	
+	/*
+	 * Método para limpiar el contenido de la barra lateral y el reproductor. Las clases hijas podrán redefinirlo según sus necesidades. 
+	 */
 	public void clean() {
 		modeloListaVideos.removeAllElements();
 		comboBox.removeAllItems();
 		cancelarVideo();
 	}
 	
-	
+	/*
+	 * Método para cambiar el texto de la etiqueta superior.
+	 */
 	protected void setTextoEtiqueta(String texto) {
 		etiquetaSeleccion.setText(texto);
 	}
 	
+	/*
+	 * Método para quitar el reproductor cuando cancelemos un vídeo. 
+	 */
 	protected void cancelarVideo() {
 		reproductor.cancelarVideo();
 		remove(reproductor);	
@@ -160,6 +182,9 @@ public abstract class PanelGenerico extends JPanel{
 		
 	}
 	
+	/*
+	 * Métodos que implementarán las subclases. 
+	 */
 
 	public abstract void rellenarPantalla();
 	public abstract List<Video> metodoRelleno();

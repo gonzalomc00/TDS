@@ -1,7 +1,7 @@
 package tds.umu.persistencia;
 
-//Define una factoria abstracta que devuelve todos los DAO de la aplicacion
 
+/* Factoría abstracta que se encarga de devolver objetos factoria, los cuales a su vez nos proporcionará los adaptadores adecuados */
 public abstract class FactoriaDAO {
 	private static FactoriaDAO unicaInstancia;
 	
@@ -15,7 +15,6 @@ public abstract class FactoriaDAO {
 		if (unicaInstancia == null) {
 			try {
 				unicaInstancia=(FactoriaDAO) Class.forName(tipo).newInstance();
-				System.out.println("eee");
 			} catch (Exception e) {	
 				throw new DAOException(e.getMessage());
 			} 
@@ -24,6 +23,7 @@ public abstract class FactoriaDAO {
 	}
 
 
+	/* Método que devuelve la única instancia de la factoría */
 	public static FactoriaDAO getInstancia() throws DAOException{
 			if (unicaInstancia == null) return getInstancia (FactoriaDAO.DAO_TDS);
 					else return unicaInstancia;
@@ -33,7 +33,8 @@ public abstract class FactoriaDAO {
 	protected FactoriaDAO (){}
 		
 		
-	// Metodos factoria que devuelven adaptadores que implementen estos interfaces
+	// Métodos que deberán implementar las factorias que sean creadas. Cada objeto devuelvo debe implementar una interfaz distinta, interfaz usada por todos los adaptadores de la misma clase
+	// pero que pueden ser creados por factorías distintas. 
 
 	public abstract IAdaptadorUsuarioDAO getUsuarioDAO();
 	public abstract IAdaptadorVideoDAO getVideoDAO();

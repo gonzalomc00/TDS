@@ -28,6 +28,7 @@ import java.awt.event.ActionEvent;
 import java.awt.Component;
 import javax.swing.UIManager;
 
+/* Panel similar a panel genérico, pero su metodo para rellenar la columna lateral es obteniendo los video más vistos por todos los usuarios.*/
 public class PanelMasVisto extends PanelGenerico {
 
 	private JLabel etiquetaSeleccion;

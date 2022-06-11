@@ -59,13 +59,13 @@ public class AdaptadorVideoTDS  implements IAdaptadorVideoDAO {
 	/*Borramos un video*/
 	@Override
 	public void borrarVideo(Video video) {
-		//PROBABLEMENTE ESTÉ MAL, SUPER REVISAR
-		//Mirar el tema de las etiquetas
 		Entidad eVideo;
 		eVideo= servPersistencia.recuperarEntidad(video.getCodigo());
 		servPersistencia.borrarEntidad(eVideo);
 	}
-/*Modificamos un vídeo */
+	
+	
+	/*Modificamos un vídeo */
 	@Override
 	public void modificarVideo(Video video) {
 		Entidad eVideo= servPersistencia.recuperarEntidad(video.getCodigo());
@@ -139,6 +139,7 @@ public class AdaptadorVideoTDS  implements IAdaptadorVideoDAO {
 	}
 	/*-----FUNCIONES AUXILIARES-------*/
 	
+	/* Obtenemos los códigos de las etiquetas */
 	private String obtenerCodigosEtiquetas(List<Etiqueta> etiquetas) {
 		String lineas="";
 		for(Etiqueta etq: etiquetas)

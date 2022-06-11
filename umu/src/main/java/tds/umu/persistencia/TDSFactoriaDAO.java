@@ -1,5 +1,7 @@
 package tds.umu.persistencia;
 
+
+	/* Factoría que se encarga de crear los adaptadores necesarios para manejar la base de datos en nuestra asignatura.  */
 public class TDSFactoriaDAO extends FactoriaDAO {
 	public TDSFactoriaDAO () {
 	}

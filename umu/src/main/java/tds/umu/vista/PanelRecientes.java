@@ -28,6 +28,7 @@ import java.awt.event.ActionEvent;
 import java.awt.Component;
 import javax.swing.UIManager;
 
+/* Panel similar a panel genérico, pero su metodo para rellenar la columna lateral es obteniendo los videos recientes del usuario.*/
 public class PanelRecientes extends PanelGenerico {
 
 	

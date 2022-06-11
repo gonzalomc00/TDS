@@ -34,6 +34,7 @@ import tds.umu.modelo.CatalogoVideos;
 import tds.umu.modelo.Etiqueta;
 import tds.umu.modelo.ListaVideos;
 import tds.umu.modelo.Video;
+import tds.umu.modelo.VideoRepresent;
 
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -43,6 +44,13 @@ import javax.swing.SwingConstants;
 import tds.video.VideoWeb;
 import javax.swing.JTable;
 
+/*
+ * Debido a que el panel Explorar y el panel Nuevas Listas tienen una estructura común y utilizan muchos métodos similares, o incluso iguales, hemos decidido unificar ambos paneles en uno solo.
+ * Para cambiar de un "modo" a otro, ocultamos uno de los 3 paneles que contiene este panel. Cuando lo utilizamos el panel en modo Explorar, ocultamos el panel izquierdo mientras que en el modo
+ * Nueva Lista ocultamos el panel derecho.  
+ * 
+ * Para visualizar de forma correcta el contenido de esta ventana en el modo Explorar, deberemos recargarla justo después de cargar los vídeos, en el caso de que no lo estuvieran previamente. 
+ */
 public class PanelExplorar_NLista extends JPanel {
 	private JPanel panel_etiquetas,panelBusqueda,panelControl,panel_control_superior,panel_control_inferior,panel_etiquetas_disponibles,panel_lista_etiquetas_disp,panel_etiquetas_selec,panel_lista_etiquetas_selec,panel_resultados;
 	private JPanel panel_listas,panel_lista_supeior,panel_listas_inferior,panel_eliminar_lista,panel_listas_busqueda,panel_3;
@@ -55,44 +63,33 @@ public class PanelExplorar_NLista extends JPanel {
 
 
 
-	//VARIABLE PROPIA DE EXPLORAR
+	//VARIABLES PROPIAS DE EXPLORAR
 	private LinkedList<String> etiquetas_Sel_Lista= new LinkedList<String>();
 	private DefaultListModel<String> modeloEtiqDisponibles = new DefaultListModel<String>();
 	private DefaultListModel<String> modeloEtiqueSeleccionadas= new DefaultListModel<String>();
 	
-	//VARIABLE PROPIAS DE UNA BUSQUEDA
+	//VARIABLES PROPIAS DE UNA BUSQUEDA
 	private DefaultListModel<VideoRepresent> modeloTablaVideos= new DefaultListModel<VideoRepresent>();
 	
 	//VARIABLES PROPIAS DE LA VENTANA NUEVAS LISTAS
 	private ListaVideos lv_creada;
 	private DefaultListModel<VideoRepresent> modeloVideosLista= new DefaultListModel<VideoRepresent>();
 
-	
-	
+	//Ya que no queremos que en el modo Nueva Lista se reproduzcan vídeos cuando hacemos doble click en los resultados de la búsqueda, añadiremos el MouseListener únicamente cuando 
+	//utilicemos el panel en modo Explorar. 
 	private MouseListener event;
 	private boolean activo;
 	private Controlador controlador= Controlador.getUnicaInstancia();
 	private JPanel panel_nombre;
 	
 
-	/**
-	 * Create the panel.
-	 */
-	
-	
-	/*
-	 * Para enviar los videos al controlador podemos hacerlo de manera directa pues previamente los recuperamos para poder
-	 * representarlos en las listas. Como estas listas no varian entre busqueda y busquedas, los indices de las listas
-	 * (la que contiene las representaciones de los videos y la que contiene los videos en si) coinciden. Sin embargo, con las
-	 * etiquetas no se puede hacer esto para enviarlas al controlador. Esto se debe a que los indices de las etiquetas seleccionadas
-	 * no coinciden con el indice de las etiquetas encontradas, pues son un solo conjunto cambiante a lo largo de toda la ejecución
-	 * 
-	 * Luego en el controlador si que podemos hacer el paso de nombre de etiqueta a etiqueta
-	 */
+	/* Constructor del panel.*/
 	public PanelExplorar_NLista(VentanaPrincipal ventana) {
 		this.activo=false;
 		crearPantalla();
 		
+		//Inicializamos el MouseListener anteriormente descrito. Al hacer doble click sobre un vídeo se llamará a la Ventana Principal para que actualice el contenido del panel central de la 
+		//aplicación para que muestre el reproductor con el vídeo que hemos seleccionado. 
 		event=new MouseAdapter() {
 			public void mouseClicked(MouseEvent event) {
 				if(event.getClickCount()==2) {
@@ -107,7 +104,7 @@ public class PanelExplorar_NLista extends JPanel {
 		};
 	}
 
-	/*Metodo por el cual vamos a crear la pantalla de explorar junto con sus otras. */
+	/*Metodo el cual llama a las distintas funciones para contruir el contenido de la ventana. . */
 	private void crearPantalla() {
 		setBackground(Color.LIGHT_GRAY);
 	    setLayout(new BorderLayout(0, 0));
@@ -118,7 +115,8 @@ public class PanelExplorar_NLista extends JPanel {
 	    
 	}
 	
-	/*Método para construir la vista del panel que contiene las listas de vídeos*/
+	
+	/*Método para construir la vista del panel que contiene las listas de vídeos. Este panel solo estará visible en el modo Nueva Lista.*/
 	private void construirPanelListaVideos() {
 		panel_listas= new JPanel();
 		panel_listas.setPreferredSize(new Dimension(Constantes.TAM_PANEL_LATERAL_ANCHO,200));
@@ -190,6 +188,9 @@ public class PanelExplorar_NLista extends JPanel {
 	
 		
 		//MANEJADORES
+		/*
+		 * Al hacer click en este botón se buscará una lista de vídeo que pertenezca al usuario o se creará en su defecto.
+		 */
 		bBuscar_lista.addActionListener(new ActionListener() {
 
 			@Override
@@ -198,7 +199,9 @@ public class PanelExplorar_NLista extends JPanel {
 			}
 			
 		});
-		
+		/*
+		 * Al hacer click en este botón se preguntará al usuario si quiere eliminar la lista que está actualmente seleccionada. 
+		 */
 		bEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(lv_creada==null) {
@@ -213,6 +216,9 @@ public class PanelExplorar_NLista extends JPanel {
 			}
 		});
 		
+		/*
+		 * Al hacer click en este botón añadimos a la lista de video seleccionada el video seleccionado en la búsqueda. 
+		 */
 		bAñadir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				VideoRepresent selected = (VideoRepresent) lista_videos.getSelectedValue();
@@ -223,7 +229,9 @@ public class PanelExplorar_NLista extends JPanel {
 				}
 			}
 		});
-		
+		/*
+		 *  Al hacer click en este botón eliminamos de la lista de video seleccionada el video seleccionado en la búsqueda. 
+		 */
 		bQuitar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				VideoRepresent selected = (VideoRepresent) videos_lista.getSelectedValue();
@@ -238,7 +246,7 @@ public class PanelExplorar_NLista extends JPanel {
 		
 		
 	}
-/*Método para construir la vista del panel que contiene las etiquetas*/
+/*Método para construir la vista del panel que contiene las etiquetas, el cual solo será visible en el modo Explorar. */
 	public void construirPanelEtiquetas() {
 		    panel_etiquetas = new JPanel();
 		    panel_etiquetas.setBackground(Color.GRAY);
@@ -288,6 +296,11 @@ public class PanelExplorar_NLista extends JPanel {
 		    
 		    
 		    //MANEJADORES
+		    
+		    /*
+		     * Si seleccionamos una etiqueta de la primera lista de etiquetas y esta no se encuentra ya seleccionada, entonces la añadimos a la segunda lista de etiquetas,
+		     * la cual filtrará la búsqueda. 
+		     */
 		    lista_etiquetas.addListSelectionListener(
 		    		new ListSelectionListener() {
 		    			public void valueChanged(ListSelectionEvent event) {
@@ -304,7 +317,9 @@ public class PanelExplorar_NLista extends JPanel {
 		    		}	
 		    		);
 		    
-		    
+		    /*
+		     * Si seleccionamos una etiqueta de la segunda lista de etiquetas la eliminamos de ella. 
+		     */
 		    lista_etiquetas_sel.addListSelectionListener(
 		    		new ListSelectionListener() {
 		    			public void valueChanged(ListSelectionEvent event) {
@@ -326,7 +341,7 @@ public class PanelExplorar_NLista extends JPanel {
 		    
 	}
 	
-	/*Método para construir la vista que contiene el panel de búsqueda*/
+	/*Método para construir el panel que contendrá los componentes para realizar la búsqueda, visible en ambos modos.*/
 	public void construirPanelBusqueda() {
 		panelBusqueda = new JPanel();
 	    panelBusqueda.setBackground(Color.GRAY);
@@ -352,13 +367,7 @@ public class PanelExplorar_NLista extends JPanel {
 	    barra_busqueda.setColumns(20);
 	    
 	    boton_buscar = new JButton("Buscar");
-	    boton_buscar.addMouseListener(new MouseAdapter(){
-	    	
-	    	public void mouseClicked(MouseEvent e) {
-	    		actualizarListaVideos();
-	    	}
-	    	
-	    });
+	   
 	    panel_control_superior.add(boton_buscar);
 	    
 	    panel_control_inferior = new JPanel();
@@ -388,20 +397,38 @@ public class PanelExplorar_NLista extends JPanel {
 	    
 	    
 	    //MANEJADORES
+	    /*
+	     * Al hacer click en este botón eliminaremos todos los resultados de la búsqueda. 
+	     */
 	    n_busqueda.addMouseListener(new MouseAdapter() {
 	    	
 	    	public void mouseClicked(MouseEvent e) {
 	    		modeloTablaVideos.removeAllElements();
 	    	}
 	    });
-	
+	    /*
+	     * Al hacer click en este botón iniciaremos la búsqueda. 
+	     */
+	    boton_buscar.addMouseListener(new MouseAdapter(){
+	    	
+	    	public void mouseClicked(MouseEvent e) {
+	    		actualizarListaVideos();
+	    	}
+	    	
+	    });
 	    
 
 	}
 		
 	//METODOS DE PANEL EXPLORAR Y BUSQUEDA
 	
-	/*Métodos para actualzar los campos modificados*/
+	/*
+	 * Métodos para actualizar el panel central de búsqueda con los resultados de la misma. Se construirá un objetos VideoRepresent por cada vídeo encontrado 
+	 * y entonces se añadirá a la lista para que puedan ser representados. 
+	 *
+	 * La búsqueda estarña filtrada con las etiquetas seleccionadas en el panel derecho ( en el caso del modo Nueva Lista no habrá ninguna seleccionada por defecto, pues en este modo
+	 * no queremos filtrar por etiquetas)
+	 */
 	public void actualizarListaVideos() {
 		modeloTablaVideos.removeAllElements();
 	    videos_encontrados= controlador.obtenerBusqueda(barra_busqueda.getText(),etiquetas_Sel_Lista);
@@ -411,9 +438,12 @@ public class PanelExplorar_NLista extends JPanel {
 	    validate();
 	    
 	}
+	/*
+	 * Método utilizado para cargar las listas del panel derecho con todas las etiquetas encontradas en la base de datos. Como de las etiquetas solo nos interesa su nombre,
+	 * hacemos un stream para pasar del objeto etiqueta a un String con su nombre.  
+	 */
 	public void actualizarEtiquetasExplora() {
-		List<Etiqueta> lista_etiquetas_cat;
-		lista_etiquetas_cat= Controlador.getUnicaInstancia().getEtiquetas();
+		List <Etiqueta>lista_etiquetas_cat= controlador.getEtiquetas();
 		lista_etiquetas_cat.stream()
 					   .map(etq->etq.getNombre())
 					   .forEach(nom->modeloEtiqDisponibles.addElement(nom));
@@ -423,7 +453,10 @@ public class PanelExplorar_NLista extends JPanel {
 	
 	//METODOS DE PANEL NUEVA LISTA
 
-	/*Métodos para actualzar los campos modificados*/
+	/*
+	 * Método utilizado para actualizar el contenido del panel izquierdo. Si el usuario ha introducido el nombre de una playlist y esta no existe, se procederá a preguntar si quiere crearla
+	 * y la deja seleccionada por si quiere introducir vídeos en ella. En caso de existir, se seleccionará la lista y se actualizará el panel para mostrar todos los vídeos que contiene. 
+	 */
 	private void actualizacionPlaylist() {
 		if(!campoNombre.getText().equals("")) {
 		lv_creada=controlador.obtenerLista(campoNombre.getText());
@@ -448,6 +481,9 @@ public class PanelExplorar_NLista extends JPanel {
 			
 	}
 	
+	/*
+	 * Método utilizado para actualizar el panel izquierdo con todos los vídeos que contiene una lista de vídeo. 
+	 */
 	private void actualizarVideosLista() {
 		modeloVideosLista.removeAllElements();
 	    lv_creada.getVideos().stream()
@@ -466,6 +502,11 @@ public class PanelExplorar_NLista extends JPanel {
 	}
 	
 /*------------------funciones auxiliares de mantenimiento-------------*/
+	
+	/*
+	 * En el modo Explorar ocultamos el panel izquierdo y añadimos el MouseListener que permite reproducir un vídeo si se hace doble click sobre él en la lista. Para evitar
+	 * problemas por si se selecciona dos veces seguidas el panel Explorar, comprobamos que este no esté ya introducido.
+	 */
 	public void modoExplorar() {
 		panel_listas.setVisible(false);
 		panel_etiquetas.setVisible(true);
@@ -474,6 +515,9 @@ public class PanelExplorar_NLista extends JPanel {
 			activo=true;
 	}
 	
+	/*
+	 * En el modo Nueva Lista ocultamos el panel derecho y mostramos el izquierdo, a la vez que eliminamos el Mouse Listener que permite la visualización con doble click. 
+	 */
 	public void modoNuevaLista() {
 		panel_listas.setVisible(true);
 		panel_etiquetas.setVisible(false);
@@ -481,6 +525,10 @@ public class PanelExplorar_NLista extends JPanel {
 		activo=false;
 	}
 
+	/*
+	 * Método utilizado para limpiar todos los elementos del panel: la lista de etiquetas y etiquetas seleccionada, la búsqueda, la lista seleccionada... Este método será llamado 
+	 * siempre que accedamos al panel. 
+	 */
 	public void renovar() {
 		modeloEtiqDisponibles.removeAllElements();
 		modeloEtiqueSeleccionadas.removeAllElements();
@@ -493,10 +541,5 @@ public class PanelExplorar_NLista extends JPanel {
 		
 	}
 	
-	
 
-	
-	public LinkedList<String> getEtiquetaSelLista(){
-		return etiquetas_Sel_Lista;
-	}
 }

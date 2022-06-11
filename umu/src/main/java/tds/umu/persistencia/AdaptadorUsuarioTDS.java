@@ -17,14 +17,13 @@ import beans.Entidad;
 import beans.Propiedad;
 
 
-
-
-//Usamos un pool para evitar problemas doble referencia con ventas
 public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 	private static ServicioPersistencia servPersistencia;
 	private static AdaptadorUsuarioTDS unicaInstancia = null;
 
-	public static AdaptadorUsuarioTDS getUnicaInstancia() { // patron singleton
+	
+	/* Aplicación del patrón Singleton */
+	public static AdaptadorUsuarioTDS getUnicaInstancia() { 
 		if (unicaInstancia == null)
 			unicaInstancia=new AdaptadorUsuarioTDS();
 	
@@ -35,12 +34,12 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 		servPersistencia = FactoriaServicioPersistencia.getInstance().getServicioPersistencia();
 	}
 
-	/* cuando se registra un usuario se le asigna un identificador �nico */
+	/* Registramos un usuario en la base de datos y le damos un código único. */
 	public void registrarUsuario(Usuario usuario) {
 		Entidad eUsuario = null;
 		
+		// Si la entidad ya esta registrada no la registra de nuevo
 		if(usuario.getCodigo()!=null) {
-		// Si la entidad esta registrada no la registra de nuevo
 		try {
 			eUsuario = servPersistencia.recuperarEntidad(usuario.getCodigo());
 		} catch (NullPointerException e) {}
@@ -48,24 +47,18 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 		if (eUsuario != null) return;
 
 		
-		// crear entidad Usuario
+		// Creamos una entidad Usuario
 		eUsuario = new Entidad();
 		eUsuario.setNombre("usuario");
 		
-		
-		AdaptadorListaVideosTDS adaptadorListaVideos= AdaptadorListaVideosTDS.getUnicaInstancia();
-		for(ListaVideos lv: usuario.getListas()) {
-			adaptadorListaVideos.registrarListaVideos(lv);
-		}
 		
 		DateTimeFormatter formattedDate = DateTimeFormatter.ofPattern("dd-MMM-yy");
 		String fecha= usuario.getFecha().format(formattedDate);
 		
 		
+		//Añadimos las propiedades del Usuario.
 		eUsuario.setPropiedades(new ArrayList<Propiedad>(
 				Arrays.asList( new Propiedad("nombre", usuario.getNombre()),
-				//añado las nuevas propiedades
-				//TODO supongo que si tiene listas de videos habrá que añadir algún campo a la BBDD para almacenarlos.
 						new Propiedad("apellidos", usuario.getApellidos()),
 						new Propiedad("fechaNacimiento", fecha),
 						new Propiedad("email", usuario.getEmail()),
@@ -77,16 +70,14 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 						)));
 
 		
-		// registrar entidad usuario
+		// Registramos la entidad en la base de datos y le asignamos un código único. 
 		eUsuario = servPersistencia.registrarEntidad(eUsuario);
-		// asignar identificador unico
-		// Se aprovecha el que genera el servicio de persistencia
 		usuario.setCodigo(eUsuario.getId());
 	}
 
 
+	/* Al borrar una entidad Usuario de la base de datos también deberemos borrar todas sus listas de vídeo.*/
 	public void borrarUsuario(Usuario usuario) {
-		// Habrá que borrar tambien todas las playlists que tenga este usuario
 		AdaptadorListaVideosTDS adaptadorListaVideos= AdaptadorListaVideosTDS.getUnicaInstancia();
 		for(ListaVideos lv: usuario.getListas()) {
 			adaptadorListaVideos.borrarListaVideos(lv);
@@ -94,17 +85,14 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 		Entidad eUsuario = servPersistencia.recuperarEntidad(usuario.getCodigo());
 		servPersistencia.borrarEntidad(eUsuario);
 	}
-/*Modificamos un usuario */
+	
+/* Modificamos a un usuario en la base de datos */
 	public void modificarUsuario(Usuario usuario) {
 
 		Entidad eUsuario = servPersistencia.recuperarEntidad(usuario.getCodigo());
-		//como en el arraylist de propiedades almacenamos strings, tengo que convertir lo del premium a un string
-		//tengo que pasar lafecha a string también que la tengo en forma de LocalDate
-		//he seguido los pasos de https://howtodoinjava.com/java/date-time/localdate-format-example/
 		DateTimeFormatter formattedDate = DateTimeFormatter.ofPattern("dd-MMM-yy");
 	
 		for (Propiedad prop : eUsuario.getPropiedades()) {
-			//TODO faltará uno para modificar las playlists de videos
 			switch(prop.getNombre()) {
 			case("nombre"):
 				prop.setValor(usuario.getNombre());
@@ -127,7 +115,6 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 				break;
 			
 			case("contraseña"):	
-
 				prop.setValor(usuario.getContraseña());
 				break;
 				
@@ -149,10 +136,8 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 
 	}
 
+	/* Recuperamos la entidad de la base de datos utilizando su código. Construimos el objeto Usuario desde la base de datos*/
 	public Usuario recuperarUsuario(int codigo) {
-
-		// si no, la recupera de la base de datos
-		//TODO same otra vez las lsitas de videos
 		Entidad eUsuario=null;
 		String nombre;
 		String apellidos;
@@ -171,7 +156,6 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 		if(eUsuario==null) return null;
 		
 
-		// recuperar entidad
 		nombre = servPersistencia.recuperarPropiedadEntidad(eUsuario, "nombre");
 		apellidos = servPersistencia.recuperarPropiedadEntidad(eUsuario, "apellidos");
 		fecha = servPersistencia.recuperarPropiedadEntidad(eUsuario, "fechaNacimiento");
@@ -201,8 +185,8 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 		return usuario;
 	}
 	
-/*Recuperar todos los usuarios de la base de datos*/
-
+	
+	/*Recuperar todos los usuarios de la base de datos*/
 	public List<Usuario> recuperarTodosUsuarios() {
 
 		List<Entidad> eUsuarios = servPersistencia.recuperarEntidades("usuario");
@@ -215,15 +199,16 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 	}
 
 	/*-------------------FUNCIONES AUXILIARES------------------*/
-	/*Obtenemos los codigos a partir de una lista de videos*/
+	
+	/*Obtenemos los codigos de todas las listas de códigos*/
 	private String obtenerCodigosListasVideos(List<ListaVideos> lvideos) {
 		String lineas="";
 		for(ListaVideos lv: lvideos)
 			lineas+= lv.getCodigo()+" ";
 		return lineas.trim();
 	}
-	/*Obtenemos una lista de videos a partir de sus codigos*/
 	
+	/*Obtenemos las listas de videos teniendo sus códigos.*/
 	private List<ListaVideos> obtenerListaVideosDesdeCodigos(String lineas){
 		List<ListaVideos> listasvideos= new LinkedList<ListaVideos>();
 		StringTokenizer strTok= new StringTokenizer(lineas," ");
@@ -234,8 +219,9 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
  		
 		return listasvideos;
 	}
-	/*Obtenemos los codigos de los videos recientes*/
 	
+	
+	/*Obtenemos los codigos de los videos recientes*/
 	private String obtenerCodigosRecientes(List<Video> recientes) {
 		String lineas="";
 		for(Video v: recientes )
@@ -243,8 +229,8 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 		return lineas.trim();
 	}
 	
-	/*Obtenemos los videos recientes a partir de sus codigos*/
 	
+	/*Obtenemos los videos recientes a partir de sus codigos*/
 	private List<Video> obtenerRecientesDesdeCodigos(String lineas) {
 		List<Video> recientes= new LinkedList<Video>();
 		StringTokenizer strTok= new StringTokenizer(lineas," ");

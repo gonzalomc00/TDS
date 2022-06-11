@@ -33,31 +33,36 @@ import javax.swing.border.Border;
 import javax.swing.border.SoftBevelBorder;
 import javax.swing.border.BevelBorder;
 
+
+
+/* 
+ * Panel que muestra el reproductor del componente VideoWeb. Este panel será mostrado por pantalla cuando haya que reproducir algún vídeo, ya sea ocupando la ventana completa cuando es llamado
+ * desde la ventana principal u ocupando solo un trozo de la ventana cuando es llamado desde otra ventana. Se le aplica el patrón Singleton de forma que solo exista una única instancia de este 
+ * panel ya que, cuando existen varias, el contenido no se visualiza de manera correcta. Además, esto no interfiere con el funcionamiento de la aplicación, pues solo se puede visualizar un único
+ * video a la vez. 
+ */
 public class Reproductor extends JPanel {
-
-	private static Reproductor unicaInstancia= null;
-	private JLabel reproducciones;
 	
+	/* Atributo del patrón Singleton */
+	private static Reproductor unicaInstancia= null;
 	private Controlador controlador= Controlador.getUnicaInstancia();
-	private VideoWeb videoWeb= Controlador.getUnicaInstancia().getReproductor();
-	private JPanel p;
-	private JPanel panel;
-
-	private JPanel panelEtiq;
-
-	private JLabel tit;
-	private JTextField textField;
-	private JButton anadir;
-	private Component verticalStrut;
-	private JList<String> listaetiquetas;
-	private DefaultListModel<String> modeloListaEtiquetas= new DefaultListModel<String>();
-	private Component verticalStrut_1;
-	private JLabel nombreVideo;
-	private Component verticalStrut_2;
+	private VideoWeb videoWeb= controlador.getReproductor();
 	private Video v;
 
 	
+	private JPanel p;
+	private JPanel panel;
+	private JPanel panelEtiq;
+	private JLabel tit,reproducciones, nombreVideo;
+	private JTextField textField;
+	private JButton anadir;
+	private Component verticalStrut, verticalStrut_1, verticalStrut_2;
+	private JList<String> listaetiquetas;
+	private DefaultListModel<String> modeloListaEtiquetas= new DefaultListModel<String>();
+
+
 	
+	/* Constructor de la clase Reproductor: establece todos los componentes */
 	public Reproductor() {
 		v=null;
 		setBackground(Color.LIGHT_GRAY);
@@ -106,7 +111,9 @@ public class Reproductor extends JPanel {
 		anadir = new JButton("Añadir"); 
 		anadir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(!textField.getText().isEmpty()) {
 					añadirEtiqueta();
+				}
 				}
 			
 		});
@@ -128,12 +135,17 @@ public class Reproductor extends JPanel {
 		
 	}
 	
+	/* Método del patrón Singleton para obtener la única instancia de la clase*/
 	public static Reproductor getUnicaInstancia() {
 		if (unicaInstancia == null)
 			unicaInstancia = new Reproductor();
 		return unicaInstancia;
 	}
 	
+	/* 
+	 * Cuando vayamos a reproducir algún vídeo, este estará en el controlador seleccionado como video actual. Una vez tengamos el vídeo entonces podremos obtener todos sus datos para mostrarlos
+	 * por pantalla y reproducirlo. 
+	 */
 	public void reproducir() {
 		modeloListaEtiquetas.removeAllElements();
 	    v= controlador.getVideoActual();
@@ -144,18 +156,24 @@ public class Reproductor extends JPanel {
 		
 	}
 
+	/* Método que cancela la reproducción de un vídeo*/
 	public void cancelarVideo() {
 		videoWeb.cancel();
 		
 	}
-	
+	/* 
+	 * Método utilizado para añadir una etiqueta al vídeo que está actualmente reproduciendose (recordemos que el vídeo se encuentra en el controlador como VídeoSeleccionado).
+	 * Una vez se llegue al controlador este realizará todo el proceso necesario para hacer los cambios oportunos en la base de datos. 
+	 */
 	public void añadirEtiqueta() {
-		controlador.añadirEtiqueta(textField.getText());
-		actualizarEtiquetas();
+			controlador.añadirEtiqueta(textField.getText());
+			actualizarEtiquetas();
 		
 		
 	}
-
+	/*
+	 * Método para mostrar todas las etiquetas que tiene un vídeo por pantalla. Cuando se añadan etiquetas a un vídeo se llamará para que muestre también las nuevas etiquetas.
+	 */
 	private void actualizarEtiquetas() {
 		modeloListaEtiquetas.removeAllElements();
 		List<String> listaetiquetas= v.obtenerEtiquetas();

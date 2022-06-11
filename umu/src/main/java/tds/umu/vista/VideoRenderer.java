@@ -9,6 +9,13 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
+import tds.umu.modelo.VideoRepresent;
+
+
+/*
+ * Renderer utilizado por todas las listas que necesiten mostrar un vídeo junto a su miniatura. Consiste, básicamente en una etiqueta a la cual 
+ * le asignamos como imágen la miniatura del vídeo y como texto su título. 
+ */
 public class VideoRenderer extends JLabel implements ListCellRenderer<VideoRepresent> {
 	public VideoRenderer() {
 		setOpaque(true);

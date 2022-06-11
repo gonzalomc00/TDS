@@ -46,6 +46,12 @@ import tds.umu.modelo.Usuario;
 import tds.video.VideoWeb;
 import pulsador.Luz;
 
+/*
+ * Ventana principal de nuestra aplicación. Se encargará de inicializar todos los paneles necesarios para la aplicación y de mostrarlos correctamente en pantalla
+ * Además mantiene el resto de elementos de la pantalla: los botones para el intercambio y la barra superior. 
+ * 
+ * El estado de esta ventana restringirá los botones que se podrán pulsar, estando algunos bloqueados, por ejemplo, si el usuario todavía no ha iniciado sesión o si no es premium. 
+ */
 public class VentanaPrincipal extends JFrame implements ActionListener {
 
 	private static VideoWeb videoWeb=Controlador.getUnicaInstancia().getReproductor();
@@ -65,8 +71,11 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 	private EstadoLogin estado;
 
 	
+	/* Constructor de la ventana principal, inicializa todos los paneles, crea la propia ventana y llama a los distintos métodos para construir todos sus elementos*/
 	public VentanaPrincipal() {
-		setResizable(false);
+		
+		//Creamos todos los paneles necesarios. El panel Reproductor es creado mediante el patrón Singleton ya que, si tenemos varias instancias del mismo, su contenido no se ve correctamente
+		//Por eso, hemos optado tener una única instancia que sea compartida por todos los paneles que lo necesiten. 
 		reproductor= Reproductor.getUnicaInstancia();
 		Plogin= new PanelLogin(this);
 		PRegistro = new VentanaRegistro(this);
@@ -75,7 +84,8 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 		PReciente= new PanelRecientes();
 		PMVisto= new PanelMasVisto();
 
-		
+		//Por defecto, el tamaño de la ventana no es modificable en tiempo de ejecución.
+		setResizable(false);
 		setBounds(0,0,1270,720);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		contentPane = new JPanel();
@@ -91,7 +101,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 	}
 
 
-
+/* Función que crea todos los elementos del panel superior de la ventana principal */
 private void crearPanelSuperior()
 {
 	panel_superior = new JPanel();
@@ -136,6 +146,7 @@ private void crearPanelSuperior()
 	
 }
 
+/* Función que crea el panel inferior, en el que se encuentran los botones para el cambio de panel*/
 private void crearPanelBotones()
 {
 	panel_botones = new JPanel();
@@ -180,14 +191,15 @@ private void crearPanelBotones()
 	masvisto.setBackground(Color.LIGHT_GRAY);
 	panel_botones.add(masvisto);
 	
+	//Añadimos todos los filtros que sean necesarios, según los que estén disponibles
 	filtros_selecter=new JComboBox<String>();
-	//Añado los tipos de filtros que hay. Seguro que hay alguna forma mejor de hacerlo 
 	filtros_selecter.addItem("NoFiltro");
 	filtros_selecter.addItem("MisListas");
 	filtros_selecter.addItem("Largos");
 	filtros_selecter.addActionListener(this);
 	panel_botones.add(filtros_selecter);
 	
+	//Componente Luz, proporcionado por los profesores de la asignatura. Cuando sea pulsado se notificará al controlador, el cual se encargará de cargar los vídeos. 
 	luz = new Luz();
 	luz.addEncendidoListener(controlador);
 	panel_botones.add(luz);
@@ -196,6 +208,10 @@ private void crearPanelBotones()
 	
 }
 
+/* 
+ * Dependiendo de la fuente del evento que acaba de surgir (p.e. pulsar un botón de la pantalla), se llevará a cabo unas acciones u otras. La mayoria llaman a la función para cambiar el panel
+ * central
+ */
 @Override
 public void actionPerformed(ActionEvent e) {
 	
@@ -233,13 +249,16 @@ public void actionPerformed(ActionEvent e) {
 	}
 }
 
-//Falta el apartado de recientes
 
-//Función que cambia todo el panel central. Permite pasar de una ventana "general" hacia otra. Las ventanas generales son las que ocupan toda la ventana. 
+/* 
+ * Función que ejecuta una función u otra dependiendo de para qué panel haya sido llamada. Para los paneles que tienen listas, barras de búsqueda o algún texto se llama a la respectiva
+ * función que realizar el proceso de limpieza de los mismos, de forma que el contenido que había antes del cambio siga visionándose. Además si las listas tienen que mostrar algo automáticamente
+ * al ser mostradas por pantalla, también llama al método indicado para realizar esta actualización.  
+ */ 
 public void cambioPanel(Paneles panel) {
 	videoWeb.cancel();
 	
-	//hacemos esto para evitar que una lista de reproducción continue reproduciendose incluso estando en una ventana diferente.
+	//Hacemos esto para evitar que una lista de reproducción a la que hemos indicado reproducción automática continue reproduciendose incluso estando en una ventana diferente.
 	panel_mis_listas.clean();
 	switch (panel) {
 		case REPRODUCTOR:
@@ -285,6 +304,7 @@ public void cambioPanel(Paneles panel) {
 	}
 }
 
+/* Método que se encarga de realizar el cambio efectivo del panel central: cambia un panel por otro y vuelve a pintar el panel que lo contiene.*/
 private void cambio_panel_vista(JPanel panel) {
 	panel_central.removeAll();
 	panel_central.add(panel,BorderLayout.CENTER);
@@ -295,6 +315,7 @@ private void cambio_panel_vista(JPanel panel) {
 }
 
 
+/* Función que se encarga de actualizar los botones que son interactuables dependiendo del estado en el que se encuentre el usuario */
 private void cambiarEstado(EstadoLogin estado) {
 	switch (estado) {
 	
@@ -345,7 +366,7 @@ private void cambiarEstado(EstadoLogin estado) {
 	}
 	
 }
-
+/* Función que se encarga de actualizar el estado de esta ventana después de hacer login. Llama a la función de cambiar el estado propio de la ventana y cambia la etiqueta superior*/
 public void actualizarLogin(String text) {
 	etiqueta.setText("¡Hola "+text+"!");
 	if(controlador.esUserPremium()) {
@@ -359,6 +380,7 @@ public void actualizarLogin(String text) {
 	
 }
 
+/* Método análogo al anterior, pero cuando se realizar logout */
 private void cierreSesion() {
 	cambiarEstado(EstadoLogin.LOGOUT);
 	Plogin.clean();

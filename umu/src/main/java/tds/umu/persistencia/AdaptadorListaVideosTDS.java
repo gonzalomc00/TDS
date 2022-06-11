@@ -28,7 +28,7 @@ public class AdaptadorListaVideosTDS implements IAdaptadorListaVideosDAO {
 	private AdaptadorListaVideosTDS() {
 		servPersistencia = FactoriaServicioPersistencia.getInstance().getServicioPersistencia();
 	}
-	/*Registramos una Lista de Vídeos asociándola a un código*/
+	/*Registramos una Lista de Vídeos asignándole un código*/
 	@Override
 	public void registrarListaVideos(ListaVideos listavideos) {
 		Entidad eListaVideos=null;
@@ -84,7 +84,7 @@ public class AdaptadorListaVideosTDS implements IAdaptadorListaVideosDAO {
 		
 	}
 
-	/*Recuperamos una lista de videos asociadas a un código*/
+	/*Recuperamos una lista de videos mediante su código*/
 	@Override
 	public ListaVideos recuperarListaVideos(int codigo) {
 		
@@ -130,6 +130,7 @@ public class AdaptadorListaVideosTDS implements IAdaptadorListaVideosDAO {
 			lineas+= v.getCodigo()+" ";
 		return lineas.trim();
 	}
+	
 	/*Obtenemos los vídeos a partir de sus códigos*/
 	private List<Video> obtenerVideosDesdeCodigos(String lineas){
 		List<Video> videos= new LinkedList<Video>();

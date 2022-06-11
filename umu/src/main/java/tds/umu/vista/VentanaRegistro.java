@@ -34,19 +34,20 @@ import javax.swing.border.LineBorder;
 import java.awt.Color;
 import javax.swing.border.TitledBorder;
 
+/*
+ * Panel que se encarga de realizar el registro de un usuario y le permite introducir todos sus datos. 
+ */
 public class VentanaRegistro extends JPanel {
-	/**
-	 * 
-	 */
+
+	
 	private static final long serialVersionUID = 1L;
-	private JTextField campoNombre;
-	private JTextField campoApellidos;
-	private JTextField campoEmail;
-	private JTextField campoUsuario;
+	private JTextField campoNombre,campoApellidos,campoEmail,campoUsuario;
 	private JPasswordField campoContra;
 	private VentanaPrincipal prin;
 	private JPasswordField repetirContra;
 	private final JCalendar calendar;
+	
+	private Controlador controlador= Controlador.getUnicaInstancia();
 
 	/**
 	 * Create the panel.
@@ -187,7 +188,11 @@ public class VentanaRegistro extends JPanel {
 		});
 		
 		
-		
+		/*
+		 * Al hacer click en el botón de "Registrar" obtenemos todos los datos de todos los campos en los que se han introducido. y procedemos a comprobar que todos estén correctos.
+		 * Si lo están, se pasan los datos al controlador para que este sea quien cree al Usuario e introduzca todos sus datos en la base de datos. Si los datos no están correctos, o no pudo ser 
+		 * posible el registro, entonces no se llevará a cabo el registro. 
+		 */
 		botonRegistrarse.addActionListener(new ActionListener() {
 			
 			@Override
@@ -200,13 +205,12 @@ public class VentanaRegistro extends JPanel {
 				String email= campoEmail.getText();
 				String usuario= campoUsuario.getText();
 				String contra= new String(campoContra.getPassword());
-				String contraRepe= new String(repetirContra.getPassword());
 				
 				boolean OK = false;
 				OK = checkFields();
 				if (OK) {
 					boolean registrado = false;
-					registrado = Controlador.getUnicaInstancia().registrarUsuario(nombre, apellidos,fechaNacimiento,email, usuario, contra);
+					registrado = controlador.registrarUsuario(nombre, apellidos,fechaNacimiento,email, usuario, contra);
 						if (registrado) {
 							JOptionPane.showMessageDialog(VentanaRegistro.this, "Usuario registrado correctamente.", "Registro",
 									JOptionPane.INFORMATION_MESSAGE);
@@ -226,6 +230,10 @@ public class VentanaRegistro extends JPanel {
 		
 		
 	}
+	
+	/*
+	 * Función que se utiliza para comprobar que todos los datos introducidos por el usuario cumplen con todas las características necesarias. 
+	 */
 	private boolean checkFields() {
 		boolean salida = true;
 		String falta="";
@@ -242,6 +250,7 @@ public class VentanaRegistro extends JPanel {
 			falta=falta.concat("Debes introducir un email\n");
 			salida = false;
 		}
+		//Comprobamos que el formato del correo electrónico sea el correcto. 
 		if(!(campoEmail.getText().endsWith(".com")||campoEmail.getText().endsWith(".es")||(campoEmail.getText().endsWith(".orgs")))&&(campoEmail.getText().contains("@"))) {		
 			falta=falta.concat("El correo electrónico introducido no es válido\n");
 			salida =false;
@@ -250,6 +259,8 @@ public class VentanaRegistro extends JPanel {
 			falta=falta.concat("Debes introducir un nombre de usuario\n");
 			salida = false;
 		}
+		
+		//Obtenemos el string de la contraseña y comprobamos que coincidan. 
 		String password = new String(campoContra.getPassword());
 		String password2 = new String(repetirContra.getPassword());
 		if (password.isEmpty()) {
@@ -264,11 +275,14 @@ public class VentanaRegistro extends JPanel {
 			falta=falta.concat("Ambas contraseñas no coinciden\n");
 			salida = false;
 		}
-		/* Comprobar que no exista otro usuario con igual login */
-		if (!campoNombre.getText().trim().isEmpty() && Controlador.getUnicaInstancia().esUsuarioRegistrado(campoUsuario.getText())) {
+		
+		/* Comprobar que no exista otro usuario con el mismo nickname ya en la base de datos.  */
+		if (!campoNombre.getText().trim().isEmpty() && controlador.esUsuarioRegistrado(campoUsuario.getText())) {
 			falta=falta.concat("Ya existe ese usuario\n");
 			salida = false;
 		}
+		
+		//Obtenemos la fecha de nacimiento y comprobamos que no esté vacía y sea una fecha posterior a la actual.
 		Date fecha= calendar.getDate();
 		LocalDate fechaNacimiento= fecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
@@ -281,6 +295,7 @@ public class VentanaRegistro extends JPanel {
 			salida=false;
 		}
 
+		//Mostramos una ventana con todos los datos que faltan. 
 		if(!salida) {
 		JOptionPane.showMessageDialog(VentanaRegistro.this, falta,
 				"Error", JOptionPane.ERROR_MESSAGE);
