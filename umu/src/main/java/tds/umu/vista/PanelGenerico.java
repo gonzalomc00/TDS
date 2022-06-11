@@ -20,6 +20,8 @@ import tds.umu.modelo.Video;
 import tds.video.VideoWeb;
 
 public abstract class PanelGenerico extends JPanel{
+	/*Este tipo de panel nos sirve para tener una instancia que luego irá convirtiéndose en el tipo de panel que necesitemos. De esta forma, 
+	 * no repetiremos código de manera innecesaria*/
 	protected JPanel panel_lateral,panel_superior,panel_inferior,panel_3,panel_4,panel_5;
 	private JList<VideoRepresent> lista_videos;
 	protected JComboBox<String> comboBox;
@@ -44,6 +46,7 @@ public abstract class PanelGenerico extends JPanel{
 	
 	public void crearPantalla()
 	{
+		//Disposición del panel genérico
 		setBackground(Color.GRAY);
 		setLayout(new BorderLayout(0, 0));
 		
@@ -75,6 +78,8 @@ public abstract class PanelGenerico extends JPanel{
 		panel_4.setLayout(new BorderLayout(0, 0));
 		bReproducir = new JButton("Reproducir");
 		bReproducir.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		//Manejador que selecciona un vídeo de una lista de vídeos
 		bReproducir.addMouseListener(
 	    		new MouseAdapter() {
 	    			public void mouseClicked(MouseEvent event) {
@@ -98,6 +103,8 @@ public abstract class PanelGenerico extends JPanel{
 		panel_inferior.setLayout(new BorderLayout());
 		
 		bCancelar = new JButton("Cancelar");
+		
+		//Manejador que gestiona el hecho de clicar para cancelar una selección
 		bCancelar.addMouseListener(
 	    		new MouseAdapter() {
 	    			public void mouseClicked(MouseEvent event) {
@@ -105,6 +112,7 @@ public abstract class PanelGenerico extends JPanel{
 	    			
 	    			}
 	    		});
+		
 		panel_inferior.add(bCancelar,BorderLayout.NORTH);
 		panel_lateral.add(panel_inferior, BorderLayout.SOUTH);
 		
@@ -118,7 +126,7 @@ public abstract class PanelGenerico extends JPanel{
 	    panel_lateral.add(new JScrollPane(lista_videos));
 	    
 	}
-	
+	/*Funciones auxiliares que actualizan los diferentes paneles, y gestionan sus elementos */
 	public void actualizarPanelLateral() {
 		modeloListaVideos.removeAllElements();
 		videos_relleno= metodoRelleno();
@@ -160,7 +168,7 @@ public abstract class PanelGenerico extends JPanel{
 		
 	}
 	
-
+//funciones abstractas que dependiendo del tipo de panel al que se derive, harán una función u otra
 	public abstract void rellenarPantalla();
 	public abstract List<Video> metodoRelleno();
 	

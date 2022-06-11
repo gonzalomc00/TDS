@@ -120,6 +120,8 @@ public class PanelExplorar_NLista extends JPanel {
 	
 	/*Método para construir la vista del panel que contiene las listas de vídeos*/
 	private void construirPanelListaVideos() {
+		
+		/*DISPOSICIÓN DE ELEMENTOS EN EL PANEL DE LA LISTA DE VÍDEOS*/
 		panel_listas= new JPanel();
 		panel_listas.setPreferredSize(new Dimension(Constantes.TAM_PANEL_LATERAL_ANCHO,200));
 		panel_listas.setBackground(Color.GRAY);
@@ -189,7 +191,7 @@ public class PanelExplorar_NLista extends JPanel {
 		panel_listas.add(new JScrollPane(videos_lista));
 	
 		
-		//MANEJADORES
+		//Manejador para actualizar la lista de videos
 		bBuscar_lista.addActionListener(new ActionListener() {
 
 			@Override
@@ -198,7 +200,7 @@ public class PanelExplorar_NLista extends JPanel {
 			}
 			
 		});
-		
+		//Manejador para eliminar una lista de videos
 		bEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(lv_creada==null) {
@@ -213,6 +215,7 @@ public class PanelExplorar_NLista extends JPanel {
 			}
 		});
 		
+		//Manejador para añadir un video a una lista de videos
 		bAñadir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				VideoRepresent selected = (VideoRepresent) lista_videos.getSelectedValue();
@@ -223,7 +226,7 @@ public class PanelExplorar_NLista extends JPanel {
 				}
 			}
 		});
-		
+		//Manejador para quitar un video de una lista de videos
 		bQuitar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				VideoRepresent selected = (VideoRepresent) videos_lista.getSelectedValue();
@@ -240,6 +243,8 @@ public class PanelExplorar_NLista extends JPanel {
 	}
 /*Método para construir la vista del panel que contiene las etiquetas*/
 	public void construirPanelEtiquetas() {
+
+		/*DISPOSICIÓN DE ELEMENTOS EN EL PANEL DE ETIQUETAS*/
 		    panel_etiquetas = new JPanel();
 		    panel_etiquetas.setBackground(Color.GRAY);
 		    panel_etiquetas.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -287,7 +292,9 @@ public class PanelExplorar_NLista extends JPanel {
 		    panel_lista_etiquetas_selec.add(new JScrollPane(lista_etiquetas_sel));
 		    
 		    
-		    //MANEJADORES
+		    
+		    
+/*Con el siguiente manejador controlamos la selección de etiquetas en el panel explorar*/
 		    lista_etiquetas.addListSelectionListener(
 		    		new ListSelectionListener() {
 		    			public void valueChanged(ListSelectionEvent event) {
@@ -304,13 +311,12 @@ public class PanelExplorar_NLista extends JPanel {
 		    		}	
 		    		);
 		    
-		    
+		    //Manejador que controla las listas de etiquetas seleccionadas
 		    lista_etiquetas_sel.addListSelectionListener(
 		    		new ListSelectionListener() {
 		    			public void valueChanged(ListSelectionEvent event) {
 		    				
 		    				if(!event.getValueIsAdjusting()) {
-		    					//No usar los indices cuando tratemos con listas. Solo traen problemas. 
 		    					JList<String> source=(JList<String>) event.getSource();
 		    					String selected = source.getSelectedValue();
 		    					if(selected!=null) {
@@ -328,6 +334,8 @@ public class PanelExplorar_NLista extends JPanel {
 	
 	/*Método para construir la vista que contiene el panel de búsqueda*/
 	public void construirPanelBusqueda() {
+
+		/*DISPOSICIÓN DE ELEMENTOS EN EL PANEL DE BÚSQUEDA*/
 		panelBusqueda = new JPanel();
 	    panelBusqueda.setBackground(Color.GRAY);
 	    add(panelBusqueda, BorderLayout.CENTER);
@@ -354,11 +362,14 @@ public class PanelExplorar_NLista extends JPanel {
 	    boton_buscar = new JButton("Buscar");
 	    boton_buscar.addMouseListener(new MouseAdapter(){
 	    	
+	    	
+	    	//Si hacemos click, actualizaremos la lista de videos
 	    	public void mouseClicked(MouseEvent e) {
 	    		actualizarListaVideos();
 	    	}
 	    	
 	    });
+	    
 	    panel_control_superior.add(boton_buscar);
 	    
 	    panel_control_inferior = new JPanel();
@@ -374,7 +385,7 @@ public class PanelExplorar_NLista extends JPanel {
 	    panelBusqueda.add(panel_resultados, BorderLayout.CENTER);
 	    
 	    
-	    //Tratamiento de la lista de videos
+	 
 	    lista_videos = new JList();
 	    lista_videos.setBackground(Color.GRAY);
 	    lista_videos.setForeground(Color.WHITE);
@@ -387,7 +398,7 @@ public class PanelExplorar_NLista extends JPanel {
 	    panel_resultados.add(new JScrollPane(lista_videos),BorderLayout.CENTER);
 	    
 	    
-	    //MANEJADORES
+	    //Manejador que controla el botón de búsqueda
 	    n_busqueda.addMouseListener(new MouseAdapter() {
 	    	
 	    	public void mouseClicked(MouseEvent e) {
@@ -399,9 +410,12 @@ public class PanelExplorar_NLista extends JPanel {
 
 	}
 		
-	//METODOS DE PANEL EXPLORAR Y BUSQUEDA
 	
-	/*Métodos para actualzar los campos modificados*/
+	//Métodos asociados con panel explorar y busqueda
+	
+	
+	/*Métodos auxiliares para actualizar los campos modificados*/
+	
 	public void actualizarListaVideos() {
 		modeloTablaVideos.removeAllElements();
 	    videos_encontrados= controlador.obtenerBusqueda(barra_busqueda.getText(),etiquetas_Sel_Lista);
@@ -457,6 +471,7 @@ public class PanelExplorar_NLista extends JPanel {
 		
 		
 	}
+	
 	/*Método para eliminar listas de vídeos*/
 	private void eliminarLista() {
 		controlador.borrarLista(lv_creada);
