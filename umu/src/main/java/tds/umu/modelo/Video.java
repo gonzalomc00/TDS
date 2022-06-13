@@ -44,16 +44,6 @@ public class Video {
 
 	}
 
-	/* Método para comprobar si un vídeo contiene una etiqueta */
-	public boolean containsEtiqueta(List<Etiqueta> etiquetas) {
-
-		for (Etiqueta et : etiquetas) {
-			if (this.etiquetas.contains(et))
-				return true;
-		}
-
-		return false;
-	}
 
 	/* Método para obtener los nombres de las etiquetas del video */
 	public List<String> obtenerEtiquetas() {
@@ -63,6 +53,17 @@ public class Video {
 	/* Método para comprobar si un vídeo contiene una etiqueta. */
 	public boolean contieneEtiqueta(Etiqueta etq) {
 		return etiquetas.contains(etq);
+	}
+	
+	/* Método para comprobar si un video contiene una etiqueta de una lista */
+	public boolean contieneEtiquetas(List<Etiqueta>etiquetas) {
+		
+		for(Etiqueta et:etiquetas) {
+			if(contieneEtiqueta(et))
+				return true;
+		}
+		
+		return false;
 	}
 
 	

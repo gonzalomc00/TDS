@@ -407,7 +407,6 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 
 	public void añadirVideoPlaylist(ListaVideos lv_creada, Video v_sel) {
 		lv_creada.añadirVideo(v_sel);
-		catalogoListaVideos.addListaVideos(lv_creada);
 		adaptadorListaVideos.modificarListaVideos(lv_creada);
 
 	}

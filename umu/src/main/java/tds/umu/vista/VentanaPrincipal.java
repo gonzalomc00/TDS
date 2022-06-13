@@ -26,6 +26,8 @@ import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.GridLayout;
@@ -222,8 +224,14 @@ public void actionPerformed(ActionEvent e) {
 		cambioPanel(Paneles.LOGIN);
 	}
 	if(e.getSource()==premium) {
-		controlador.actualizarPremium();
-		cambiarEstado(EstadoLogin.PREMIUM);
+		int input= JOptionPane.showConfirmDialog(null,"¿Quieres actualizar tu cuenta y pasar a ser un usuario premium? Podrás: \n -Saber cuáles son los video más vistos \n -Aplicar filtros a tus búsquedas \n -Imprimir un PDF con tus listas",
+				"Actualizar a premium",JOptionPane.YES_NO_OPTION);
+		if(input==0) {
+			controlador.actualizarPremium();
+			cambiarEstado(EstadoLogin.PREMIUM);
+		}
+	
+	
 	}
 	if(e.getSource()==explorar) {
 		cambioPanel(Paneles.EXPLORAR);

@@ -85,7 +85,7 @@ public class CatalogoVideos {
 				Video v= videos.get(vt);
 				if(filtroVideo.esVideoOK(v)) {
 					if(etiquetas.size()>0 ) {
-						if(v.containsEtiqueta(etiquetas) )
+						if(v.contieneEtiquetas(etiquetas) )
 							resultado.add(v);
 					}
 					else{

@@ -47,7 +47,7 @@ import javax.swing.JTable;
 /*
  * Debido a que el panel Explorar y el panel Nuevas Listas tienen una estructura común y utilizan muchos métodos similares, o incluso iguales, hemos decidido unificar ambos paneles en uno solo.
  * Para cambiar de un "modo" a otro, ocultamos uno de los 3 paneles que contiene este panel. Cuando lo utilizamos el panel en modo Explorar, ocultamos el panel izquierdo mientras que en el modo
- * Nueva Lista ocultamos el panel derecho.  
+ * Nueva Lista ocultamos el panel derecho. Haciéndolo de esta forma podemos reducir mucho la cantidad de código repetido. 
  * 
  * Para visualizar de forma correcta el contenido de esta ventana en el modo Explorar, deberemos recargarla justo después de cargar los vídeos, en el caso de que no lo estuvieran previamente. 
  */
@@ -211,7 +211,7 @@ public class PanelExplorar_NLista extends JPanel {
 							"Error", JOptionPane.ERROR_MESSAGE);
 				}
 				else {
-					int input= JOptionPane.showConfirmDialog(null,"¿Quieres eliminar la lista de videos "+ lista_videos.getName()+"?","Borrar lista",JOptionPane.YES_NO_OPTION);
+					int input= JOptionPane.showConfirmDialog(null,"¿Quieres eliminar la lista de videos "+ lv_creada.getNombre()+"?","Borrar lista",JOptionPane.YES_NO_OPTION);
 					if(input==0)
 						eliminarLista();
 				}

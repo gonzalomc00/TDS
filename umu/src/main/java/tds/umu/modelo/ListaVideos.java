@@ -47,6 +47,11 @@ public class ListaVideos {
 	public void añadirVideo(Video v) {
 		videos.add(v);
 	}
+	
+	/* Método para eliminar un vídeo de una playlist */
+	public void eliminarVideo(Video v_sel) {
+		videos.remove(v_sel);
+	}
 
 	
 	/*Métodos para comparar playlist y comprobar si son iguales o no*/
@@ -68,12 +73,7 @@ public class ListaVideos {
 				nombre.equals(otro.getNombre()) &&
 				videos.equals(otro.getVideos());
 	}
-	public Video obtenerVideoIndex(int selectedIndex) {
-		return videos.get(selectedIndex);
-	}
-	public void eliminarVideo(Video v_sel) {
-		videos.remove(v_sel);
-	}
+
 	
 	
 }
