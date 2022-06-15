@@ -15,6 +15,7 @@ public class Main {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				
+				//Establecemos un look and feel más moderno a la aplicación. 
 				try {
 					
 					FlatLightLaf.setup();

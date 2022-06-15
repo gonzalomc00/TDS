@@ -110,7 +110,6 @@ public class VentanaRegistro extends JPanel{
 		
 		campoEmail = new JTextField();
 		campoEmail.setForeground(SystemColor.textInactiveText);
-		campoEmail.setText("pepico@dominio.algo");
 		campoEmail.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_email.add(campoEmail);
 		campoEmail.setColumns(15);
@@ -125,7 +124,6 @@ public class VentanaRegistro extends JPanel{
 		
 		campoUsuario = new JTextField();
 		campoUsuario.setForeground(SystemColor.textInactiveText);
-		campoUsuario.setText("pepico45");
 		panel_user_contra.add(campoUsuario);
 		campoUsuario.setColumns(10);
 		
