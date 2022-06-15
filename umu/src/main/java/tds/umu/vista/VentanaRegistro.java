@@ -70,7 +70,7 @@ public class VentanaRegistro extends JPanel{
 		panel_datos.add(panel_na);
 		panel_na.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 		
-		JLabel etiqueta_nombre = new JLabel("Nombre  ");
+		JLabel etiqueta_nombre = new JLabel("*Nombre  ");
 		etiqueta_nombre.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_na.add(etiqueta_nombre);
 		
@@ -80,7 +80,7 @@ public class VentanaRegistro extends JPanel{
 		campoNombre.setColumns(10);
 		panel_na.add(campoNombre);
 		
-		JLabel lblNewLabel_1 = new JLabel("Apellidos");
+		JLabel lblNewLabel_1 = new JLabel("*Apellidos");
 		panel_na.add(lblNewLabel_1);
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
 		
@@ -105,7 +105,7 @@ public class VentanaRegistro extends JPanel{
 		panel_datos.add(panel_email);
 		panel_email.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 		
-		JLabel etiqueta_email = new JLabel("Email");
+		JLabel etiqueta_email = new JLabel("*Email");
 		panel_email.add(etiqueta_email);
 		
 		campoEmail = new JTextField();
@@ -120,7 +120,7 @@ public class VentanaRegistro extends JPanel{
 		panel_datos.add(panel_user_contra);
 		panel_user_contra.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 		
-		JLabel etiqueta_usuario = new JLabel("Usuario");
+		JLabel etiqueta_usuario = new JLabel("*Usuario");
 		panel_user_contra.add(etiqueta_usuario);
 		
 		campoUsuario = new JTextField();
@@ -129,7 +129,7 @@ public class VentanaRegistro extends JPanel{
 		panel_user_contra.add(campoUsuario);
 		campoUsuario.setColumns(10);
 		
-		JLabel etiqueta_contra = new JLabel("Contrase\u00F1a");
+		JLabel etiqueta_contra = new JLabel("*Contraseña");
 		panel_user_contra.add(etiqueta_contra);
 		
 		campoContra = new JPasswordField();
