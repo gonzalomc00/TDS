@@ -47,6 +47,9 @@ import tds.umu.modelo.Etiqueta;
 import tds.umu.modelo.Usuario;
 import tds.video.VideoWeb;
 import pulsador.Luz;
+import javax.swing.border.LineBorder;
+import javax.swing.border.SoftBevelBorder;
+import java.awt.SystemColor;
 
 /*
  * Ventana principal de nuestra aplicación. Se encargará de inicializar todos los paneles necesarios para la aplicación y de mostrarlos correctamente en pantalla
@@ -91,6 +94,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 		setBounds(0,0,1270,720);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		contentPane = new JPanel();
+		contentPane.setBackground(Color.LIGHT_GRAY);
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
 		
@@ -107,8 +111,9 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 private void crearPanelSuperior()
 {
 	panel_superior = new JPanel();
+	panel_superior.setForeground(Color.WHITE);
+	panel_superior.setBorder(UIManager.getBorder("Spinner.border"));
 	panel_superior.setPreferredSize(new Dimension(900,40));
-	panel_superior.setBorder(new BevelBorder(BevelBorder.LOWERED, Color.LIGHT_GRAY, null, Color.LIGHT_GRAY, null));
 	panel_superior.setLayout(new BoxLayout(panel_superior,BoxLayout.X_AXIS));
 	
 	etiqueta = new JLabel("Inicia sesión o crea una nueva cuenta");
@@ -152,9 +157,9 @@ private void crearPanelSuperior()
 private void crearPanelBotones()
 {
 	panel_botones = new JPanel();
+	panel_botones.setForeground(Color.RED);
+	panel_botones.setBorder(UIManager.getBorder("Spinner.border"));
 	panel_botones.setMaximumSize(new Dimension(900,300));
-	panel_botones.setForeground(Color.WHITE);
-	panel_botones.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 	
 	panel_central = new JPanel();
 	panel_central.setLayout(new BorderLayout(0, 0));
@@ -163,34 +168,29 @@ private void crearPanelBotones()
 
 	
 	explorar = new JButton("Explorar");
-	explorar.setForeground(Color.WHITE);
-	explorar.setBackground(Color.LIGHT_GRAY);
+	
 	explorar.addActionListener(this);
 	panel_botones.add(explorar);
 	
 	mlistas = new JButton("Mis Listas");
 	mlistas.addActionListener(this);
-	mlistas.setForeground(Color.WHITE);
-	mlistas.setBackground(Color.LIGHT_GRAY);
+	
 	panel_botones.add(mlistas);
 	
 	recientes = new JButton("Recientes");
 	recientes.addActionListener(this);
-	recientes.setForeground(Color.WHITE);
-	recientes.setBackground(Color.LIGHT_GRAY);
+
 	panel_botones.add(recientes);
 	
 	nlistas = new JButton("Nueva Lista");
 	nlistas.addActionListener(this);
-	nlistas.setForeground(Color.WHITE);
-	nlistas.setBackground(Color.LIGHT_GRAY);
+
 	panel_botones.add(nlistas);
 	
 
 	masvisto= new JButton("Más Visto");
 	masvisto.addActionListener(this);
-	masvisto.setForeground(Color.WHITE);
-	masvisto.setBackground(Color.LIGHT_GRAY);
+
 	panel_botones.add(masvisto);
 	
 	//Añadimos todos los filtros que sean necesarios, según los que estén disponibles

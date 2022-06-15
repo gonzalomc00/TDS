@@ -138,7 +138,7 @@ public class PanelMisListas extends PanelGenerico {
 	 * Método para la creación del PDF. Toma la información de esta ventana para poder generarlo. Para la generación del PDF se utiliza el componente ITextPDF
 	 */
 	private void crearPDF() {
-		String raiz = "C:\\Lista.pdf";
+		String raiz = "C:\\temp\\Lista.pdf";
 		PdfWriter writer = null;
 		try {
 			writer = new PdfWriter(raiz);
@@ -175,7 +175,7 @@ public class PanelMisListas extends PanelGenerico {
 			document.add(new Paragraph("\n\n"));
 		}
 		document.close();
-		JOptionPane.showMessageDialog(null, "El PDF se ha generado correctamente en  C:\\Lista.pdf.", "PDF generado",JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(null, "El PDF se ha generado correctamente en  C:\\temp\\Lista.pdf.", "PDF generado",JOptionPane.INFORMATION_MESSAGE);
 
 	}
 	

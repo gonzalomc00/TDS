@@ -37,7 +37,7 @@ import javax.swing.border.TitledBorder;
 /*
  * Panel que se encarga de realizar el registro de un usuario y le permite introducir todos sus datos. 
  */
-public class VentanaRegistro extends JPanel {
+public class VentanaRegistro extends JPanel{
 
 	
 	private static final long serialVersionUID = 1L;

@@ -53,24 +53,20 @@ public abstract class PanelGenerico extends JPanel{
 	public void crearPantalla()
 	{
 		//Disposición del panel genérico
-		setBackground(Color.GRAY);
 		setLayout(new BorderLayout(0, 0));
 		
 		panel_lateral = new JPanel();
+		panel_lateral.setBorder(UIManager.getBorder("Spinner.border"));
 		panel_lateral.setPreferredSize(new Dimension(Constantes.TAM_PANEL_LATERAL_GENRICO_ANCHO,0));
-		panel_lateral.setBackground(Color.GRAY);
 		add(panel_lateral, BorderLayout.WEST);
 		panel_lateral.setLayout(new BorderLayout(0, 0));
 		
 		panel_superior = new JPanel();
-		panel_superior.setBackground(Color.GRAY);
-		panel_superior.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
 		panel_lateral.add(panel_superior, BorderLayout.NORTH);
 		panel_superior.setLayout(new BoxLayout(panel_superior, BoxLayout.Y_AXIS));
 		
 		etiquetaSeleccion = new JLabel();
 		etiquetaSeleccion.setAlignmentX(Component.CENTER_ALIGNMENT);
-		etiquetaSeleccion.setForeground(Color.WHITE);
 		panel_superior.add(etiquetaSeleccion);
 		
 		comboBox = new JComboBox<String>();
@@ -80,7 +76,6 @@ public abstract class PanelGenerico extends JPanel{
 		
 		
 		panel_4=new JPanel();
-		panel_4.setBackground(Color.GRAY);
 		panel_4.setLayout(new BorderLayout(0, 0));
 		bReproducir = new JButton("Reproducir");
 		bReproducir.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -104,8 +99,6 @@ public abstract class PanelGenerico extends JPanel{
 		panel_4.add(bReproducir, BorderLayout.NORTH);
 		panel_superior.add(panel_4);
 		panel_inferior = new JPanel();
-		panel_inferior.setBackground(Color.GRAY);
-		panel_inferior.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
 		panel_inferior.setLayout(new BorderLayout());
 		
 		bCancelar = new JButton("Cancelar");
@@ -123,8 +116,6 @@ public abstract class PanelGenerico extends JPanel{
 		panel_lateral.add(panel_inferior, BorderLayout.SOUTH);
 		
 		lista_videos = new JList<VideoRepresent>();
-	    lista_videos.setBackground(Color.GRAY);
-	    lista_videos.setForeground(Color.WHITE);
 	    lista_videos.setVisibleRowCount(-1);
 	    lista_videos.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 	    lista_videos.setModel(modeloListaVideos);

@@ -18,13 +18,17 @@ import tds.umu.controlador.Controlador;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JPasswordField;
+import javax.swing.UIManager;
+import javax.swing.border.BevelBorder;
+import java.awt.FlowLayout;
+import java.awt.SystemColor;
 
 /*
  * Panel que va a permitir que el usuario inicie sesión mediante su nickname y contraseña. 
  */
 public class PanelLogin extends JPanel {
 	private JTextField textoUser;
-	private JPanel panel_relleno_izq,panel_relleno_sup,panel_relleno_der,panel_relleno_inf,panel_campos,panel_nombre,panel_contraseña,panel_boton;
+	private JPanel panel_campos,panel_nombre,panel_contraseña,panel_boton;
 	private JLabel etiquetaUsuario,etiquetaContrasena;
 	private JButton aceptar;
 	private VentanaPrincipal ventana;
@@ -41,36 +45,19 @@ public class PanelLogin extends JPanel {
 	
 	private void crearPantalla()
 	{
-		setLayout(new BorderLayout(0, 0));
-		
-		panel_relleno_izq = new JPanel();
-		panel_relleno_izq.setBackground(Color.GRAY);
-		panel_relleno_izq.add(Box.createRigidArea(new Dimension(220, 70)));
-		add(panel_relleno_izq, BorderLayout.WEST);
-		
-		panel_relleno_sup = new JPanel();
-		panel_relleno_sup.setBackground(Color.GRAY);
-		panel_relleno_sup.add(Box.createRigidArea(new Dimension(105, 150)));
-		add(panel_relleno_sup, BorderLayout.NORTH);
-		
-		panel_relleno_der = new JPanel();
-		panel_relleno_der.setBackground(Color.GRAY);
-		panel_relleno_der.add(Box.createRigidArea(new Dimension(220, 70)));
-		add(panel_relleno_der, BorderLayout.EAST);
-		
-		panel_relleno_inf = new JPanel();
-		panel_relleno_inf.setBackground(Color.GRAY);
-		panel_relleno_inf.add(Box.createRigidArea(new Dimension(105, 190)));
-		add(panel_relleno_inf, BorderLayout.SOUTH);
+		FlowLayout flowLayout = new FlowLayout(FlowLayout.CENTER, 0, Constantes.LOGIN_VERTICAL_GAP);
+		flowLayout.setAlignOnBaseline(true);
+		setLayout(flowLayout);
 		
 		panel_campos = new JPanel();
-		panel_campos.setBorder(new LineBorder(new Color(0, 0, 0)));
-		add(panel_campos, BorderLayout.CENTER);
-		panel_campos.setLayout(new BorderLayout(0, 0));
+		panel_campos.setBackground(Color.LIGHT_GRAY);
+		panel_campos.setBorder(UIManager.getBorder("Spinner.border"));
+		add(panel_campos);
+		panel_campos.setLayout(new BoxLayout(panel_campos, BoxLayout.Y_AXIS));
 		
 		panel_nombre = new JPanel();
 		panel_nombre.setPreferredSize(new Dimension(900, 50));
-		panel_campos.add(panel_nombre, BorderLayout.NORTH);
+		panel_campos.add(panel_nombre);
 		
 		etiquetaUsuario = new JLabel("Usuario");
 		panel_nombre.add(etiquetaUsuario);
@@ -80,7 +67,7 @@ public class PanelLogin extends JPanel {
 		textoUser.setColumns(14);
 		
 		panel_contraseña = new JPanel();
-		panel_campos.add(panel_contraseña, BorderLayout.CENTER);
+		panel_campos.add(panel_contraseña);
 		
 		etiquetaContrasena = new JLabel("Contraseña");
 		panel_contraseña.add(etiquetaContrasena);
@@ -90,7 +77,7 @@ public class PanelLogin extends JPanel {
 		panel_contraseña.add(textoContrasena);
 		
 		panel_boton = new JPanel();
-		panel_campos.add(panel_boton, BorderLayout.SOUTH);
+		panel_campos.add(panel_boton);
 		
 		aceptar = new JButton("Aceptar");
 		
@@ -112,6 +99,7 @@ public class PanelLogin extends JPanel {
 				}
 			}
 		});
+		panel_boton.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 20));
 		panel_boton.add(aceptar);
 	}
 

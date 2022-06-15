@@ -65,23 +65,20 @@ public class Reproductor extends JPanel {
 	/* Constructor de la clase Reproductor: establece todos los componentes */
 	public Reproductor() {
 		v=null;
-		setBackground(Color.LIGHT_GRAY);
 	    setLayout(new BorderLayout());
 		
 		
-		setBackground(Color.GRAY);
 		
 		reproducciones=new JLabel();
-		reproducciones.setForeground(Color.WHITE);
+		reproducciones.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		reproducciones.setAlignmentX(Component.CENTER_ALIGNMENT);
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		verticalStrut_1 = Box.createVerticalStrut(20);
 		add(verticalStrut_1, BorderLayout.NORTH);
 		
 		nombreVideo = new JLabel();
-		nombreVideo.setText("Titulo de un video");
-		nombreVideo.setForeground(Color.WHITE);
-		nombreVideo.setFont(new Font("Verdana", Font.BOLD, 15));
+		nombreVideo.setFont(new Font("Verdana", Font.BOLD, 18));
 		nombreVideo.setAlignmentX(0.5f);
 		add(nombreVideo, BorderLayout.NORTH);
 		
@@ -90,18 +87,15 @@ public class Reproductor extends JPanel {
 		add(reproducciones);
 		
 		p= new JPanel();
-		p.setBackground(Color.GRAY);
 		p.add(videoWeb);
 		add(p);
 		panel = new JPanel();
-		panel.setBackground(Color.GRAY);
 	
 		
 		verticalStrut = Box.createVerticalStrut(50);
 		panel.add(verticalStrut);
 		
 		tit = new JLabel("Nueva etiqueta:");
-		tit.setForeground(Color.WHITE);
 		panel.add(tit);
 		
 		textField = new JTextField();
@@ -120,11 +114,7 @@ public class Reproductor extends JPanel {
 		
 		panel.add(anadir); 
 		panelEtiq = new JPanel(); 
-		panelEtiq.setBackground(Color.GRAY); 
 		listaetiquetas = new JList<String>(); 
-		listaetiquetas.setBorder(new SoftBevelBorder(BevelBorder.RAISED, Color.CYAN, null, Color.DARK_GRAY, null)); 
-		listaetiquetas.setBackground(Color.GRAY); 
-		listaetiquetas.setForeground(Color.BLACK); 
 		listaetiquetas.setVisibleRowCount(1); 
 		listaetiquetas.setLayoutOrientation(JList.HORIZONTAL_WRAP); 
 		listaetiquetas.setModel(modeloListaEtiquetas); 

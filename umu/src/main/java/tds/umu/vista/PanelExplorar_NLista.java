@@ -43,6 +43,9 @@ import javax.swing.SwingConstants;
 
 import tds.video.VideoWeb;
 import javax.swing.JTable;
+import javax.swing.border.MatteBorder;
+import javax.swing.UIManager;
+import javax.swing.ScrollPaneConstants;
 
 /*
  * Debido a que el panel Explorar y el panel Nuevas Listas tienen una estructura común y utilizan muchos métodos similares, o incluso iguales, hemos decidido unificar ambos paneles en uno solo.
@@ -52,7 +55,7 @@ import javax.swing.JTable;
  * Para visualizar de forma correcta el contenido de esta ventana en el modo Explorar, deberemos recargarla justo después de cargar los vídeos, en el caso de que no lo estuvieran previamente. 
  */
 public class PanelExplorar_NLista extends JPanel {
-	private JPanel panel_etiquetas,panelBusqueda,panelControl,panel_control_superior,panel_control_inferior,panel_etiquetas_disponibles,panel_lista_etiquetas_disp,panel_etiquetas_selec,panel_lista_etiquetas_selec,panel_resultados;
+	private JPanel panel_etiquetas,panelBusqueda,panelControl,panel_control_superior,panel_control_inferior,panel_lista_etiquetas_disp,panel_resultados;
 	private JPanel panel_listas,panel_lista_supeior,panel_listas_inferior,panel_eliminar_lista,panel_listas_busqueda,panel_3;
 	private JButton n_busqueda,boton_buscar,bEliminar,bBuscar_lista,bAñadir,bQuitar;
 	private JLabel etiq_titulo,etiquetas_disp,b_etiquetas_selec,etiquetaSeleccion,etiquetaNomLista;
@@ -106,7 +109,6 @@ public class PanelExplorar_NLista extends JPanel {
 
 	/*Metodo el cual llama a las distintas funciones para contruir el contenido de la ventana. . */
 	private void crearPantalla() {
-		setBackground(Color.LIGHT_GRAY);
 	    setLayout(new BorderLayout(0, 0));
 	    
 	    construirPanelListaVideos();
@@ -121,24 +123,21 @@ public class PanelExplorar_NLista extends JPanel {
 		
 		/*DISPOSICIÓN DE ELEMENTOS EN EL PANEL DE LA LISTA DE VÍDEOS*/
 		panel_listas= new JPanel();
+		panel_listas.setBorder(UIManager.getBorder("Spinner.border"));
 		panel_listas.setPreferredSize(new Dimension(Constantes.TAM_PANEL_LATERAL_ANCHO,200));
-		panel_listas.setBackground(Color.GRAY);
 		add(panel_listas, BorderLayout.WEST);
 		panel_listas.setLayout(new BorderLayout(0, 0));
 		
 		panel_lista_supeior = new JPanel();
-		panel_lista_supeior.setBackground(Color.GRAY);
-		panel_lista_supeior.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
 		panel_listas.add(panel_lista_supeior, BorderLayout.NORTH);
 		panel_lista_supeior.setLayout(new BoxLayout(panel_lista_supeior, BoxLayout.Y_AXIS));
 		
 		etiquetaSeleccion = new JLabel("Introducir nombre lista:");
 		etiquetaSeleccion.setAlignmentX(Component.CENTER_ALIGNMENT);
-		etiquetaSeleccion.setForeground(Color.WHITE);
 		panel_lista_supeior.add(etiquetaSeleccion);
 		
 		panel_listas_busqueda = new JPanel();
-		panel_listas_busqueda.setBackground(Color.GRAY);
+		panel_listas_busqueda.setBackground(Color.WHITE);
 		panel_lista_supeior.add(panel_listas_busqueda);
 		panel_listas_busqueda.setLayout(new BoxLayout(panel_listas_busqueda, BoxLayout.X_AXIS));
 		
@@ -150,22 +149,17 @@ public class PanelExplorar_NLista extends JPanel {
 		panel_listas_busqueda.add(bBuscar_lista);
 		
 		panel_eliminar_lista = new JPanel();
-		panel_eliminar_lista.setBackground(Color.GRAY);
 		panel_lista_supeior.add(panel_eliminar_lista);
 		
 		bEliminar = new JButton("Eliminar");
 		panel_eliminar_lista.add(bEliminar);
 		
 		panel_nombre = new JPanel();
-		panel_nombre.setBackground(Color.GRAY);
 		panel_lista_supeior.add(panel_nombre);
 		etiquetaNomLista= new JLabel("");
-		etiquetaNomLista.setForeground(Color.WHITE);
 		panel_nombre.add(etiquetaNomLista);
 		
 		panel_listas_inferior = new JPanel();
-		panel_listas_inferior.setBackground(Color.GRAY);
-		panel_listas_inferior.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
 		panel_listas.add(panel_listas_inferior, BorderLayout.SOUTH);
 		panel_listas_inferior.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
@@ -181,8 +175,6 @@ public class PanelExplorar_NLista extends JPanel {
 		
 		
 		videos_lista = new JList<VideoRepresent>();
-	    videos_lista.setBackground(Color.GRAY);
-	    videos_lista.setForeground(Color.WHITE);
 	    videos_lista.setVisibleRowCount(-1);
 	    videos_lista.setModel(modeloVideosLista);
 	    videos_lista.setCellRenderer(new VideoRenderer());
@@ -253,50 +245,47 @@ public class PanelExplorar_NLista extends JPanel {
 
 		/*DISPOSICIÓN DE ELEMENTOS EN EL PANEL DE ETIQUETAS*/
 		    panel_etiquetas = new JPanel();
-		    panel_etiquetas.setBackground(Color.GRAY);
-		    panel_etiquetas.setBorder(new LineBorder(new Color(0, 0, 0)));
+		    panel_etiquetas.setBorder(UIManager.getBorder("Spinner.border"));
 			panel_etiquetas.setPreferredSize(new Dimension(Constantes.TAM_PANEL_LATERAL_ANCHO,0));
 		    add(panel_etiquetas, BorderLayout.EAST);
-		    panel_etiquetas.setLayout(new BoxLayout(panel_etiquetas, BoxLayout.Y_AXIS));
-		   
-		    panel_etiquetas_disponibles = new JPanel();
-		    panel_etiquetas_disponibles.setBackground(Color.GRAY);
-		    panel_etiquetas.add(panel_etiquetas_disponibles);
-		    
+	
 		    etiquetas_disp = new JLabel("Etiquetas disponibles");
-		    etiquetas_disp.setForeground(Color.WHITE);
-		    panel_etiquetas_disponibles.add(etiquetas_disp);
-		    
-		    panel_lista_etiquetas_disp = new JPanel();
-		    panel_lista_etiquetas_disp.setBackground(Color.GRAY);
-		    panel_etiquetas.add(panel_lista_etiquetas_disp);
+		    panel_etiquetas.add(etiquetas_disp);
 		    
 		    lista_etiquetas = new JList();
+		    lista_etiquetas.setVisibleRowCount(Constantes.TAM_EXTENT_CELDAS_LISTAS);
 		    lista_etiquetas.setModel(modeloEtiqDisponibles);
-		    lista_etiquetas.setFixedCellWidth(120);
-		   
+		    lista_etiquetas.setFixedCellWidth(Constantes.TAM_LISTA_HORIZONTAL);
 
-		
-		    panel_lista_etiquetas_disp.add(new JScrollPane(lista_etiquetas));
+		    panel_etiquetas.add(new JScrollPane(lista_etiquetas));
 		    
-		    
-		  
-		    panel_etiquetas_selec = new JPanel();
-		    panel_etiquetas_selec.setBackground(Color.GRAY);
-		    panel_etiquetas.add(panel_etiquetas_selec);
-		    
-		    b_etiquetas_selec = new JLabel("Buscar etiquetas");
-		    b_etiquetas_selec.setForeground(Color.WHITE);
-		    panel_etiquetas_selec.add(b_etiquetas_selec);
-		    
-		    panel_lista_etiquetas_selec = new JPanel();
-		    panel_lista_etiquetas_selec.setBackground(Color.GRAY);
-		    panel_etiquetas.add(panel_lista_etiquetas_selec);
+		    b_etiquetas_selec = new JLabel("Etiquetas seleccionadas");
+		    panel_etiquetas.add(b_etiquetas_selec);
 		    
 		    lista_etiquetas_sel = new JList();
+		    lista_etiquetas_sel.setVisibleRowCount(Constantes.TAM_EXTENT_CELDAS_LISTAS);
+		    lista_etiquetas_sel.setFixedCellWidth(Constantes.TAM_LISTA_HORIZONTAL);
+		
+		    JScrollPane scrollPane = new JScrollPane(lista_etiquetas_sel);
+		    scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		    panel_etiquetas.add(scrollPane);
 		    lista_etiquetas_sel.setModel(modeloEtiqueSeleccionadas);
-		    lista_etiquetas_sel.setFixedCellWidth(120);
-		    panel_lista_etiquetas_selec.add(new JScrollPane(lista_etiquetas_sel));
+		    lista_etiquetas_sel.addListSelectionListener(
+		    		new ListSelectionListener() {
+		    			public void valueChanged(ListSelectionEvent event) {
+		    				
+		    				if(!event.getValueIsAdjusting()) {
+		    					JList<String> source=(JList<String>) event.getSource();
+		    					String selected = source.getSelectedValue();
+		    					if(selected!=null) {
+		    						modeloEtiqueSeleccionadas.removeElement(selected);
+		    						etiquetas_Sel_Lista.remove(selected);
+		    					}
+		    					
+		    				}
+		    			}	
+		    		}	
+		    		);
 		    
 		    
 		    //MANEJADORES
@@ -324,22 +313,6 @@ public class PanelExplorar_NLista extends JPanel {
 		    /*
 		     * Si seleccionamos una etiqueta de la segunda lista de etiquetas la eliminamos de ella. 
 		     */
-		    lista_etiquetas_sel.addListSelectionListener(
-		    		new ListSelectionListener() {
-		    			public void valueChanged(ListSelectionEvent event) {
-		    				
-		    				if(!event.getValueIsAdjusting()) {
-		    					JList<String> source=(JList<String>) event.getSource();
-		    					String selected = source.getSelectedValue();
-		    					if(selected!=null) {
-		    						modeloEtiqueSeleccionadas.removeElement(selected);
-		    						etiquetas_Sel_Lista.remove(selected);
-		    					}
-		    					
-		    				}
-		    			}	
-		    		}	
-		    		);
 		    
 		    
 	}
@@ -349,22 +322,18 @@ public class PanelExplorar_NLista extends JPanel {
 
 		/*DISPOSICIÓN DE ELEMENTOS EN EL PANEL DE BÚSQUEDA*/
 		panelBusqueda = new JPanel();
-	    panelBusqueda.setBackground(Color.GRAY);
 	    add(panelBusqueda, BorderLayout.CENTER);
 	    panelBusqueda.setLayout(new BorderLayout(0, 0));
 	    
 	    panelControl = new JPanel();
-	    panelControl.setBackground(Color.GRAY);
-	    panelControl.setBorder(new LineBorder(new Color(0, 0, 0)));
+	    panelControl.setBorder(UIManager.getBorder("Spinner.border"));
 	    panelBusqueda.add(panelControl, BorderLayout.NORTH);
 	    panelControl.setLayout(new BoxLayout(panelControl, BoxLayout.Y_AXIS));
 	    
 	    panel_control_superior = new JPanel();
-	    panel_control_superior.setBackground(Color.GRAY);
 	    panelControl.add(panel_control_superior);
 	    
 	    etiq_titulo = new JLabel("Buscar titulo");
-	    etiq_titulo.setForeground(Color.WHITE);
 	    panel_control_superior.add(etiq_titulo);
 	    
 	    barra_busqueda = new JTextField();
@@ -376,7 +345,6 @@ public class PanelExplorar_NLista extends JPanel {
 	    panel_control_superior.add(boton_buscar);
 	    
 	    panel_control_inferior = new JPanel();
-	    panel_control_inferior.setBackground(Color.GRAY);
 	    panelControl.add(panel_control_inferior);
 	    
 	    n_busqueda = new JButton("Nueva búsqueda");
@@ -384,14 +352,11 @@ public class PanelExplorar_NLista extends JPanel {
 	    
 	    panel_resultados = new JPanel();
 	    panel_resultados.setLayout(new BorderLayout());
-	    panel_resultados.setBackground(Color.GRAY);
 	    panelBusqueda.add(panel_resultados, BorderLayout.CENTER);
 	    
 	    
 	 
 	    lista_videos = new JList();
-	    lista_videos.setBackground(Color.GRAY);
-	    lista_videos.setForeground(Color.WHITE);
 	    lista_videos.setVisibleRowCount(-1);
 	    lista_videos.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 	    lista_videos.setModel(modeloTablaVideos);
@@ -468,7 +433,7 @@ public class PanelExplorar_NLista extends JPanel {
 		//y hacerlo si corresponde. 
 		if(lv_creada==null) {
 			int res = JOptionPane.showConfirmDialog(this, "¿Quieres crear la lista de videos "+campoNombre.getText()+"?",
-					"Crear lista de video",JOptionPane.YES_NO_CANCEL_OPTION);
+					"Crear lista de video",JOptionPane.YES_NO_OPTION);
 			
 			if(res==JOptionPane.YES_OPTION)
 				lv_creada=controlador.crearLista(campoNombre.getText());
