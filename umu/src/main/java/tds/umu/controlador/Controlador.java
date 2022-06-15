@@ -1,6 +1,5 @@
 package tds.umu.controlador;
 
-
 import java.io.File;
 import java.time.LocalDate;
 import java.util.EventObject;
@@ -11,7 +10,6 @@ import java.util.stream.Collectors;
 import javax.swing.JFileChooser;
 import pulsador.IEncendidoListener;
 import umu.tds.componente.*;
-
 
 import tds.umu.modelo.CatalogoEtiquetas;
 import tds.umu.modelo.CatalogoListasVideos;
@@ -45,8 +43,7 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 	private CatalogoEtiquetas catalogoEtiqueta;
 	private CatalogoListasVideos catalogoListaVideos;
 
-	
-	/*Atributo Singleton*/
+	/* Atributo Singleton */
 	private static Controlador unicaInstancia = null;
 
 	/*
@@ -65,26 +62,27 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 
 	/* Atributo que contiene la clase Factoría asociada a los filtros */
 	private FactoriaFiltros factoriaFiltros = FactoriaFiltros.getUnicaInstancia();
-	
+
 	/* Atributos asociados con la funcionalidad a manejar */
 	private Usuario usuarioActual;
 	private Video videoActual;
 	private static VideoWeb videoWeb;
 
 	private Controlador() {
-		/* Inicializamos todos los catalogos,adaptadores y elementos necesarios*/
+		/* Inicializamos todos los catalogos,adaptadores y elementos necesarios */
 		inicializarAdaptadores();
 		inicializarCatalogos();
 		usuarioActual = null;
-		videoActual=null;
+		videoActual = null;
 		videoWeb = new VideoWeb();
 		buscadorVideos = new ComponenteBuscadorVideos();
 		buscadorVideos.addVideosListener(this);
-		
+
 	}
 
-	/* Método para inicializar la factoría DAO y todos los adaptadores para los distintos
-	 * elementos del modelo
+	/*
+	 * Método para inicializar la factoría DAO y todos los adaptadores para los
+	 * distintos elementos del modelo
 	 */
 	private void inicializarAdaptadores() {
 		FactoriaDAO factoria = null;
@@ -97,8 +95,6 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 		adaptadorVideo = factoria.getVideoDAO();
 		adaptadorListaVideos = factoria.getListaVideosDAO();
 		adaptadorEtiquetas = factoria.getEtiquetaDAO();
-
-	
 
 	}
 
@@ -113,7 +109,6 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 		catalogoListaVideos = CatalogoListasVideos.getUnicaInstancia();
 
 	}
-
 
 	public boolean esVideoRegistrado(String vtext) {
 		return catalogoVideos.getVideo(vtext) != null;
@@ -158,16 +153,17 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 		return videoWeb;
 	}
 
-
 	/*---------------- U S U A R I O  --------------------------*/
-	
-	
-	/*Metodo para comprobar si ya hay algún usuario registrado con el mismo nickname */
+
+	/*
+	 * Metodo para comprobar si ya hay algún usuario registrado con el mismo
+	 * nickname
+	 */
 	public boolean esUsuarioRegistrado(String login) {
 		return catalogoUsuarios.getUsuario(login) != null;
 
 	}
-	
+
 	/* Método para comprobar si el usuario ha hecho el login correctamente */
 	public boolean loginUsuario(String nombre, String password) {
 		Usuario usuario = catalogoUsuarios.getUsuario(nombre);
@@ -185,7 +181,7 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 			return false;
 
 		}
-		
+
 		Usuario usuario = new Usuario(nombre, apellidos, fecha, email, login, contra);
 		adaptadorUsuario.registrarUsuario(usuario);
 		catalogoUsuarios.addUsuario(usuario);
@@ -202,14 +198,14 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 		return true;
 	}
 
-	
-	/* Método para que el usuario actual no siga siendo el mismo tras hacer logout */
+	/*
+	 * Método para que el usuario actual no siga siendo el mismo tras hacer logout
+	 */
 	public void logout() {
 		usuarioActual = null;
 
 	}
 
-	
 	/* Método para actualizar a premium a un usuario */
 
 	public void actualizarPremium() {
@@ -222,7 +218,6 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 	public boolean esUserPremium() {
 		return usuarioActual.isPremium();
 	}
-
 
 	/*
 	 * Método para comprobar si un usuario tiene un vídeo en alguna de sus playlists
@@ -240,8 +235,8 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 	/*---------------- G E S T I O N  F I C H E R O  X M L --------------------------*/
 
 	/*
-	 * Método para cargar el fichero xml que contiene los videos en el sistema 
-	 * Este método pertence al componene CargadorVideos propuesto en la asignatura
+	 * Método para cargar el fichero xml que contiene los videos en el sistema Este
+	 * método pertence al componene CargadorVideos propuesto en la asignatura
 	 */
 	public void cargarVideos(File xml) {
 		buscadorVideos.setFichero(xml);
@@ -249,8 +244,9 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 	}
 
 	/*
-	 * Método que se ejecutará cuando se interactúe con el Componente Luz proporcionado
-	 * por los profesores de la asignatura. Permite seleccionar un fichero con JFileChooser
+	 * Método que se ejecutará cuando se interactúe con el Componente Luz
+	 * proporcionado por los profesores de la asignatura. Permite seleccionar un
+	 * fichero con JFileChooser
 	 */
 
 	@Override
@@ -265,10 +261,13 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 	}
 
 	/*
-	 *  Método utilizado para cargar el contenido del fichero XML. Se ejecutará cuando el componente avise a todos sus listeners 
-	 * 	Tenemos que hacer la transición entre la clase Video del componente a la clase Video de nuestro modelo. Para ello vamos cogiendo los campos y
-	 *  revisamos que no se encuentren ya en la persistencia. Si lo están los recuperamos del catálogo y hacemos todas las modificaciones necesarias  
-	 * */
+	 * Método utilizado para cargar el contenido del fichero XML. Se ejecutará
+	 * cuando el componente avise a todos sus listeners Tenemos que hacer la
+	 * transición entre la clase Video del componente a la clase Video de nuestro
+	 * modelo. Para ello vamos cogiendo los campos y revisamos que no se encuentren
+	 * ya en la persistencia. Si lo están los recuperamos del catálogo y hacemos
+	 * todas las modificaciones necesarias
+	 */
 
 	@Override
 	public void enteradoSubidaVideos(EventObject arg0) {
@@ -288,7 +287,7 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 				}
 
 				Video vid = new Video(v.getURL(), v.getTitulo());
-				for(Etiqueta etq: etiquetas) {
+				for (Etiqueta etq : etiquetas) {
 					vid.addEtiqueta(etq);
 				}
 				adaptadorVideo.registrarVideo(vid);
@@ -306,9 +305,10 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 		return videosMatch;
 	}
 
-	/* 
-	 * Método para actualizar el video que se va a reproducir en un instante
-	 * Esto implica que se actualice su contador de visualizaciones y se añada a la lista de recientes del usuario actual.
+	/*
+	 * Método para actualizar el video que se va a reproducir en un instante Esto
+	 * implica que se actualice su contador de visualizaciones y se añada a la lista
+	 * de recientes del usuario actual.
 	 */
 
 	public void actualizarVideoSeleccionado(Video v) {
@@ -324,16 +324,13 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 	public List<Video> obtenerMasVisto() {
 		return catalogoVideos.getMasVistos();
 	}
-	
+
 	/* Método para obtener la lista de videos recientes del usuario */
 
 	public List<Video> obtenerRecientesUser() {
 		return usuarioActual.getRecientes();
 	}
-	
-	
-	
-	
+
 	/* Método para obtener un vídeo del catálogo */
 	public Video getVideo(String titulo) {
 		return catalogoVideos.getVideo(titulo);
@@ -342,16 +339,18 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 	/*---------------- E T I Q U E T A S --------------------------*/
 
 	/*
-	 * Método para obtener una lista de etiquetas a partir de una lista de strings. Estos strings son los nombres de estas.
+	 * Método para obtener una lista de etiquetas a partir de una lista de strings.
+	 * Estos strings son los nombres de estas.
 	 */
 	private List<Etiqueta> getEtiqFromText(LinkedList<String> etiquetas_Sel_Lista) {
 		return etiquetas_Sel_Lista.stream().map(text -> catalogoEtiqueta.getEtiqueta(text))
 				.collect(Collectors.toList());
 
 	}
-	
+
 	/*
-	 * Método para añadir una etiqueta al video actual que se está reproduciendo. Solo se añade si el video no tiene ya la etiqueta. 
+	 * Método para añadir una etiqueta al video actual que se está reproduciendo.
+	 * Solo se añade si el video no tiene ya la etiqueta.
 	 */
 
 	public void añadirEtiqueta(String text) {
@@ -371,14 +370,13 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 		adaptadorVideo.modificarVideo(videoActual);
 
 	}
-	
+
 	/*
-	 * Lista para obtener todas las etiquetas que se encuentran en la base de datos. 
+	 * Lista para obtener todas las etiquetas que se encuentran en la base de datos.
 	 */
 	public List<Etiqueta> getEtiquetas() {
 		return catalogoEtiqueta.getEtiquetas();
 	}
-
 
 	/*---------------- L I S T A S  D E  V I D E O S--------------------------*/
 
@@ -393,7 +391,10 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 		return usuarioActual.getLista(lista);
 	}
 
-	/* Método para crear una playlist. El encargado de crear la lista en este caso será el propio usuario.  */
+	/*
+	 * Método para crear una playlist. El encargado de crear la lista en este caso
+	 * será el propio usuario.
+	 */
 
 	public ListaVideos crearLista(String text) {
 		ListaVideos lv = usuarioActual.crearLista(text);
@@ -428,14 +429,12 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 
 	}
 
-
 	/*
-	 * Método para obtener todas las listas de videos 
+	 * Método para obtener todas las listas de videos
 	 */
 	public List<Video> getListaVideos() {
 		return catalogoVideos.getVideos();
 
 	}
-
 
 }

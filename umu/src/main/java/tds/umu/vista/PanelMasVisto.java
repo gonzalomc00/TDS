@@ -10,18 +10,14 @@ public class PanelMasVisto extends PanelGenerico {
 		super();
 		rellenarPantalla();
 	}
-	
-	public void rellenarPantalla()
-	{
+
+	public void rellenarPantalla() {
 		setTextoEtiqueta("Videos más vistos");
 	}
 
-	
 	@Override
 	public List<Video> metodoRelleno() {
 		return controlador.obtenerMasVisto();
 	}
-	
 
 }
-	
