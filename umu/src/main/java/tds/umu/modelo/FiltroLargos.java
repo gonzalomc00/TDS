@@ -1,7 +1,5 @@
 package tds.umu.modelo;
 
-import tds.umu.controlador.Controlador;
-
 /*Clase que filtra los vídeos de manera que solo aparezcan aquellos cuya longitud del título sea menor a LONGITUD_MAX_TITULO */
 public class FiltroLargos implements FiltroVideo {
 

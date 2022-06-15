@@ -21,17 +21,11 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 
-import javax.swing.border.SoftBevelBorder;
-import javax.swing.border.BevelBorder;
-import java.awt.BorderLayout;
 import com.toedter.calendar.JCalendar;
 
 import tds.umu.controlador.Controlador;
-import tds.umu.modelo.Usuario;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.border.LineBorder;
-import java.awt.Color;
 import javax.swing.border.TitledBorder;
 
 /*
@@ -43,7 +37,6 @@ public class VentanaRegistro extends JPanel{
 	private static final long serialVersionUID = 1L;
 	private JTextField campoNombre,campoApellidos,campoEmail,campoUsuario;
 	private JPasswordField campoContra;
-	private VentanaPrincipal prin;
 	private JPasswordField repetirContra;
 	private final JCalendar calendar;
 	
@@ -53,7 +46,6 @@ public class VentanaRegistro extends JPanel{
 	 * Create the panel.
 	 */
 	public VentanaRegistro(VentanaPrincipal prin) {
-		this.prin=prin; //TODO mirar donde se usa en el otro  fichero
 		setBorder(null);
 		FlowLayout flowLayout = (FlowLayout) getLayout();
 		flowLayout.setVgap(80);

@@ -2,7 +2,6 @@ package tds.umu.persistencia;
 
 import java.util.List;
 
-import tds.umu.modelo.Etiqueta;
 import tds.umu.modelo.Video;
 
 public interface IAdaptadorVideoDAO {

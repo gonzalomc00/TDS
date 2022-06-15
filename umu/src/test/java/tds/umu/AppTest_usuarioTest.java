@@ -3,12 +3,7 @@ package tds.umu;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.*;
-
-import tds.umu.modelo.Etiqueta;
-import tds.umu.modelo.FiltroLargos;
 import tds.umu.modelo.ListaVideos;
 import tds.umu.modelo.Usuario;
 import tds.umu.modelo.Video;
@@ -17,11 +12,7 @@ import tds.umu.modelo.Video;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
-
-import tds.umu.modelo.Usuario;
-
-import tds.umu.modelo.Usuario;
-
+/*Pruebas para comprobar que toda la funcionalidad del usuario funcione correctamente*/
 public class AppTest_usuarioTest {
 
 		private  Usuario u1,u2,u3;

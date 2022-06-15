@@ -10,7 +10,6 @@ import beans.Propiedad;
 import tds.driver.FactoriaServicioPersistencia;
 import tds.driver.ServicioPersistencia;
 import tds.umu.modelo.Etiqueta;
-import tds.umu.modelo.Video;
 
 public class AdaptadorEtiquetaTDS implements IAdaptadorEtiquetaDAO {
 

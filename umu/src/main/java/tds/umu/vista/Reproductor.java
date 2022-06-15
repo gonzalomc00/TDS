@@ -6,32 +6,19 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 
 import tds.umu.controlador.Controlador;
-import tds.umu.modelo.Etiqueta;
 import tds.umu.modelo.Video;
 import tds.video.VideoWeb;
-import java.awt.GridLayout;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 import java.awt.Font;
-import javax.swing.SwingConstants;
-import javax.swing.border.Border;
-import javax.swing.border.SoftBevelBorder;
-import javax.swing.border.BevelBorder;
 
 
 

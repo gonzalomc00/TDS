@@ -8,7 +8,6 @@ import java.util.Map;
 import tds.umu.persistencia.DAOException;
 import tds.umu.persistencia.FactoriaDAO;
 import tds.umu.persistencia.IAdaptadorUsuarioDAO;
-import tds.umu.persistencia.IAdaptadorVideoDAO;
 
 public class CatalogoUsuarios {
 

@@ -1,16 +1,10 @@
 package tds.umu;
 
 import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.time.LocalDate;
-import java.util.LinkedList;
-import java.util.List;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import tds.umu.modelo.CatalogoEtiquetas;
 import tds.umu.modelo.Etiqueta;
 import tds.umu.modelo.ListaVideos;
 import tds.umu.modelo.Usuario;
@@ -26,6 +20,7 @@ import tds.umu.persistencia.TDSFactoriaDAO;
 
 
 //FICHERO DE TESTS CREADOS PARA AUTOMATIZAR CIERTOS PROCESOS Y PROBAR FUNCIONES DE LA PERSISTENCIA, EJECUTAR CON LA BD RECIEN CREADA 
+/*Pruebas para comprobar que toda la funcionalidad de la persistencia funcione correctamente*/
 class AppTest_persistenciaTest {
 
 	
