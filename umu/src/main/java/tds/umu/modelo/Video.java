@@ -32,18 +32,21 @@ public class Video {
 		this.numReproducciones++;
 	}
 
-    /* La clase vídeo será la encargada de crear las etiquetas en caso de que no existan, ya que es quien las contiene. */
+	/*
+	 * La clase vídeo será la encargada de crear las etiquetas en caso de que no
+	 * existan, ya que es quien las contiene.
+	 */
 	public Etiqueta crearEtiqueta(String text) {
-		Etiqueta etq= new Etiqueta(text);
+		Etiqueta etq = new Etiqueta(text);
 		addEtiqueta(etq);
 		return etq;
 	}
+
 	/* Método para asociar una etiqueta ya existente a un vídeo */
 	public void addEtiqueta(Etiqueta etq) {
 		etiquetas.add(etq);
 
 	}
-
 
 	/* Método para obtener los nombres de las etiquetas del video */
 	public List<String> obtenerEtiquetas() {
@@ -54,21 +57,20 @@ public class Video {
 	public boolean contieneEtiqueta(Etiqueta etq) {
 		return etiquetas.contains(etq);
 	}
-	
+
 	/* Método para comprobar si un video contiene una etiqueta de una lista */
-	public boolean contieneEtiquetas(List<Etiqueta>etiquetas) {
-		
-		for(Etiqueta et:etiquetas) {
-			if(contieneEtiqueta(et))
+	public boolean contieneEtiquetas(List<Etiqueta> etiquetas) {
+
+		for (Etiqueta et : etiquetas) {
+			if (contieneEtiqueta(et))
 				return true;
 		}
-		
+
 		return false;
 	}
 
-	
-	/* 		MÉTODOS GET Y SET	*/
-	
+	/* MÉTODOS GET Y SET */
+
 	public String getUrl() {
 		return url;
 	}
@@ -92,8 +94,7 @@ public class Video {
 	public void setNumReproducciones(int numReproducciones) {
 		this.numReproducciones = numReproducciones;
 	}
-	
-	
+
 	public List<Etiqueta> getEtiquetas() {
 		return etiquetas;
 	}
@@ -110,7 +111,6 @@ public class Video {
 		this.codigo = codigo;
 	}
 
-	
 	/* Métodos para comprobar la igualdad de dos objetos */
 	@Override
 	public int hashCode() {

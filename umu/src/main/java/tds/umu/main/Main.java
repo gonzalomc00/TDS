@@ -4,7 +4,6 @@ import java.awt.EventQueue;
 
 import javax.swing.UIManager;
 
-import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 
@@ -17,14 +16,14 @@ public class Main {
 				
 				//Establecemos un look and feel más moderno a la aplicación. 
 				try {
-					
+
 					FlatLightLaf.setup();
 					try {
-					    UIManager.setLookAndFeel( new FlatIntelliJLaf() );
-					} catch( Exception ex ) {
-					    System.err.println( "Failed to initialize LaF" );
+						UIManager.setLookAndFeel(new FlatIntelliJLaf());
+					} catch (Exception ex) {
+						System.err.println("Failed to initialize LaF");
 					}
-				
+
 					VentanaPrincipal frame = new VentanaPrincipal();
 					frame.setVisible(true);
 				} catch (Exception e) {

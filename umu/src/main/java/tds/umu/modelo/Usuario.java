@@ -32,7 +32,10 @@ public class Usuario {
 	/* Filtro actual aplicado por el usuario */
 	private FiltroVideo filtro;
 
-	/* Constructor de la clase Usuario. Por defecto, un usuario tiene como filtro "NOFILTRO" */
+	/*
+	 * Constructor de la clase Usuario. Por defecto, un usuario tiene como filtro
+	 * "NOFILTRO"
+	 */
 	public Usuario(String nombre, String apellidos, LocalDate fecha, String email, String usuario, String contraseña) {
 		this.nombre = nombre;
 		this.apellidos = apellidos;
@@ -47,7 +50,7 @@ public class Usuario {
 
 	}
 
-	/* Método para comprobar la contraseña del usuario*/
+	/* Método para comprobar la contraseña del usuario */
 	public boolean checkLogin(String contraseña) {
 
 		return this.contraseña.equals(contraseña);
@@ -79,19 +82,23 @@ public class Usuario {
 		return null;
 	}
 
-	/* Método para añadir al usuario un video en su lista de videos recientes. 
-	 * Su funcionamiento es el siguiente: si un usuario visualiza su video más reciente más de una vez seguida, este no se volverá a introducir en la lista de recientes.
-	 * Si un usuario ve sus videos recientes de manera intercalada, entonces si se añadirá de forma repetida. Sigue un funcionamiento similar al de páginas como Youtube. 
+	/*
+	 * Método para añadir al usuario un video en su lista de videos recientes. Su
+	 * funcionamiento es el siguiente: si un usuario visualiza su video más reciente
+	 * más de una vez seguida, este no se volverá a introducir en la lista de
+	 * recientes. Si un usuario ve sus videos recientes de manera intercalada,
+	 * entonces si se añadirá de forma repetida. Sigue un funcionamiento similar al
+	 * de páginas como Youtube.
 	 */
 	public void añadirReciente(Video v) {
 
-		//Comprobación inicial necesaria por si es el primer vídeo que ve un usuario. 
-		if(recientes.size()!=0) {
-		if (!v.equals(recientes.getFirst())) {
-			recientes.addFirst(v);
-			if (recientes.size() > Constantes.MAX_RECIENTES)
-				recientes.removeLast();
-		}
+		// Comprobación inicial necesaria por si es el primer vídeo que ve un usuario.
+		if (recientes.size() != 0) {
+			if (!v.equals(recientes.getFirst())) {
+				recientes.addFirst(v);
+				if (recientes.size() > Constantes.MAX_RECIENTES)
+					recientes.removeLast();
+			}
 		} else {
 			recientes.addFirst(v);
 		}
@@ -102,7 +109,8 @@ public class Usuario {
 	public boolean tieneVideo(Video v) {
 
 		/*
-		 * Usamos un stream que realiza un flatmap de todos los videos de un usuario. Entonces comprueba si alguno coincide con el que buscamos. 
+		 * Usamos un stream que realiza un flatmap de todos los videos de un usuario.
+		 * Entonces comprueba si alguno coincide con el que buscamos.
 		 */
 		return listas.stream().flatMap(l -> l.getVideos().stream()).anyMatch(vid -> vid.equals(v));
 	}
@@ -201,7 +209,7 @@ public class Usuario {
 	/* Métodos para comprobar la igualdad de entidades */
 	@Override
 	public int hashCode() {
-		return Objects.hash(codigo, nombre, apellidos, fecha, email, usuario, contraseña, isPremium, listas,recientes);
+		return Objects.hash(codigo, nombre, apellidos, fecha, email, usuario, contraseña, isPremium, listas, recientes);
 	}
 
 	@Override
@@ -215,8 +223,7 @@ public class Usuario {
 		return codigo == otro.getCodigo() && nombre.equals(otro.getNombre()) && apellidos.equals(otro.getApellidos())
 				&& fecha.isEqual(otro.getFecha()) && email.equals(otro.getEmail()) && usuario.equals(otro.getUsuario())
 				&& contraseña.equals(otro.getContraseña()) && isPremium == otro.isPremium()
-				&& listas.equals(otro.listas)
-				&& recientes.equals(otro.recientes);
+				&& listas.equals(otro.listas) && recientes.equals(otro.recientes);
 
 	}
 

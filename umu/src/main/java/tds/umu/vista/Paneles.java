@@ -5,14 +5,6 @@ package tds.umu.vista;
  * están representados aquí.
  */
 public enum Paneles {
-	REPRODUCTOR,
-	EXPLORAR,
-	MISLISTAS,
-	RECIENTE,
-	REGISTRO,
-	LOGIN,
-	LOGOUT,
-	NUEVALISTA,
-	MASVISTO,
-	
+	REPRODUCTOR, EXPLORAR, MISLISTAS, RECIENTE, REGISTRO, LOGIN, LOGOUT, NUEVALISTA, MASVISTO,
+
 }
