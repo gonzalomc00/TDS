@@ -73,11 +73,15 @@
     <scope>test</scope>
 </dependency>
 <dependency>
-  <groupId>com.formdev</groupId>
-  <artifactId>flatlaf</artifactId>
-  <version>2.3</version>
-</dependency>
-
+      <groupId>com.formdev</groupId>
+      <artifactId>flatlaf</artifactId>
+      <version>2.2</version>
+    </dependency>
+    <dependency>
+      <groupId>com.formdev</groupId>
+      <artifactId>flatlaf-intellij-themes</artifactId>
+      <version>2.2</version>
+    </dependency>
     
   </dependencies>
 

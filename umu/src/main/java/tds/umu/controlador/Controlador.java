@@ -1,6 +1,7 @@
 package tds.umu.controlador;
 
 import java.io.File;
+import java.lang.reflect.InaccessibleObjectException;
 import java.time.LocalDate;
 import java.util.EventObject;
 import java.util.LinkedList;
@@ -251,14 +252,16 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 
 	@Override
 	public void enteradoCambioEncendido(EventObject arg0) {
+	
 		JFileChooser chooser = new JFileChooser();
 		int returnVal = chooser.showOpenDialog(null);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File currentFile = chooser.getSelectedFile();
 			cargarVideos(currentFile);
 		}
-
+	
 	}
+	
 
 	/*
 	 * Método utilizado para cargar el contenido del fichero XML. Se ejecutará
