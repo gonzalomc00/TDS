@@ -1,7 +1,6 @@
 package tds.umu.controlador;
 
 import java.io.File;
-import java.lang.reflect.InaccessibleObjectException;
 import java.time.LocalDate;
 import java.util.EventObject;
 import java.util.LinkedList;

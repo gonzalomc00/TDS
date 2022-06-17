@@ -68,9 +68,14 @@ public class PanelMisListas extends PanelGenerico {
 			 */
 			public void mouseClicked(MouseEvent event) {
 				String tiempo = JOptionPane.showInputDialog(null, "Introduce los segundos que quieres ver los vídeos.");
-				if (!tiempo.equals(""))
+				if (tiempo!=null && !tiempo.equals(""))
+					try {
 					reproducirTodos(Integer.valueOf(tiempo));
-
+					} catch(NumberFormatException e) {
+						JOptionPane.showMessageDialog(null,"Debes introducir un número","Introduce un número"
+								,JOptionPane.ERROR_MESSAGE);
+					
+					}
 			}
 		});
 		panel_4.add(bReproducirTodos, BorderLayout.CENTER);
@@ -80,7 +85,7 @@ public class PanelMisListas extends PanelGenerico {
 			if (controlador.esUserPremium()) {
 				crearPDF();
 			} else {
-				JOptionPane.showMessageDialog(null, "Para usar esta función debes ser un usuario premium",
+				JOptionPane.showMessageDialog(this, "Para usar esta función debes ser un usuario premium",
 						"No eres Premium", JOptionPane.ERROR_MESSAGE);
 			}
 		});

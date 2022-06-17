@@ -12,25 +12,17 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.awt.BorderLayout;
 import javax.swing.JButton;
-import javax.swing.AbstractListModel;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JTextField;
-import javax.swing.JTextArea;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.AbstractTableModel;
 
 import tds.umu.controlador.Controlador;
-import tds.umu.modelo.CatalogoEtiquetas;
-import tds.umu.modelo.CatalogoVideos;
 import tds.umu.modelo.Etiqueta;
 import tds.umu.modelo.ListaVideos;
 import tds.umu.modelo.Video;
@@ -38,12 +30,9 @@ import tds.umu.modelo.VideoRepresent;
 
 import javax.swing.JList;
 import javax.swing.JOptionPane;
-import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
 
 import tds.video.VideoWeb;
-import javax.swing.JTable;
-import javax.swing.border.MatteBorder;
 import javax.swing.UIManager;
 import javax.swing.ScrollPaneConstants;
 
@@ -56,13 +45,14 @@ import javax.swing.ScrollPaneConstants;
  */
 public class PanelExplorar_NLista extends JPanel {
 	private JPanel panel_etiquetas, panelBusqueda, panelControl, panel_control_superior, panel_control_inferior,
-			panel_lista_etiquetas_disp, panel_resultados;
+			panel_resultados;
 	private JPanel panel_listas, panel_lista_supeior, panel_listas_inferior, panel_eliminar_lista,
-			panel_listas_busqueda, panel_3;
+			panel_listas_busqueda;
 	private JButton n_busqueda, boton_buscar, bEliminar, bBuscar_lista, bAñadir, bQuitar;
 	private JLabel etiq_titulo, etiquetas_disp, b_etiquetas_selec, etiquetaSeleccion, etiquetaNomLista;
 	private JTextField barra_busqueda, campoNombre;
-	private JList lista_etiquetas, lista_etiquetas_sel, lista_videos, videos_lista;
+	private JList<String> lista_etiquetas, lista_etiquetas_sel;
+	private JList<VideoRepresent>  lista_videos, videos_lista;
 	private VideoWeb videoWeb = Controlador.getUnicaInstancia().getReproductor();
 	private List<Video> videos_encontrados;
 
@@ -265,7 +255,7 @@ public class PanelExplorar_NLista extends JPanel {
 		etiquetas_disp = new JLabel("Etiquetas disponibles");
 		panel_etiquetas.add(etiquetas_disp);
 
-		lista_etiquetas = new JList();
+		lista_etiquetas = new JList<String>();
 		lista_etiquetas.setVisibleRowCount(Constantes.TAM_EXTENT_CELDAS_LISTAS);
 		lista_etiquetas.setModel(modeloEtiqDisponibles);
 		lista_etiquetas.setFixedCellWidth(Constantes.TAM_LISTA_HORIZONTAL);
@@ -275,7 +265,7 @@ public class PanelExplorar_NLista extends JPanel {
 		b_etiquetas_selec = new JLabel("Etiquetas seleccionadas");
 		panel_etiquetas.add(b_etiquetas_selec);
 
-		lista_etiquetas_sel = new JList();
+		lista_etiquetas_sel = new JList<String>();
 		lista_etiquetas_sel.setVisibleRowCount(Constantes.TAM_EXTENT_CELDAS_LISTAS);
 		lista_etiquetas_sel.setFixedCellWidth(Constantes.TAM_LISTA_HORIZONTAL);
 
@@ -366,7 +356,7 @@ public class PanelExplorar_NLista extends JPanel {
 		panel_resultados.setLayout(new BorderLayout());
 		panelBusqueda.add(panel_resultados, BorderLayout.CENTER);
 
-		lista_videos = new JList();
+		lista_videos = new JList<VideoRepresent>();
 		lista_videos.setVisibleRowCount(-1);
 		lista_videos.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		lista_videos.setModel(modeloTablaVideos);

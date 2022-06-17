@@ -1,17 +1,13 @@
 package tds.umu.vista;
 
 import javax.swing.JPanel;
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.BorderLayout;
 import java.awt.Color;
-import javax.swing.border.LineBorder;
 
 import tds.umu.controlador.Controlador;
 
@@ -19,9 +15,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JPasswordField;
 import javax.swing.UIManager;
-import javax.swing.border.BevelBorder;
 import java.awt.FlowLayout;
-import java.awt.SystemColor;
 
 /*
  * Panel que va a permitir que el usuario inicie sesión mediante su nickname y contraseña. 
