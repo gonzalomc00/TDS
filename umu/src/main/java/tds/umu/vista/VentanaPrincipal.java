@@ -43,6 +43,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 	private PanelMasVisto PMVisto;
 	private Luz luz;
 	private Controlador controlador = Controlador.getUnicaInstancia();
+	private EstadoLogin estado;
 
 	/*
 	 * Constructor de la ventana principal, inicializa todos los paneles, crea la
@@ -202,13 +203,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 			cambioPanel(Paneles.LOGIN);
 		}
 		if (e.getSource() == premium) {
-			int input = JOptionPane.showConfirmDialog(null,
-					"¿Quieres actualizar tu cuenta y pasar a ser un usuario premium? Podrás: \n -Saber cuáles son los video más vistos \n -Aplicar filtros a tus búsquedas \n -Imprimir un PDF con tus listas",
-					"Actualizar a premium", JOptionPane.YES_NO_OPTION);
-			if (input == 0) {
-				controlador.actualizarPremium();
-				cambiarEstado(EstadoLogin.PREMIUM);
-			}
+			cambioPremium();
 
 		}
 		if (e.getSource() == explorar) {
@@ -234,6 +229,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 			controlador.cambiarFiltro((String) filtros_selecter.getSelectedItem());
 		}
 	}
+
 
 	/*
 	 * Función que ejecuta una función u otra dependiendo de para qué panel haya
@@ -312,6 +308,8 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 	 * dependiendo del estado en el que se encuentre el usuario
 	 */
 	private void cambiarEstado(EstadoLogin estado) {
+		
+		this.estado=estado;
 		switch (estado) {
 
 		case LOGOUT:
@@ -348,8 +346,8 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 			recientes.setEnabled(true);
 			nlistas.setEnabled(true);
 			logout.setEnabled(true);
-			premium.setEnabled(false);
 			login.setEnabled(false);
+			premium.setEnabled(true);
 			registro.setEnabled(false);
 			masvisto.setEnabled(true);
 			filtros_selecter.setEnabled(true);
@@ -381,5 +379,29 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 		controlador.logout();
 		etiqueta.setText("Inicia sesión o crea una cuenta nueva");
 	}
+	
+	/* Función para cambiar el estado del premium*/
+	private void cambioPremium() {
+		if(estado==EstadoLogin.LOGIN) {
+		int input = JOptionPane.showConfirmDialog(this,
+				"¿Quieres actualizar tu cuenta y pasar a ser un usuario premium? Podrás: \n -Saber cuáles son los video más vistos \n -Aplicar filtros a tus búsquedas \n -Imprimir un PDF con tus listas",
+				"Actualizar a premium", JOptionPane.YES_NO_OPTION);
+		if (input == 0) {
+			controlador.actualizarPremium(true);
+			cambiarEstado(EstadoLogin.PREMIUM);
+		}
+		}
+		else if(estado==EstadoLogin.PREMIUM) {
+			int input = JOptionPane.showConfirmDialog(this,
+					"¿Quieres dejar de ser premium?",
+					"Dejar de ser Premium", JOptionPane.YES_NO_OPTION);
+			if (input == 0) {
+				controlador.actualizarPremium(false);
+				cambiarEstado(EstadoLogin.LOGIN);
+				filtros_selecter.setSelectedIndex(0);
+			}
+		}
+	}
+
 
 }

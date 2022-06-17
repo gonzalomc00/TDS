@@ -206,11 +206,13 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 
 	}
 
-	/* Método para actualizar a premium a un usuario */
+	/* Método para actualizar el premium a un usuario. Si deja de ser premium, se pone el filtro NoFiltro pues ya no tiene esa funcionalidad disponible. */
 
-	public void actualizarPremium() {
-		usuarioActual.setPremium(true);
+	public void actualizarPremium(boolean b) {
+		usuarioActual.setPremium(b);
 		adaptadorUsuario.modificarUsuario(usuarioActual);
+		if(b==false)
+			usuarioActual.setFiltro(factoriaFiltros.getFiltro("NoFiltro"));
 
 	}
 
