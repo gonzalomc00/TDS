@@ -51,7 +51,6 @@ public class CatalogoUsuarios {
 
 	/* Método que añade un usuario al Catálogo */
 	public void addUsuario(Usuario user) {
-		System.out.println(user.getUsuario());
 		Usuarios.put(user.getUsuario(), user);
 	}
 
