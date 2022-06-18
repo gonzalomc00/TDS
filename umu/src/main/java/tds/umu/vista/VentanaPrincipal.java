@@ -18,8 +18,10 @@ import javax.swing.JOptionPane;
 
 import java.awt.Color;
 import tds.umu.controlador.Controlador;
+import tds.umu.modelo.Usuario;
 import tds.video.VideoWeb;
 import pulsador.Luz;
+import javax.swing.SwingConstants;
 
 /*
  * Ventana principal de nuestra aplicación. Se encargará de inicializar todos los paneles necesarios para la aplicación y de mostrarlos correctamente en pantalla
@@ -44,6 +46,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 	private Luz luz;
 	private Controlador controlador = Controlador.getUnicaInstancia();
 	private EstadoLogin estado;
+	private Usuario user;
 
 	/*
 	 * Constructor de la ventana principal, inicializa todos los paneles, crea la
@@ -109,12 +112,12 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 
 		panel_superior.add(registro);
 
-		login = new JButton("login");
+		login = new JButton("Iniciar sesión");
 		login.addActionListener(this);
 
 		panel_superior.add(login);
 		panel_superior.add(Box.createRigidArea(new Dimension(30, 40)));
-		logout = new JButton("logout");
+		logout = new JButton("Cerrar sesión");
 		logout.addActionListener(this);
 		panel_superior.add(logout);
 
@@ -226,7 +229,9 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 			cambioPanel(Paneles.MASVISTO);
 		}
 		if (e.getSource() == filtros_selecter) {
-			controlador.cambiarFiltro((String) filtros_selecter.getSelectedItem());
+			//Solo actua cuando el usuario esta en estado login(para restablecer el NoFiltro) o cuando es premium para cambiarlo a su preferencia
+			if(estado!=EstadoLogin.LOGOUT)
+				controlador.cambiarFiltro((String) filtros_selecter.getSelectedItem());
 		}
 	}
 
@@ -320,8 +325,8 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 			logout.setEnabled(false);
 			premium.setEnabled(false);
 			masvisto.setEnabled(false);
-			registro.setEnabled(true);
-			login.setEnabled(true);
+			registro.setVisible(true);
+			login.setVisible(true);
 			filtros_selecter.setEnabled(false);
 
 			break;
@@ -333,8 +338,8 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 			nlistas.setEnabled(true);
 			logout.setEnabled(true);
 			premium.setEnabled(true);
-			login.setEnabled(false);
-			registro.setEnabled(false);
+			login.setVisible(false);
+			registro.setVisible(false);
 			masvisto.setEnabled(false);
 			filtros_selecter.setEnabled(false);
 
@@ -346,11 +351,12 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 			recientes.setEnabled(true);
 			nlistas.setEnabled(true);
 			logout.setEnabled(true);
-			login.setEnabled(false);
+			login.setVisible(false);
 			premium.setEnabled(true);
-			registro.setEnabled(false);
+			registro.setVisible(false);
 			masvisto.setEnabled(true);
 			filtros_selecter.setEnabled(true);
+			filtros_selecter.setSelectedItem(user.getNombreFiltro());
 			break;
 		}
 
@@ -361,8 +367,9 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 	 * hacer login. Llama a la función de cambiar el estado propio de la ventana y
 	 * cambia la etiqueta superior
 	 */
-	public void actualizarLogin(String text) {
-		etiqueta.setText("¡Hola " + text + "!");
+	public void actualizarLogin() {
+		user=controlador.getUsuarioActual();
+		etiqueta.setText("¡Hola " + user.getUsuario() + "!");
 		if (controlador.esUserPremium()) {
 			cambiarEstado(EstadoLogin.PREMIUM);
 		} else {
@@ -375,8 +382,10 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 	/* Método análogo al anterior, pero cuando se realizar logout */
 	private void cierreSesion() {
 		cambiarEstado(EstadoLogin.LOGOUT);
+		user=null;
 		Plogin.clean();
 		controlador.logout();
+		filtros_selecter.setSelectedIndex(0);
 		etiqueta.setText("Inicia sesión o crea una cuenta nueva");
 	}
 	

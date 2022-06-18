@@ -17,7 +17,6 @@ import tds.umu.modelo.CatalogoUsuarios;
 import tds.umu.modelo.CatalogoVideos;
 import tds.umu.modelo.Etiqueta;
 import tds.umu.modelo.FactoriaFiltros;
-import tds.umu.modelo.FiltroVideo;
 import tds.umu.modelo.ListaVideos;
 import tds.umu.modelo.Usuario;
 import tds.umu.modelo.Video;
@@ -60,8 +59,6 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 
 	private ComponenteBuscadorVideos buscadorVideos;
 
-	/* Atributo que contiene la clase Factoría asociada a los filtros */
-	private FactoriaFiltros factoriaFiltros = FactoriaFiltros.getUnicaInstancia();
 
 	/* Atributos asociados con la funcionalidad a manejar */
 	private Usuario usuarioActual;
@@ -211,8 +208,7 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 	public void actualizarPremium(boolean b) {
 		usuarioActual.setPremium(b);
 		adaptadorUsuario.modificarUsuario(usuarioActual);
-		if(b==false)
-			usuarioActual.setFiltro(factoriaFiltros.getFiltro("NoFiltro"));
+	
 
 	}
 
@@ -231,8 +227,8 @@ public final class Controlador implements VideosListener, IEncendidoListener {
 
 	/* Método para cambiarle el filtro a un usuario */
 	public void cambiarFiltro(String filtro_selected) {
-		FiltroVideo filtro = factoriaFiltros.getFiltro(filtro_selected);
-		usuarioActual.setFiltro(filtro);
+		usuarioActual.setFiltro(filtro_selected);
+		adaptadorUsuario.modificarUsuario(usuarioActual);
 	}
 	/*---------------- G E S T I O N  F I C H E R O  X M L --------------------------*/
 

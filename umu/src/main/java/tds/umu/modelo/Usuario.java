@@ -30,7 +30,7 @@ public class Usuario {
 	/* Vídeos más recientes reproducidos por el usuario */
 	private LinkedList<Video> recientes;
 	/* Filtro actual aplicado por el usuario */
-	private FiltroVideo filtro;
+	private String filtro;
 
 	/*
 	 * Constructor de la clase Usuario. Por defecto, un usuario tiene como filtro
@@ -46,7 +46,7 @@ public class Usuario {
 		this.isPremium = false;
 		this.listas = new LinkedList<ListaVideos>();
 		this.recientes = new LinkedList<Video>();
-		this.setFiltro(FactoriaFiltros.getUnicaInstancia().getFiltro("NOFILTRO"));
+		this.filtro= "NoFiltro";
 
 	}
 
@@ -188,13 +188,22 @@ public class Usuario {
 		this.listas = listas;
 	}
 
-	/* Métodos para recuperar/establecer un filtro */
+	/*
+	 *  Métodos para recuperar el filtro del usuario. 
+	 * Como tenemos el nombre, podemos crear la clase filtro cuando se recupere
+	 */
 	public FiltroVideo getFiltro() {
-		return filtro;
+		return FactoriaFiltros.getUnicaInstancia().getFiltro(filtro);
 	}
 
-	public void setFiltro(FiltroVideo filtro) {
+	/* Método para cambiar el filtro del usuario*/
+	public void setFiltro(String filtro) {
 		this.filtro = filtro;
+	}
+	
+	/* Método para recuperar el nombre del filtro. */
+	public String getNombreFiltro() {
+		return filtro;
 	}
 
 	/* Método para recuperar los vídeos recientes del usuario */

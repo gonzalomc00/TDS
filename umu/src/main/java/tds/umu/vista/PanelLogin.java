@@ -83,7 +83,7 @@ public class PanelLogin extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(Controlador.getUnicaInstancia().loginUsuario(textoUser.getText(), textoContrasena.getText())) {
-					ventana.actualizarLogin(textoUser.getText());
+					ventana.actualizarLogin();
 				}
 				else {
 					JOptionPane.showMessageDialog(PanelLogin.this, "Nombre de usuario o contraseña no valido",

@@ -60,7 +60,8 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 				new Propiedad("contraseña", usuario.getContraseña()),
 				new Propiedad("listasDeVideo", obtenerCodigosListasVideos(usuario.getListas())),
 				new Propiedad("isPremium", String.valueOf(usuario.isPremium())),
-				new Propiedad("recientes", obtenerCodigosRecientes(usuario.getRecientes())))));
+				new Propiedad("recientes", obtenerCodigosRecientes(usuario.getRecientes())),
+				new Propiedad("filtro",usuario.getNombreFiltro()))));
 
 		// Registramos la entidad en la base de datos y le asignamos un código único.
 		eUsuario = servPersistencia.registrarEntidad(eUsuario);
@@ -122,9 +123,12 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 			case ("recientes"):
 				String lineas_recientes = obtenerCodigosRecientes(usuario.getRecientes());
 				prop.setValor(String.valueOf(lineas_recientes));
-
+				break;
+			case ("filtro"):
+				prop.setValor(usuario.getNombreFiltro());
+				break;
 			}
-
+		
 			servPersistencia.modificarPropiedad(prop);
 		}
 
@@ -144,6 +148,7 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 		String nombreUsuario;
 		String contraseña;
 		String isPremium;
+		String filtro;
 		List<ListaVideos> lv;
 		List<Video> recientes;
 
@@ -163,6 +168,7 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 		isPremium = servPersistencia.recuperarPropiedadEntidad(eUsuario, "isPremium");
 		lv = obtenerListaVideosDesdeCodigos(servPersistencia.recuperarPropiedadEntidad(eUsuario, "listasDeVideo"));
 		recientes = obtenerRecientesDesdeCodigos(servPersistencia.recuperarPropiedadEntidad(eUsuario, "recientes"));
+		filtro= servPersistencia.recuperarPropiedadEntidad(eUsuario, "filtro");
 
 		DateTimeFormatter formattedDate = DateTimeFormatter.ofPattern("dd-MMM-yy");
 		fechaFormateada = LocalDate.parse(fecha, formattedDate);
@@ -180,6 +186,7 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 
 		usuario.setRecientes((LinkedList<Video>) recientes);
 		usuario.setCodigo(codigo);
+		usuario.setFiltro(filtro);
 		return usuario;
 	}
 
