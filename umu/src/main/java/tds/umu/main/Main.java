@@ -15,6 +15,7 @@ public class Main {
 			public void run() {
 				
 				//Establecemos un look and feel más moderno a la aplicación. 
+				
 				try {
 
 					FlatLightLaf.setup();
@@ -23,6 +24,7 @@ public class Main {
 					} catch (Exception ex) {
 						System.err.println("Failed to initialize LaF");
 					}
+					
 
 					VentanaPrincipal frame = new VentanaPrincipal();
 					frame.setVisible(true);
