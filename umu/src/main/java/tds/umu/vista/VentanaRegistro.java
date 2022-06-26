@@ -204,6 +204,7 @@ public class VentanaRegistro extends JPanel {
 					if (registrado) {
 						JOptionPane.showMessageDialog(VentanaRegistro.this, "Usuario registrado correctamente.",
 								"Registro", JOptionPane.INFORMATION_MESSAGE);
+						clean();
 						prin.cambioPanel(Paneles.LOGIN);
 
 					} else {
@@ -293,6 +294,15 @@ public class VentanaRegistro extends JPanel {
 			JOptionPane.showMessageDialog(VentanaRegistro.this, falta, "Error", JOptionPane.ERROR_MESSAGE);
 		}
 		return salida;
+	}
+	
+	private void clean() {
+		campoNombre.setText("");
+		campoApellidos.setText("");
+		campoEmail.setText("");
+		campoUsuario.setText("");
+		campoContra.setText("");
+		repetirContra.setText("");
 	}
 
 }
